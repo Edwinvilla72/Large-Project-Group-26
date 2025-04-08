@@ -18,7 +18,7 @@ function CardUI() {
         let js = JSON.stringify(obj);
         try {
             const response = await
-                fetch('http://localhost:5000/api/addcard',
+                fetch('/api/addcard',
                     {
                         method: 'POST', body: js, headers: {
                             'Content-Type':
@@ -44,7 +44,7 @@ function CardUI() {
         let js = JSON.stringify(obj);
         try {
             const response = await
-                fetch('http://localhost:5000/api/searchcards',
+                fetch('/api/searchcards',
                     {
                         method: 'POST', body: js, headers: {
                             'Content-Type':
