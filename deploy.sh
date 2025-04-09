@@ -1,5 +1,5 @@
 #!/bin/bash
-
+echo "🚨 Hello from test deploy!" >> /tmp/deploy-test.log
 cd /opt/bitnami/projects/cards || exit
 
 echo "🚀 Pulling latest code..."
