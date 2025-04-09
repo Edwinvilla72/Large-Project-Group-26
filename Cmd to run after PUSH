@@ -1,0 +1,4 @@
+Run this command after push to update the site live:
+====================================================
+bash /opt/bitnami/projects/cards/deploy.sh
+====================================================
