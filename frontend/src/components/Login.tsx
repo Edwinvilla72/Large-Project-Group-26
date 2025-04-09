@@ -13,6 +13,13 @@ function Login() {
         setPassword(e.target.value);
     }
 
+    // button to get to regsiter screen
+    function RegisterButton() {
+        window.location.href = '/register';
+    }
+
+
+
     // dologin
     async function doLogin(event: any): Promise<void> {
         event.preventDefault();
@@ -47,11 +54,30 @@ function Login() {
     return (
         <div id="loginDiv">
             <span id="inner-title">PLEASE LOG IN</span><br />
-            <input type="text" id="loginName" placeholder="Username" onChange={handleSetLoginName} />
-            <input type="password" id="loginPassword" placeholder="Password" onChange={handleSetPassword} />
+            <input type="text" id="loginName" placeholder="Username" onChange={handleSetLoginName} /><br></br>
+            <input type="password" id="loginPassword" placeholder="Password" onChange={handleSetPassword} /><br></br>
             <input type="submit" id="loginButton" className="buttons" value="Login"
                 onClick={doLogin} />
             <span id="loginResult">{message}</span>
+            
+            <br></br>
+            <br></br>
+            <br></br>
+            
+            <input type="button" id="registerButton" className="buttons" value="Create an Account" onClick={RegisterButton} /><br></br>
+            <br></br>
+            <button id="forgotPasswordButton" onClick={RegisterButton} style={{ 
+                background: 'none', 
+                border: 'none', 
+                color: 'white', 
+                textDecoration: 'underline',
+                cursor: 'pointer',
+                padding: 0,
+                font: 'inherit'
+            }}>
+            Forgot Password?
+            </button>
+
         </div>
     );
 };
