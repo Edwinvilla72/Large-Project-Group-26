@@ -1,5 +1,5 @@
 import Register from '../components/Login.tsx';
-const LoginPage = () => {
+const RegistrationPage = () => {
     return (
         <div>
             <h1 id="registerTitle">Sign up for FitGame!</h1>
@@ -7,4 +7,4 @@ const LoginPage = () => {
         </div>
     );
 };
-export default LoginPage;
+export default RegistrationPagePage;
