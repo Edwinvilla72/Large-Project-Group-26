@@ -22,7 +22,7 @@ const FPSecurityQuestion = () => {
         <div id="ForgotPassUserDiv">
     
         <h1>Hi, User!</h1>
-        <p>Answer your security question: </p><br></br>
+        <p>Answer your security question: </p>
         <p>Your Security Question: [Insert question here]</p><br></br>
 
         <input type="text" value={answer} onChange={e => setAnswer(e.target.value)} placeholder="Your Answer"></input><br></br>
