@@ -14,7 +14,7 @@ const ChangePassword = () => {
         alert(`if username was found on db, send them to answer their security questions.\nIf not, say no user found`);
 
         // sends user (if they exist) to answer their security question
-        window.location.href = '/FPSecurityQuestion';
+        window.location.href = '/';
     }
     return (
         <div id="ForgotPassUserDiv">
