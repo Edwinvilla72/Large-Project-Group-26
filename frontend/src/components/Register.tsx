@@ -6,8 +6,8 @@ function Register() {
     return (
         <div id="RegisterDiv">
 
-            <>insert code here...</> 
             
+
         </div>
     );
 }

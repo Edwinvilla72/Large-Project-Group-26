@@ -18,6 +18,9 @@ function Login() {
         window.location.href = '/register';
     }
 
+    function ForgotPassword () {
+        window.location.href = '/ForgotPass';
+    }
 
 
     // dologin
@@ -66,7 +69,7 @@ function Login() {
             
             <input type="button" id="registerButton" className="buttons" value="Create an Account" onClick={RegisterButton} /><br></br>
             <br></br>
-            <button id="forgotPasswordButton" onClick={RegisterButton} style={{ 
+            <button id="forgotPasswordButton" onClick={ForgotPassword} style={{ 
                 background: 'none', 
                 border: 'none', 
                 color: 'white', 
