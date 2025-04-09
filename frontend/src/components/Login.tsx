@@ -49,7 +49,7 @@ function Login() {
             <span id="inner-title">PLEASE LOG IN</span><br />
             <input type="text" id="loginName" placeholder="USERNAME" onChange={handleSetLoginName} />
             <input type="password" id="loginPassword" placeholder="PASSWORD" onChange={handleSetPassword} />
-            <input type="submit" id="loginButton" className="buttons" value="Login"
+            <input type="submit" id="loginButton" className="buttons" value="LOGIN"
                 onClick={doLogin} />
             <span id="loginResult">{message}</span>
         </div>
