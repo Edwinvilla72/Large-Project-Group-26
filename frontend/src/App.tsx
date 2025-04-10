@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import LoginPage from './pages/LoginPage';
-import CardPage from './pages/CardPage';
+import CardPage from './pages/Dashboard';
 import RegisterPage from './pages/RegisterPage';
 import ForgotPass from './pages/FP/ForgotPassPage';
 import FPSecurityQuestion from './pages/FP/FPSecurityQuestionPage';
