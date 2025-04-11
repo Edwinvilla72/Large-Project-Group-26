@@ -1,4 +1,4 @@
-const express = require('express');
+import express from 'express';
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
