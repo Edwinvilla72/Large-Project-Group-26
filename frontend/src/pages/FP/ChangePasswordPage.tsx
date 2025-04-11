@@ -19,7 +19,10 @@ const ChangePassword = () => {
         // sends user (if they exist) to answer their security question
         window.location.href = '/';
     }
+
+    // motion.div is for animating the page
     return (
+
         <motion.div
         initial={{ y: -100, opacity: 0 }}
         animate={{y: 0, opacity: 1 }}
