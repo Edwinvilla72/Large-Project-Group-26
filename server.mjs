@@ -1,7 +1,8 @@
 import express from 'express';
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const app = express();
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import { MongoClient } from 'mongodb';
+
 
 const MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb+srv://Edwin123:12345@cluster0.jqhcjet.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
