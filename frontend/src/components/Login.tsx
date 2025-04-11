@@ -28,6 +28,18 @@ function Login() {
     // dologin
     async function doLogin(event: any): Promise<void> {
         event.preventDefault();
+
+        //TODO ===========================TEMPORARY FOR TESTING (COMMENT OUT OR DELETE WHEN DONE)===========================
+        const user = {
+            FirstName: "test",
+            LastName: "user",
+            _id: "00000"
+        };
+        localStorage.setItem('user_data', JSON.stringify(user));
+        setMessage('');
+        navigate('/cards');
+        //TODO =========================== END OF TEMPORARY TEST =============================================================
+
         const obj = { login: loginName, password: loginPassword };
         const js = JSON.stringify(obj);
     
