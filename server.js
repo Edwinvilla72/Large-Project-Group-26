@@ -193,7 +193,6 @@ app.post('/api/login', async (req, res, next) => {
 });
 
 // === register ===(commented out hashing, email, and stats for testing)
-const { MongoClient } = require('mongodb');
 await client.connect();
 
 app.post('/api/register', async (req, res) => {
