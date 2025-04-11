@@ -26,7 +26,7 @@ function Login() {
     // dologin
     async function doLogin(event: any): Promise<void> {
         event.preventDefault();
-        var obj = { login: loginName, password: loginPassword };
+        var obj = { Login: loginName, Password: loginPassword };
         var js = JSON.stringify(obj);
         try {
             const response = await fetch('/api/login',
@@ -42,7 +42,7 @@ function Login() {
             }
             else {
                 var user =
-                    { firstName: res.firstName, lastName: res.lastName, id: res.id }
+                    { FirstName: res.firstName, LastName: res.lastName, _id: res.id }
                 localStorage.setItem('user_data', JSON.stringify(user));
                 setMessage('');
                 window.location.href = '/cards';
