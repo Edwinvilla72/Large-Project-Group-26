@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'; // to animate pages ooooooo
 function PageTitle() {
 
     return (
-        <motion.div initial={{ y: 0, opacity: 0 }} animate={{y: 0, opacity: 1 }} exit={{ y: 0, opacity: 0 }} transition={{ duration: 0.4 }} >
+        <motion.div initial={{ y: -100, opacity: 0 }} animate={{y: 0, opacity: 1 }} exit={{ y: 100, opacity: 0 }} transition={{ duration: 0.4 }} >
 
         <h1 id="title">FitGame</h1>
 
