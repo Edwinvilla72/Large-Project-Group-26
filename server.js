@@ -197,8 +197,45 @@ app.post('/api/login', async (req, res, next) => {
 // register
 app.post('/api/register', async (req, res) => {
     console.log("📥 Hit /api/register route:", req.body);
-    
+  
+    try {
+      const { FirstName, LastName, username, password } = req.body;
+  
+      if (!FirstName || !LastName || !username || !password) {
+        return res.status(400).json({ error: "Please fill out all fields." });
+      }
+  
+      const db = client.db("fitgame");
+      const users = db.collection("Users");
+  
+      // OPTIONAL: check for existing username
+      const existing = await users.findOne({ Login: username });
+      if (existing) {
+        return res.status(409).json({ error: "Username already exists. Please choose another." });
+      }
+  
+      const newUser = {
+        FirstName,
+        LastName,
+        Login: username, // ✅ Must match login field
+        Password: password,
+        character: {
+          name: username + "'s Hero",
+          level: 1,
+          xp: 0
+        }
+      };
+  
+      const result = await users.insertOne(newUser);
+      console.log("✅ User registered with ID:", result.insertedId);
+  
+      res.status(201).json({ error: "" });
+    } catch (e) {
+      console.error("❌ Registration error:", e);
+      res.status(500).json({ error: "Registration failed: " + e.message });
+    }
   });
+  
   
 // search cards
 app.post('/api/searchcards', async (req, res, next) => {
