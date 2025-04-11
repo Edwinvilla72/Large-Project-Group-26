@@ -165,23 +165,32 @@ app.post('/api/addcard', async (req, res, next) => {
 
 // login
 app.post('/api/login', async (req, res, next) => {
-    // incoming: login, password
-    // outgoing: id, firstName, lastName, error
-    var error = '';
     const { login, password } = req.body;
-    const db = client.db('fitgame');
-    const results = await
-        db.collection('Users').find({ Login: login, Password: password }).toArray();
-    var id = -1;
-    var fn = '';
-    var ln = '';
-    if (results.length > 0) {
-        id = results[0].UserId;
-        fn = results[0].FirstName;
-        ln = results[0].LastName;
+
+    if (!login || !password) {
+        return res.status(400).json({ error: "Missing login or password" });
     }
-    var ret = { _id: id, FirstName: fn, LastName: ln, error: '' };
-    res.status(200).json(ret);
+
+    try {
+        const db = client.db('fitgame'); // ✅ FIXED
+        const results = await db.collection('Users').find({ Login: login, Password: password }).toArray();
+
+        if (results.length === 0) {
+            return res.status(401).json({ error: "Invalid username or password" });
+        }
+
+        const user = results[0];
+
+        return res.status(200).json({
+            _id: user.UserId || user._id,
+            FirstName: user.FirstName,
+            LastName: user.LastName,
+            error: ""
+        });
+    } catch (e) {
+        console.error("Login error:", e);
+        return res.status(500).json({ error: "An error occurred during login" });
+    }
 });
 
 // search cards
