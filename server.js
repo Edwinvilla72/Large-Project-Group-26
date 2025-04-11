@@ -197,6 +197,7 @@ const { MongoClient } = require('mongodb');
 await client.connect();
 
 app.post('/api/register', async (req, res) => {
+    console.log("📥 Incoming /api/register request:", req.body);
   try {
     const { FirstName, LastName, username, password } = req.body;
 
