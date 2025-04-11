@@ -194,24 +194,28 @@ app.post('/api/login', async (req, res, next) => {
 
 // register (commented out hashing, email, and stats for testing)
 app.post('/api/register', async (req, res) => {
-    const { FirstName, LastName, username, /*email,*/ password } = req.body;
-    //const hashed = await bcrypt.hash(password, 10);
-    const user = new User({
-        FirstName, 
+    try {
+      const { FirstName, LastName, username, password } = req.body;
+  
+      const user = new User({
+        FirstName,
         LastName,
         username,
-        /* email, */
-        password /*: hashed*/,
+        password,
         character: {
-            name: username + "'s Hero",
-            level: 1,
-            xp: 0,
-            //stats: { strength: 5, stamina: 5, agility: 5 },
+          name: username + "'s Hero",
+          level: 1,
+          xp: 0,
         },
-    });
-    await user.save();
-    res.status(201).send('User registered');
-});
+      });
+  
+      await user.save();
+      res.status(201).json({ error: "" }); // ✅ consistent response
+    } catch (e) {
+      console.error("Register error:", e);
+      res.status(500).json({ error: "Server error: " + e.message });
+    }
+  });
 
 
 // search cards

@@ -36,8 +36,8 @@ function Register() {
         const obj = {
             FirstName: firstName,
             LastName: lastName,
-            Login: username,
-            Password: password
+            username: username,
+            password: password
             // don't need to add confirm password
         };
 
