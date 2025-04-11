@@ -172,7 +172,7 @@ app.post('/api/login', async (req, res, next) => {
     }
 
     try {
-        const db = client.db('fitgame'); // ✅ FIXED
+        const db = client.db('fitgame'); 
         const results = await db.collection('Users').find({ Login: login, Password: password }).toArray();
 
         if (results.length === 0) {

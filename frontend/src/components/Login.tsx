@@ -26,33 +26,47 @@ function Login() {
     // dologin
     async function doLogin(event: any): Promise<void> {
         event.preventDefault();
-        var obj = { Login: loginName, Password: loginPassword };
-        var js = JSON.stringify(obj);
+        const obj = { login: loginName, password: loginPassword };
+        const js = JSON.stringify(obj);
+    
         try {
-            const response = await fetch('/api/login',
-                {
-                    method: 'POST', body: js, headers: {
-                        'Content-Type':
-                            'application/json'
-                    }
-                });
-            var res = JSON.parse(await response.text());
-            if (res.id <= 0) {
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: js
+            });
+    
+            const text = await response.text();
+    
+            if (!response.ok) {
+                // backend returned 401, 400, etc.
+                const errRes = JSON.parse(text);
+                setMessage(errRes.error || 'Login failed.');
+                return;
+            }
+    
+            const res = JSON.parse(text);
+    
+            if (!res._id || res._id <= 0) {
                 setMessage('User/Password combination incorrect');
+                return;
             }
-            else {
-                var user =
-                    { FirstName: res.firstName, LastName: res.lastName, _id: res.id }
-                localStorage.setItem('user_data', JSON.stringify(user));
-                setMessage('');
-                window.location.href = '/cards';
-            }
+    
+            const user = {
+                FirstName: res.FirstName,
+                LastName: res.LastName,
+                _id: res._id
+            };
+    
+            localStorage.setItem('user_data', JSON.stringify(user));
+            setMessage('');
+            window.location.href = '/cards';
+        } catch (error: any) {
+            console.error('Login error:', error);
+            setMessage('Server error. Please try again later.');
         }
-        catch (error: any) {
-            alert(error.toString());
-            return;
-        }
-    };
+    }
+    
 
     return (
         <div id="loginDiv">
