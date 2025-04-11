@@ -60,6 +60,7 @@ function Login() {
     
             localStorage.setItem('user_data', JSON.stringify(user));
             setMessage('');
+            // sends user to next page (will become dashboard soon)
             window.location.href = '/cards';
         } catch (error: any) {
             console.error('Login error:', error);

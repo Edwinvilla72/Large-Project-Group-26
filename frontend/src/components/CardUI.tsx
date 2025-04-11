@@ -12,6 +12,8 @@ function CardUI() {
     const [cardList, setCardList] = useState('');
     const [search, setSearchValue] = React.useState('');
     const [card, setCardNameValue] = React.useState('');
+
+    // add card function (good to look at to register users hmmmmmm)
     async function addCard(e: any): Promise<void> {
         e.preventDefault();
         let obj = { userId: userId, card: card };
@@ -38,6 +40,8 @@ function CardUI() {
             setMessage(error.toString());
         }
     };
+
+    
     async function searchCard(e: any): Promise<void> {
         e.preventDefault();
         let obj = { userId: userId, search: search };
