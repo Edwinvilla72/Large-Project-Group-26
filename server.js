@@ -1,10 +1,9 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import { MongoClient } from 'mongodb';
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const app = express();
 
-
-//const MongoClient = require('mongodb').MongoClient;
+const MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb+srv://Edwin123:12345@cluster0.jqhcjet.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 const client = new MongoClient(url);
 client.connect();
@@ -180,7 +179,9 @@ app.post('/api/login', async (req, res, next) => {
         if (results.length === 0) {
             return res.status(401).json({ error: "Invalid username or password" });
         }
+
         const user = results[0];
+
         return res.status(200).json({
             _id: user.UserId || user._id,
             FirstName: user.FirstName,
@@ -192,40 +193,6 @@ app.post('/api/login', async (req, res, next) => {
         return res.status(500).json({ error: "An error occurred during login" });
     }
 });
-
-// === register ===(commented out hashing, email, and stats for testing)
-await client.connect();
-
-app.post('/api/register', async (req, res) => {
-    console.log("📥 Incoming /api/register request:", req.body);
-  try {
-    const { FirstName, LastName, username, password } = req.body;
-
-    const db = client.db("fitgame");
-    const usersCollection = db.collection("Users");
-
-    const newUser = {
-      FirstName,
-      LastName,
-      username,
-      password,
-      character: {
-        name: username + "'s Hero",
-        level: 1,
-        xp: 0
-      }
-    };
-
-    await usersCollection.insertOne(newUser);
-
-    res.status(201).json({ error: "" });
-  } catch (e) {
-    console.error("Registration error:", e);
-    res.status(500).json({ error: e.message });
-  }
-});
-// ===============
-
 
 // search cards
 app.post('/api/searchcards', async (req, res, next) => {
