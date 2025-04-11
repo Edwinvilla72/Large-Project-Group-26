@@ -169,7 +169,7 @@ app.post('/api/login', async (req, res, next) => {
     // outgoing: id, firstName, lastName, error
     var error = '';
     const { login, password } = req.body;
-    const db = client.db('COP4331');
+    const db = client.db('fitgame');
     const results = await
         db.collection('Users').find({ Login: login, Password: password }).toArray();
     var id = -1;
