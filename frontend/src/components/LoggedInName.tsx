@@ -2,9 +2,9 @@ function LoggedInName() {
     var _ud = localStorage.getItem('user_data');
     if (_ud == null) _ud = "";
     var ud = JSON.parse(_ud);
-    var userId = ud.id;
-    var firstName = ud.firstName;
-    var lastName = ud.lastName;
+    var userId = ud._id;
+    var firstName = ud.FirstName;
+    var lastName = ud.LastName;
     function doLogout(event: any): void {
         event.preventDefault();
         localStorage.removeItem("user_data")

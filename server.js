@@ -167,6 +167,7 @@ app.post('/api/addcard', async (req, res, next) => {
 app.post('/api/login', async (req, res, next) => {
     const { login, password } = req.body;
 
+    // if there is no entry for the username OR the password, let the user know at least one of the fields is missing
     if (!login || !password) {
         return res.status(400).json({ error: "Missing login or password" });
     }
