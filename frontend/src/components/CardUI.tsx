@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion'; // to animate pages ooooooo
+import { useNavigate } from 'react-router-dom'; // if you're using React Router
+
 
 function CardUI() {
 
@@ -41,7 +44,7 @@ function CardUI() {
         }
     };
 
-    
+
     async function searchCard(e: any): Promise<void> {
         e.preventDefault();
         let obj = { userId: userId, search: search };
@@ -84,7 +87,12 @@ function CardUI() {
     }
 
     return (
-        <div id="cardUIDiv">
+        <motion.div
+        initial={{ x: -100, opacity: 0 }}
+        animate={{x: 0, opacity: 1 }}
+        exit={{ x: 100, opacity: 0 }}
+        transition={{ duration: 0.44 }}
+        >
             <br />
             <input type="text" id="searchText" placeholder="Card To Search For" onChange={handleSearchTextChange} />
             <button type="button" id="searchCardButton" className="buttons"
@@ -96,7 +104,7 @@ function CardUI() {
             <button type="button" id="addCardButton" className="buttons"
                 onClick={addCard}> Add Card </button><br />
             <span id="cardAddResult">{message}</span>
-        </div>
+        </motion.div>
     );
 }
 export default CardUI;

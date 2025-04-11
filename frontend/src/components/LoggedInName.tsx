@@ -1,4 +1,6 @@
 import { motion } from 'framer-motion'; // to animate pages ooooooo
+import { useNavigate } from 'react-router-dom'; // if you're using React Router
+const navigate = useNavigate(); // for redirecting
 
 function LoggedInName() {
     // user variables
@@ -13,7 +15,7 @@ function LoggedInName() {
     function doLogout(event: any): void {
         event.preventDefault();
         localStorage.removeItem("user_data")
-        window.location.href = '/';
+        navigate('/');
     };
 
     // additions to the page which includes the users first and last name (adds a log out button)
@@ -32,7 +34,7 @@ function LoggedInName() {
             initial={{ x: -100, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: 100, opacity: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.42 }}
           >
             <button
               type="button"
