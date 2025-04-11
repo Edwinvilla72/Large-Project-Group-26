@@ -194,6 +194,12 @@ app.post('/api/login', async (req, res, next) => {
     }
 });
 
+// register
+app.post('/api/register', async (req, res) => {
+    console.log("📥 Hit /api/register route:", req.body);
+    
+  });
+  
 // search cards
 app.post('/api/searchcards', async (req, res, next) => {
     // incoming: userId, search
