@@ -192,30 +192,38 @@ app.post('/api/login', async (req, res, next) => {
     }
 });
 
-// register (commented out hashing, email, and stats for testing)
+// === register ===(commented out hashing, email, and stats for testing)
+const { MongoClient } = require('mongodb');
+await client.connect();
+
 app.post('/api/register', async (req, res) => {
-    try {
-      const { FirstName, LastName, username, password } = req.body;
-  
-      const user = new User({
-        FirstName,
-        LastName,
-        username,
-        password,
-        character: {
-          name: username + "'s Hero",
-          level: 1,
-          xp: 0,
-        },
-      });
-  
-      await user.save();
-      res.status(201).json({ error: "" }); // ✅ consistent response
-    } catch (e) {
-      console.error("Register error:", e);
-      res.status(500).json({ error: "Server error: " + e.message });
-    }
-  });
+  try {
+    const { FirstName, LastName, username, password } = req.body;
+
+    const db = client.db("fitgame");
+    const usersCollection = db.collection("Users");
+
+    const newUser = {
+      FirstName,
+      LastName,
+      username,
+      password,
+      character: {
+        name: username + "'s Hero",
+        level: 1,
+        xp: 0
+      }
+    };
+
+    await usersCollection.insertOne(newUser);
+
+    res.status(201).json({ error: "" });
+  } catch (e) {
+    console.error("Registration error:", e);
+    res.status(500).json({ error: e.message });
+  }
+});
+// ===============
 
 
 // search cards
