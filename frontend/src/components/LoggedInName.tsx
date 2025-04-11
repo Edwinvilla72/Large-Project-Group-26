@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'; // to animate pages ooooooo
 import { useNavigate } from 'react-router-dom'; // if you're using React Router
-const navigate = useNavigate(); // for redirecting
+
 
 function LoggedInName() {
     // user variables
@@ -10,7 +10,8 @@ function LoggedInName() {
     var userId = ud._id;
     var firstName = ud.FirstName;
     var lastName = ud.LastName;
-
+    const navigate = useNavigate(); // for redirecting
+    
     // logout function
     function doLogout(event: any): void {
         event.preventDefault();
