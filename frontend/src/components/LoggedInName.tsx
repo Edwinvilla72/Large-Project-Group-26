@@ -1,3 +1,5 @@
+import { motion } from 'framer-motion'; // to animate pages ooooooo
+
 function LoggedInName() {
     // user variables
     var _ud = localStorage.getItem('user_data');
@@ -16,11 +18,33 @@ function LoggedInName() {
 
     // additions to the page which includes the users first and last name (adds a log out button)
     return (
-        <div id="loggedInDiv">
+        <>
+          <motion.div
+            initial={{ x: -100, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: 100, opacity: 0 }}
+            transition={{ duration: 0.4 }}
+          >
             <span id="userName">Welcome back, {firstName} {lastName}!</span><br />
-            <button type="button" id="logoutButton" className="buttons"
-                onClick={doLogout}> Log Out </button>
-        </div>
-    );
+          </motion.div>
+      
+          <motion.div
+            initial={{ x: -100, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: 100, opacity: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <button
+              type="button"
+              id="logoutButton"
+              className="buttons"
+              onClick={doLogout}
+            >
+              Log Out
+            </button>
+          </motion.div>
+        </>
+      );
+      
 };
 export default LoggedInName;

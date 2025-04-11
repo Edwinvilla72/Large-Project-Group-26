@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // if you're using React Router
 import { motion } from 'framer-motion'; // to animate pages ooooooo
-const navigate = useNavigate(); // for redirecting
+
 const ForgotPass = () => {
-    
+    const navigate = useNavigate(); // for redirecting
     let _ud: any = localStorage.getItem('user_data');
     let ud = JSON.parse(_ud);
 
@@ -20,9 +20,9 @@ const ForgotPass = () => {
     }
     return (
         <motion.div
-        initial={{ x: -100, opacity: 0 }}
-        animate={{x: 0, opacity: 1 }}
-        exit={{ x: 100, opacity: 0 }}
+        initial={{ y: -100, opacity: 0 }}
+        animate={{y: 0, opacity: 1 }}
+        exit={{ y: 100, opacity: 0 }}
         transition={{ duration: 0.4 }}
         >
     
