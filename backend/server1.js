@@ -46,7 +46,7 @@ app.get('/api/quests', authenticateToken, async (req, res) => {
 });
 
 // User Progress
-app.post('/api/complete-quest', authenticateToken, async (req, res) => {
+app.post('/api/completeQuest', authenticateToken, async (req, res) => {
     const { questId, progress } = req.body;
     const quest = await Quest.findById(questId);
     if (!quest) return res.status(404).send('Quest not found');
@@ -71,6 +71,38 @@ app.post('/api/complete-quest', authenticateToken, async (req, res) => {
 app.get('/api/leaderboard', async (req, res) => {
     const users = await User.find().sort({ 'character.xp': -1 }).limit(10);
     res.json(users.map(u => ({ username: u.username, level: u.character.level, xp: u.character.xp })));
+});
+
+app.post('/api/logWorkout', async (req, res) => {
+    // Add code for logging workouts
+});
+
+app.get('/api/getStats', async (req, res) => {
+    // Add code for getting stats
+});
+
+app.get('/api/getQuests', async (req, res) => {
+    // Add code for getting quests
+});
+
+app.get('/api/getAllFriends', async (req, res) => {
+    // Add code for gathering friends
+});
+
+app.post('/api/addFriend', async (req, res) => {
+    // Add code for adding friends
+});
+
+app.delete('/api/removeFriend', async (req, res) => {
+    // Add code for deleting friends
+});
+
+app.get('/api/getProfile', async (req, res) => {
+    // Add code for loading profile
+});
+
+app.post('/api/updateProfile', async (req, res) => {
+    // Add code for updating information on profile
 });
 
 // ===== Server =====
