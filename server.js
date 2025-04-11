@@ -217,7 +217,7 @@ app.post('/api/register', async (req, res) => {
       const newUser = {
         FirstName,
         LastName,
-        Login: username, // ✅ Must match login field
+        Login: username, 
         Password: password,
         character: {
           name: username + "'s Hero",
@@ -227,11 +227,9 @@ app.post('/api/register', async (req, res) => {
       };
   
       const result = await users.insertOne(newUser);
-      console.log("✅ User registered with ID:", result.insertedId);
-  
+    
       res.status(201).json({ error: "" });
     } catch (e) {
-      console.error("❌ Registration error:", e);
       res.status(500).json({ error: "Registration failed: " + e.message });
     }
   });
