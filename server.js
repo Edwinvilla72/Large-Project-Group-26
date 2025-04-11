@@ -4,9 +4,25 @@ const cors = require('cors');
 const app = express();
 
 const MongoClient = require('mongodb').MongoClient;
-const url = 'mongodb+srv://edwinvillamiibo72:LVhfO9M8upcwucZw@cluster0.80s9gsh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+const url = 'mongodb+srv://Edwin123:12345@cluster0.jqhcjet.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 const client = new MongoClient(url);
 client.connect();
+
+// test
+client.connect()
+  .then(async () => {
+    console.log("✅ Connected to MongoDB!");
+
+    // Quick test: List databases
+    const databasesList = await client.db().admin().listDatabases();
+    console.log("📂 Databases:");
+    databasesList.databases.forEach(db => console.log(` - ${db.name}`));
+  })
+  .catch(err => {
+    console.error("❌ Failed to connect to MongoDB:", err);
+  });
+
+
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -164,7 +180,7 @@ app.post('/api/login', async (req, res, next) => {
         fn = results[0].FirstName;
         ln = results[0].LastName;
     }
-    var ret = { id: id, firstName: fn, lastName: ln, error: '' };
+    var ret = { _id: id, FirstName: fn, LastName: ln, error: '' };
     res.status(200).json(ret);
 });
 
