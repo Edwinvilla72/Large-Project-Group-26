@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // if you're using React Router
+import { motion } from 'framer-motion'; // to animate pages ooooooo
 
 // insert code here
 function Register() {
@@ -87,7 +88,15 @@ function Register() {
 
 
     return (
-        <div id="RegisterDiv">
+
+        
+        <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.4 }}
+      >
+
     
         <h1>Sign Up for FitGame!</h1><br></br>
         <input type="button" id="backButton" className="buttons" value="Return to Login" onClick={returnToLogin}/>
@@ -109,7 +118,7 @@ function Register() {
                 </p>
         )}
 
-    </div>
+    </motion.div>
     );
 
 }

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // if you're using React Router
+import { motion } from 'framer-motion'; // to animate pages ooooooooo
 
 function Login() {
 
@@ -71,7 +72,12 @@ function Login() {
     
 
     return (
-        <div id="loginDiv">
+        <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.4 }}
+        >
             <span id="inner-title">Sign In</span><br />
             <input type="text" id="loginName" placeholder="Username" onChange={handleSetLoginName} /><br></br>
             <input type="password" id="loginPassword" placeholder="Password" onChange={handleSetPassword} /><br></br>
@@ -97,7 +103,7 @@ function Login() {
             Forgot Password?
             </button>
 
-        </div>
+        </motion.div>
     );
 };
 export default Login;
