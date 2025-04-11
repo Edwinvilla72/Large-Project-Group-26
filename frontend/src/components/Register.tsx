@@ -56,7 +56,7 @@ function Register() {
             const res = JSON.parse(text);
 
             //if any error exists, tell user and reject
-            if (res.error && res.error.lenght > 0) {
+            if (res.error && res.error.length > 0) {
                 setMessage("API Error: " + res.error);
                 setIsError(true);
             }

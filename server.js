@@ -196,8 +196,7 @@ app.post('/api/login', async (req, res, next) => {
 
 // register
 app.post('/api/register', async (req, res) => {
-    console.log("📥 Hit /api/register route:", req.body);
-  
+
     try {
       const { FirstName, LastName, username, password } = req.body;
   
@@ -208,7 +207,7 @@ app.post('/api/register', async (req, res) => {
       const db = client.db("fitgame");
       const users = db.collection("Users");
   
-      // OPTIONAL: check for existing username
+      // check for existing username
       const existing = await users.findOne({ Login: username });
       if (existing) {
         return res.status(409).json({ error: "Username already exists. Please choose another." });
