@@ -37,7 +37,7 @@ function Login() {
         };
         localStorage.setItem('user_data', JSON.stringify(user));
         setMessage('');
-        navigate('/cards');
+        navigate('/Dashboard');
         //TODO =========================== END OF TEMPORARY TEST =============================================================
 
         const obj = { login: loginName, password: loginPassword };

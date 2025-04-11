@@ -3,8 +3,17 @@ import { motion } from 'framer-motion'; // to animate pages ooooooo
 import { useNavigate } from 'react-router-dom'; // if you're using React Router
 
 
+//! REWORK THIS INTO A DASHBOARD FOR USERS 
+
+
+
 function CardUI() {
 
+    
+
+
+
+    //!  old stuff
     let _ud: any = localStorage.getItem('user_data');
     let ud = JSON.parse(_ud);
     let userId: string = ud.id;
@@ -87,6 +96,7 @@ function CardUI() {
     }
 
     return (
+
         <motion.div
         initial={{ y: -100, opacity: 0 }}
         animate={{y: 0, opacity: 1 }}
