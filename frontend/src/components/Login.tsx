@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // if you're using React Router
 
 function Login() {
 
     const [message, setMessage] = React.useState('');
     const [loginName, setLoginName] = React.useState('');
     const [loginPassword, setPassword] = React.useState('');
-
+    const navigate = useNavigate(); // for redirecting
     function handleSetLoginName(e: any): void {
         setLoginName(e.target.value);
     }
@@ -15,11 +16,11 @@ function Login() {
 
     // button to get to regsiter screen
     function RegisterButton() {
-        window.location.href = '/register';
+        navigate('/register');
     }
 
     function ForgotPassword () {
-        window.location.href = '/ForgotPass';
+        navigate('/ForgotPass');
     }
 
 
@@ -61,7 +62,7 @@ function Login() {
             localStorage.setItem('user_data', JSON.stringify(user));
             setMessage('');
             // sends user to next page (will become dashboard soon)
-            window.location.href = '/cards';
+            navigate('/cards');
         } catch (error: any) {
             console.error('Login error:', error);
             setMessage('Server error. Please try again later.');
