@@ -91,11 +91,11 @@ function Register() {
 
         
         <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
+        initial={{ x: -100, opacity: 0 }}
+        animate={{x: 0, opacity: 1 }}
+        exit={{ x: 100, opacity: 0 }}
         transition={{ duration: 0.4 }}
-      >
+        >
 
     
         <h1>Sign Up for FitGame!</h1><br></br>
