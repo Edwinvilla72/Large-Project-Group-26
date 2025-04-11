@@ -80,11 +80,18 @@ function Register() {
     let ud = JSON.parse(_ud);
 
 
+    // Button to return to login page
+    function returnToLogin() {
+        navigate('/');
+    }
+
+
     return (
         <div id="RegisterDiv">
     
-        <h1>Sign Up for FitGame!</h1>
-
+        <h1>Sign Up for FitGame!</h1><br></br>
+        <input type="button" id="backButton" className="buttons" value="Return to Login" onClick={returnToLogin}/>
+<br></br>
         <input type="text" value={firstName} onChange={e => setFirstName(e.target.value)} placeholder="First Name"></input><br></br>
         <input type="text" value={lastName} onChange={e => setLastName(e.target.value)} placeholder="Last Name"></input><br></br>
         <input type="text" value={username} onChange={e => setUsername(e.target.value)} placeholder="Username"></input><br></br>
