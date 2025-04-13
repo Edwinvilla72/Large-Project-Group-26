@@ -1,3 +1,4 @@
+import { hover } from 'framer-motion';
 import * as THREE from 'three';
 
 interface CustomMesh extends THREE.Mesh {
@@ -8,6 +9,7 @@ interface CustomMesh extends THREE.Mesh {
     originalScale: THREE.Vector3;
     targetScale: THREE.Vector3;
     url?: string;
+    label?: string;
   };
 }
 
@@ -32,6 +34,19 @@ export function startCarousel(container: HTMLElement) {
 function init(container: HTMLElement) {
   containerElement = container;
   scene = new THREE.Scene();
+
+  // new stuff to add text when hovering over a model
+    const hoverLabel = document.createElement('div');
+    hoverLabel.style.position = 'absolute';
+    hoverLabel.style.padding = '6px 12px';
+    hoverLabel.style.background = 'rgba(0, 0, 0, 0.7)';
+    hoverLabel.style.color = 'white';
+    hoverLabel.style.borderRadius = '8px';
+    hoverLabel.style.pointerEvents = 'none';
+    hoverLabel.style.fontSize = '14px';
+    hoverLabel.style.zIndex = '10';
+    hoverLabel.style.display = 'none';
+    container.appendChild(hoverLabel);
 
   const width = container.clientWidth;
   const height = container.clientHeight;
@@ -68,6 +83,16 @@ function init(container: HTMLElement) {
     'https://example.com/page5'
   ];
 
+
+  // creating labels for each model
+  const labels = [
+    "Daily Quests", 
+    "Gym Quests",
+    "Bonus Quests",
+    "Leaderboard", 
+    "Settings"
+  ];
+
   for (let i = 0; i < 5; i++) {
     const model = new THREE.Mesh(geometry, material) as unknown as CustomMesh;
     model.scale.set(1, 1, 1);
@@ -75,6 +100,7 @@ function init(container: HTMLElement) {
       originalScale: new THREE.Vector3(1, 1, 1),
       targetScale: new THREE.Vector3(1, 1, 1),
       url: urls[i],
+      label: labels[i],
     };
     scene.add(model);
     models.push(model);
@@ -123,6 +149,19 @@ function init(container: HTMLElement) {
     if (intersects.length > 0) {
       const hovered = intersects[0].object as CustomMesh;
       hovered.userData.targetScale.set(1.2, 1.2, 1.2);
+
+        // show the label
+        hoverLabel.style.display = 'block';
+        hoverLabel.innerText = hovered.userData.label ?? 'Unknown';
+
+        // to put the label near the mouse
+        const labelOffsetX = -65;
+        const labelOffsetY = -40;
+        hoverLabel.style.left = `${event.clientX - bounds.left + labelOffsetX}px`;
+        hoverLabel.style.top = `${event.clientY - bounds.top + labelOffsetY}px`;
+
+    } else {
+        hoverLabel.style.display = 'none';
     }
   });
 
