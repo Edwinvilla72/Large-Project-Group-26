@@ -40,3 +40,89 @@
 .read-the-docs {
   color: #888;
 }
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #3A0CA3, #7209B7);
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.neon-login-container {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 2rem;
+  width: 350px;
+  text-align: center;
+  box-shadow: 0px 0px 25px rgba(0,0,0,0.4);
+}
+
+.neon-title {
+  color: #00f0ff;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 0 8px #00f0ff, 0 0 15px #00f0ff;
+}
+
+.neon-login-container input[type="text"],
+.neon-login-container input[type="password"] {
+  width: 80%;
+  padding: 12px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.15);
+  color: white;
+  font-size: 16px;
+  outline: none;
+}
+
+.neon-login-container input::placeholder {
+  color: #ccc;
+}
+
+.neon-btn {
+  background: linear-gradient(to right, #4CC9F0, #4895EF);
+  border: none;
+  padding: 12px 20px;
+  margin-top: 10px;
+  border-radius: 12px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  width: 80%;
+  transition: transform 0.2s ease;
+}
+
+.neon-btn:hover {
+  transform: scale(1.05);
+}
+
+.neon-btn.secondary {
+  margin-top: 10px;
+  background: linear-gradient(to right, #7209B7, #4361EE);
+}
+
+.forgot-link {
+  margin-top: 15px;
+  display: inline-block;
+  background: none;
+  border: none;
+  color: #A3BFFA;
+  text-decoration: underline;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.login-msg {
+  margin-top: 1rem;
+  color: #ffb3c1;
+  font-size: 0.9rem;
+}
+
