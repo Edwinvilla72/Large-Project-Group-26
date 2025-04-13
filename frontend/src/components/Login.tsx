@@ -1,121 +1,77 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // if you're using React Router
-import { motion } from 'framer-motion'; // to animate pages ooooooooo
+import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 function Login() {
+  const [message, setMessage] = useState('');
+  const [loginName, setLoginName] = useState('');
+  const [loginPassword, setPassword] = useState('');
+  const navigate = useNavigate();
 
-    const [message, setMessage] = React.useState('');
-    const [loginName, setLoginName] = React.useState('');
-    const [loginPassword, setPassword] = React.useState('');
-    const navigate = useNavigate(); // for redirecting
-    function handleSetLoginName(e: any): void {
-        setLoginName(e.target.value);
+  const handleSetLoginName = (e: any) => setLoginName(e.target.value);
+  const handleSetPassword = (e: any) => setPassword(e.target.value);
+
+  const RegisterButton = () => navigate('/register');
+  const ForgotPassword = () => navigate('/ForgotPass');
+
+  const doLogin = async (event: any) => {
+    event.preventDefault();
+    const obj = { login: loginName, password: loginPassword };
+    const js = JSON.stringify(obj);
+
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: js
+      });
+
+      const text = await response.text();
+      if (!response.ok) {
+        const errRes = JSON.parse(text);
+        setMessage(errRes.error || 'Login failed.');
+        return;
+      }
+
+      const res = JSON.parse(text);
+      if (!res._id || res._id <= 0) {
+        setMessage('User/Password combination incorrect');
+        return;
+      }
+
+      const user = {
+        FirstName: res.FirstName,
+        LastName: res.LastName,
+        _id: res._id
+      };
+
+      localStorage.setItem('user_data', JSON.stringify(user));
+      setMessage('');
+      navigate('/cards');
+    } catch (error: any) {
+      console.error('Login error:', error);
+      setMessage('Server error. Please try again later.');
     }
-    function handleSetPassword(e: any): void {
-        setPassword(e.target.value);
-    }
+  };
 
-    // button to get to regsiter screen
-    function RegisterButton() {
-        navigate('/register');
-    }
+  return (
+    <motion.div
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      exit={{ y: -100, opacity: 0 }}
+      transition={{ duration: 0.4 }}
+    >
+      <div className="neon-login-container">
+        <h1 className="neon-title">LOGIN</h1>
+        <input type="text" placeholder="Username" onChange={handleSetLoginName} />
+        <input type="password" placeholder="Password" onChange={handleSetPassword} />
+        <input type="submit" className="neon-btn" value="Login" onClick={doLogin} />
+        <input type="button" className="neon-btn secondary" value="Create an Account" onClick={RegisterButton} />
+        <button className="forgot-link" onClick={ForgotPassword}>Forgot Password?</button>
+        {message && <p className="login-msg">{message}</p>}
+      </div>
+    </motion.div>
+  );
+}
 
-    function ForgotPassword () {
-        navigate('/ForgotPass');
-    }
-
-
-    // dologin
-    async function doLogin(event: any): Promise<void> {
-        event.preventDefault();
-
-        //TODO ===========================TEMPORARY FOR TESTING (COMMENT OUT OR DELETE WHEN DONE)===========================
-        const user = {
-            FirstName: "test",
-            LastName: "user",
-            _id: "00000"
-        };
-        localStorage.setItem('user_data', JSON.stringify(user));
-        setMessage('');
-        navigate('/Dashboard');
-        //TODO =========================== END OF TEMPORARY TEST =============================================================
-
-        const obj = { login: loginName, password: loginPassword };
-        const js = JSON.stringify(obj);
-    
-        try {
-            const response = await fetch('/api/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: js
-            });
-    
-            const text = await response.text();
-    
-            if (!response.ok) {
-                // backend returned 401, 400, etc.
-                const errRes = JSON.parse(text);
-                setMessage(errRes.error || 'Login failed.');
-                return;
-            }
-    
-            const res = JSON.parse(text);
-    
-            if (!res._id || res._id <= 0) {
-                setMessage('User/Password combination incorrect');
-                return;
-            }
-    
-            const user = {
-                FirstName: res.FirstName,
-                LastName: res.LastName,
-                _id: res._id
-            };
-    
-            localStorage.setItem('user_data', JSON.stringify(user));
-            setMessage('');
-            // sends user to next page (will become dashboard soon)
-            navigate('/cards');
-        } catch (error: any) {
-            console.error('Login error:', error);
-            setMessage('Server error. Please try again later.');
-        }
-    }
-    
-
-    return (
-        <motion.div
-        initial={{ y: -100, opacity: 0 }}
-        animate={{y: 0, opacity: 1 }}
-        exit={{ y:-100, opacity: 0 }}
-        transition={{ duration: 0.4 }}
-        >
-            <span id="inner-title">Sign In</span><br />
-            <input type="text" id="loginName" placeholder="Username" onChange={handleSetLoginName} /><br></br>
-            <input type="password" id="loginPassword" placeholder="Password" onChange={handleSetPassword} /><br></br>
-            <input type="submit" id="loginButton" className="buttons" value="Login"
-                onClick={doLogin} />
-            <span id="loginResult">{message}</span>
-            
-            <br></br>
-            <br></br>
-            <br></br>
-            
-            <input type="button" id="registerButton" className="buttons" value="Create an Account" onClick={RegisterButton} /><br></br>
-            <br></br>
-            <button id="forgotPasswordButton" onClick={ForgotPassword} style={{ 
-                background: 'none', 
-                border: 'none', 
-                color: 'white', 
-                textDecoration: 'underline',
-                cursor: 'pointer',
-                padding: 0,
-                font: 'inherit'
-            }}>
-            Forgot Password?
-            </button>
-
-        </motion.div>
-    );
-};
 export default Login;
