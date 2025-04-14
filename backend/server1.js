@@ -66,6 +66,7 @@ app.post('/api/completeQuest', authenticateToken, async (req, res) => {
         await user.save();
         res.send('Quest completed and XP rewarded');
     } else {
+        user.character.quests[questId] = progress/quest.requirement;
         res.status(400).send('Not enough progress');
     }
 });
