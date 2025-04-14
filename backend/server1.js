@@ -22,6 +22,7 @@ app.post('/api/register', async (req, res) => {
             name: username + "'s Hero",
             level: 1,
             xp: 0,
+            quests: [0,0,0,0,0,0,0,0,0,0]
             //stats: { strength: 5, stamina: 5, agility: 5 },
         },
     });
