@@ -55,6 +55,7 @@ app.post('/api/completeQuest', authenticateToken, async (req, res) => {
     if (progress >= quest.requirement) {
         const user = await User.findById(req.user.id);
         user.character.xp += quest.xpReward;
+        user.character.quests[questId-1] = 1;
         // Leveling logic (placeholder)
         if (user.character.xp >= user.character.level * 100) {
             user.character.level += 1;
@@ -79,7 +80,7 @@ app.post('/api/logWorkout', async (req, res) => {
 });
 
 app.get('/api/getStats', async (req, res) => {
-    // Add code for getting stats
+    
 });
 
 app.get('/api/getQuests', async (req, res) => {
