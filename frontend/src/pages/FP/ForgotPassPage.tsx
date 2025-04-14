@@ -23,7 +23,7 @@ const ForgotPass = () => {
     >
       <div className="neon-login-container">
         <h1 className="neon-title">Forgot your password?</h1>
-        <p className="neon-subtext">Enter your username to begin the reset process</p>
+        <p className="neon-subtext">Enter your username</p>
         <input
           type="text"
           value={username}
