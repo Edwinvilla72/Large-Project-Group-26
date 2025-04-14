@@ -19,7 +19,9 @@ const userSchema = new mongoose.Schema({
         name: String,
         level: Number,
         xp: Number,
-        quests: [Number],
+        dailyQuests: [Number],
+        weeklyQuests: [Number],
+        questProgress: [Number],
         questComp: Number,
         // stats: {
         //     strength: Number,

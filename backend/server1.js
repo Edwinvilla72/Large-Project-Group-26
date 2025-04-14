@@ -22,7 +22,9 @@ app.post('/api/register', async (req, res) => {
             name: username + "'s Hero",
             level: 1,
             xp: 0,
-            quests: [0,0,0,0,0,0,0,0,0,0],
+            dailyQuests: [], // Change this to the function that generates quests for a user.
+            weeklyQuests: [], // Change this to the function that generates quests for a user.
+            questProgress: [0,0,0,0,0,0,0,0,0,0],
             questComp: 0,
             //stats: { strength: 5, stamina: 5, agility: 5 },
         },
