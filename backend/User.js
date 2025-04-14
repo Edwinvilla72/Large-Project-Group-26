@@ -14,6 +14,17 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
+    },
+    character: {
+        name: String,
+        level: Number,
+        xp: Number,
+        quests: Array,
+        // stats: {
+        //     strength: Number,
+        //     stamina: Number,
+        //     agility: Number
+        // }
     }
 }, { timestamps: true });
 
