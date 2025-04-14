@@ -1,38 +1,44 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // if you're using React Router
-import { motion } from 'framer-motion'; // to animate pages ooooooo
+import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 const ForgotPass = () => {
-    const navigate = useNavigate(); // for redirecting
-    let _ud: any = localStorage.getItem('user_data');
-    let ud = JSON.parse(_ud);
+  const navigate = useNavigate();
+  const [username, setUsername] = useState('');
 
-    const [username, setUsername] = useState('');
+  function SecurityQuestions() {
+    const obj = { username: username };
+    const js = JSON.stringify(obj);
 
+    alert(`If username was found in DB, send them to security questions. If not, show error.`);
+    navigate('/FPSecurityQuestion');
+  }
 
-    function SecurityQuestions() {
-        var obj = { username: username};
-        var js = JSON.stringify(obj);
-        alert(`if username was found on db, send them to answer their security questions.\nIf not, say no user found`);
-
-        // sends user (if they exist) to answer their security question
-        navigate('/FPSecurityQuestion');
-    }
-    return (
-        <motion.div
-        initial={{ y: -100, opacity: 0 }}
-        animate={{y: 0, opacity: 1 }}
-        exit={{ y: 100, opacity: 0 }}
-        transition={{ duration: 0.4 }}
-        >
-    
-        <h1>Forgot your Password?!</h1>
-        <p>We can help! Please enter your username...</p>
-
-        <input type="text" value={username} onChange={e => setUsername(e.target.value)} placeholder="Username"></input><br></br>
-  
-        <input type="button" id="FPUserButton" className="buttons" value="Reset Password" onClick={SecurityQuestions}/>
+  return (
+    <motion.div
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      exit={{ y: 100, opacity: 0 }}
+      transition={{ duration: 0.4 }}
+    >
+      <div className="neon-login-container">
+        <h1 className="neon-title">Forgot your password?</h1>
+        <p className="neon-subtext">Enter your username to begin the reset process</p>
+        <input
+          type="text"
+          value={username}
+          onChange={e => setUsername(e.target.value)}
+          placeholder="Username"
+        />
+        <input
+          type="button"
+          className="neon-btn"
+          value="Reset Password"
+          onClick={SecurityQuestions}
+        />
+      </div>
     </motion.div>
-    );
-}
+  );
+};
+
 export default ForgotPass;
