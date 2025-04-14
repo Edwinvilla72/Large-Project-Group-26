@@ -23,9 +23,10 @@ app.post('/api/register', async (req, res) => {
             level: 1,
             xp: 0,
             quests: [0,0,0,0,0,0,0,0,0,0],
-            friends: []
+            questComp: 0,
             //stats: { strength: 5, stamina: 5, agility: 5 },
-        }
+        },
+        friends: [],
     });
     await user.save();
     res.status(201).send('User registered');
@@ -56,10 +57,11 @@ app.post('/api/completeQuest', authenticateToken, async (req, res) => {
     if (progress >= quest.requirement) {
         const user = await User.findById(req.user.id);
         user.character.xp += quest.xpReward;
+        user.character.questComp++;
         user.character.quests[questId] = quest.requirement;
         // Leveling logic (placeholder)
         if (user.character.xp >= user.character.level * 100) {
-            user.character.level += 1;
+            user.character.level++;
             user.character.xp = 0; // Optionally subtract instead
             // Update stats logic here
         }

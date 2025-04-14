@@ -28,6 +28,7 @@ const userSchema = new mongoose.Schema({
         level: Number,
         xp: Number,
         quests: [Number],
+        questComp: Number,
         // stats: {
         //     strength: Number,
         //     stamina: Number,
@@ -36,7 +37,7 @@ const userSchema = new mongoose.Schema({
     },
     friends: {
         type: [Number],
-        required: true
+        required: true,
     }
 }, { timestamps: true });
 
