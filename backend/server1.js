@@ -15,16 +15,17 @@ app.post('/api/register', async (req, res) => {
     const { username, email, password } = req.body;
     const hashed = await bcrypt.hash(password, 10);
     const user = new User ({
-        username: username,
-        email: email,
+        username,
+        email,
         password: hashed,
         character: {
             name: username + "'s Hero",
             level: 1,
             xp: 0,
-            quests: [0,0,0,0,0,0,0,0,0,0]
+            quests: [0,0,0,0,0,0,0,0,0,0],
+            friends: []
             //stats: { strength: 5, stamina: 5, agility: 5 },
-        },
+        }
     });
     await user.save();
     res.status(201).send('User registered');
@@ -55,7 +56,7 @@ app.post('/api/completeQuest', authenticateToken, async (req, res) => {
     if (progress >= quest.requirement) {
         const user = await User.findById(req.user.id);
         user.character.xp += quest.xpReward;
-        user.character.quests[questId-1] = 1;
+        user.character.quests[questId] = 1;
         // Leveling logic (placeholder)
         if (user.character.xp >= user.character.level * 100) {
             user.character.level += 1;
@@ -80,7 +81,7 @@ app.post('/api/logWorkout', async (req, res) => {
 });
 
 app.get('/api/getStats', async (req, res) => {
-    
+    // Add code for getting stats (character)
 });
 
 app.get('/api/getQuests', async (req, res) => {
@@ -88,11 +89,12 @@ app.get('/api/getQuests', async (req, res) => {
 });
 
 app.get('/api/getAllFriends', async (req, res) => {
-    // Add code for gathering friends
+    // Add code for gathering friends (cycle through friends array in user object)
 });
 
 app.post('/api/addFriend', async (req, res) => {
     // Add code for adding friends
+    // Arrays auto increase in size, utilize .push to add to the friends array that exists in the user object. pretty simple
 });
 
 app.delete('/api/removeFriend', async (req, res) => {
@@ -100,11 +102,11 @@ app.delete('/api/removeFriend', async (req, res) => {
 });
 
 app.get('/api/getProfile', async (req, res) => {
-    // Add code for loading profile
+    // Add code for loading profile (specifically username, first/last name stuff like that)
 });
 
 app.post('/api/updateProfile', async (req, res) => {
-    // Add code for updating information on profile
+    // Add code for updating information on profile (first/last name and probably password too?)
 });
 
 // ===== Server =====

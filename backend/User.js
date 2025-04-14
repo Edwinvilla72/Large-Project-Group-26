@@ -15,16 +15,28 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    firstName: {
+        type: String,
+        required: true,
+    },
+    lastName: {
+        type: String,
+        required: true,
+    },
     character: {
         name: String,
         level: Number,
         xp: Number,
-        quests: Array,
+        quests: [Number],
         // stats: {
         //     strength: Number,
         //     stamina: Number,
         //     agility: Number
         // }
+    },
+    friends: {
+        type: [Number],
+        required: true
     }
 }, { timestamps: true });
 
