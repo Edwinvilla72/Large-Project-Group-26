@@ -56,7 +56,7 @@ app.post('/api/completeQuest', authenticateToken, async (req, res) => {
     if (progress >= quest.requirement) {
         const user = await User.findById(req.user.id);
         user.character.xp += quest.xpReward;
-        user.character.quests[questId] = 1;
+        user.character.quests[questId] = quest.requirement;
         // Leveling logic (placeholder)
         if (user.character.xp >= user.character.level * 100) {
             user.character.level += 1;
@@ -66,7 +66,7 @@ app.post('/api/completeQuest', authenticateToken, async (req, res) => {
         await user.save();
         res.send('Quest completed and XP rewarded');
     } else {
-        user.character.quests[questId] = progress/quest.requirement;
+        user.character.quests[questId] = progress;
         res.status(400).send('Not enough progress');
     }
 });
