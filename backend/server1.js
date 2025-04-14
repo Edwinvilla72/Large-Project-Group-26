@@ -14,9 +14,9 @@ app.use('/api/auth', authRoutes);
 app.post('/api/register', async (req, res) => {
     const { username, email, password } = req.body;
     const hashed = await bcrypt.hash(password, 10);
-    const user = new User({
-        username,
-        email,
+    const user = new User ({
+        username: username,
+        email: email,
         password: hashed,
         character: {
             name: username + "'s Hero",
