@@ -22,22 +22,34 @@ const navigate = useNavigate(); // for redirecting
 
 
     return (
-
         <motion.div
-        initial={{ y: -100, opacity: 0 }}
-        animate={{y: 0, opacity: 1 }}
-        exit={{ y: 100, opacity: 0 }}
-        transition={{ duration: 0.4 }}
+            initial={{ y: -100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 100, opacity: 0 }}
+            transition={{ duration: 0.4 }}
         >
-    
-        <h1>Hi, User!</h1>
-        <p>Answer your security question: </p>
-        <p>Your Security Question: [Insert question here]</p><br></br>
+            <div className="neon-login-container">
+                <h1 className="neon-title">Hi, User!</h1>
+                
+                <p className="neon-subtext">Answer your security question:</p>
+                <p className="neon-subtext">[Insert question here]</p><br />
 
-        <input type="text" value={answer} onChange={e => setAnswer(e.target.value)} placeholder="Your Answer"></input><br></br>
-  
-        <input type="button" id="FPUserButton" className="buttons" value="Reset Password" onClick={SecurityQuestions}/>
-    </motion.div>
+                <input
+                    type="text"
+                    value={answer}
+                    onChange={e => setAnswer(e.target.value)}
+                    placeholder="Your Answer"
+                /><br />
+
+                <input
+                    type="button"
+                    id="FPUserButton"
+                    className="neon-btn"
+                    value="Reset Password"
+                    onClick={SecurityQuestions}
+                />
+            </div>
+        </motion.div>
     );
 }
 export default FPSecurityQuestion;
