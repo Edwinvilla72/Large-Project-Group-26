@@ -22,22 +22,39 @@ const ChangePassword = () => {
 
     // motion.div is for animating the page
     return (
-
         <motion.div
-        initial={{ y: -100, opacity: 0 }}
-        animate={{y: 0, opacity: 1 }}
-        exit={{ y: -100, opacity: 0 }}
-        transition={{ duration: 0.4 }}
+            initial={{ y: -100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -100, opacity: 0 }}
+            transition={{ duration: 0.4 }}
         >
-    
-        <h1>Great!</h1>
-        <p>Now you can change your Password!</p>
+            <div className="neon-login-container">
+                <h1 className="neon-title">Great!</h1>
+                <p className="neon-subtext">Now enter your new password!</p>
 
-        <input type="text" value={newPassword} onChange={e => setNewPassword(e.target.value)} placeholder="New Password"></input><br></br>
-        <input type="text" value={confirmNewPassword} onChange={e => setConfirmNewPassword(e.target.value)} placeholder="Confirm New Password"></input><br></br>
+                <input
+                    type="password"
+                    value={newPassword}
+                    onChange={e => setNewPassword(e.target.value)}
+                    placeholder="New Password"
+                /><br />
 
-        <input type="button" id="FPUserButton" className="buttons" value="Reset Password" onClick={SecurityQuestions}/>
-    </motion.div>
+                <input
+                    type="password"
+                    value={confirmNewPassword}
+                    onChange={e => setConfirmNewPassword(e.target.value)}
+                    placeholder="Confirm New Password"
+                /><br />
+
+                <input
+                    type="button"
+                    id="FPUserButton"
+                    className="neon-btn"
+                    value="Reset Password"
+                    onClick={SecurityQuestions}
+                />
+            </div>
+        </motion.div>
     );
 }
 export default ChangePassword;
