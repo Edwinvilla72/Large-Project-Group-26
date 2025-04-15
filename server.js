@@ -165,33 +165,40 @@ app.post('/api/addcard', async (req, res, next) => {
 
 // login
 app.post('/api/login', async (req, res, next) => {
-    const { login, password } = req.body;
-    // if there is no entry for the username OR the password, let the user know at least one of the fields is missing
-    if (!login || !password) {
-        return res.status(400).json({ error: "Missing login or password" });
-    }
-    // if user entered both username and password, compare results against Users collection
-    try {
-        // connects to "fitgame" cluster
-        const db = client.db('fitgame'); 
-        const results = await db.collection('Users').find({ Login: login, Password: password }).toArray();
+  const { login, password } = req.body;
 
-        if (results.length === 0) {
-            return res.status(401).json({ error: "Invalid username or password" });
-        }
+  if (!login || !password) {
+      return res.status(400).json({ error: "Missing login or password" });
+  }
 
-        const user = results[0];
+  try {
+      const db = client.db('fitgame'); 
+      const users = db.collection('Users');
 
-        return res.status(200).json({
-            _id: user.UserId || user._id,
-            FirstName: user.FirstName,
-            LastName: user.LastName,
-            error: ""
-        });
-    } catch (e) {
-        console.error("Login error:", e);
-        return res.status(500).json({ error: "An error occurred during login" });
-    }
+      const results = await users.find({ Login: login, Password: password }).toArray();
+
+      if (results.length === 0) {
+          return res.status(401).json({ error: "Invalid username or password" });
+      }
+
+      const user = results[0];
+
+      // Added login timestamp - Abdiel
+      await users.updateOne(
+          { _id: user._id },
+          { $push: { loginTimestamps: new Date() } }
+      );
+
+      return res.status(200).json({
+          _id: user.UserId || user._id,
+          FirstName: user.FirstName,
+          LastName: user.LastName,
+          error: ""
+      });
+  } catch (e) {
+      console.error("Login error:", e);
+      return res.status(500).json({ error: "An error occurred during login" });
+  }
 });
 
 // register
