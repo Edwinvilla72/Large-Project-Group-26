@@ -32,7 +32,12 @@ const userSchema = new mongoose.Schema({
     friends: {
         type: [Number],
         required: true,
-    }
+    },
+    loginTimestamps: {
+        type: [Date],
+        default: []
+    },
+    
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);
