@@ -2,9 +2,48 @@ const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
+const cors = require("cors");
+const bodyParser = require("body-parser");
 
-dotenv.config();
-connectDB();
+//dotenv.config();
+//connectDB();
+const MongoClient = require('mongodb').MongoClient;
+const url = 'mongodb+srv://Edwin123:12345@cluster0.jqhcjet.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+const client = new MongoClient(url);
+client.connect();
+
+// test
+client.connect()
+    .then(async () => {
+        console.log("✅ Connected to MongoDB!");
+
+        // Quick test: List databases
+        const databasesList = await client.db().admin().listDatabases();
+        console.log("📂 Databases:");
+        databasesList.databases.forEach(db => console.log(` - ${db.name}`));
+    })
+    .catch(err => {
+        console.error("❌ Failed to connect to MongoDB:", err);
+    });
+
+
+
+app.use(cors());
+app.use(bodyParser.json());
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader(
+        'Access-Control-Allow-Headers',
+        'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+    );
+    res.setHeader(
+        'Access-Control-Allow-Methods',
+        'GET, POST, PATCH, DELETE, OPTIONS'
+    );
+    next();
+});
+app.listen(5000); // start Node + Express server on port 5000
+
 
 const app = express();
 app.use(express.json());
@@ -72,6 +111,26 @@ app.post('/api/completeQuest', authenticateToken, async (req, res) => {
     } else {
         user.character.quests[questId] = progress;
         res.status(400).send('Not enough progress');
+    }
+});
+
+//logging workouts and posting it to db
+app.post("/api/logWorkout", async (req, res) => {
+    const { UserId, type, duration, reps } = req.body;
+
+    const workout = {
+        UserId,
+        type,
+        duration,
+        reps,
+        timestamp: new DataTransfer()
+    };
+    try {
+        const db = client.db("fitgame");
+        await db.collection("workouts").insertOne(workout);
+        res.status(200).json({ message: "Workout logged" });
+    } catch (err) {
+        res.status(500).json({ error: "Failed to log workout" });
     }
 });
 
