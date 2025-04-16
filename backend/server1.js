@@ -140,10 +140,6 @@ app.get('/api/leaderboard', async (req, res) => {
     res.json(users.map(u => ({ username: u.username, level: u.character.level, xp: u.character.xp })));
 });
 
-app.post('/api/logWorkout', async (req, res) => {
-    // Add code for logging workouts
-});
-
 app.get('/api/getStats', async (req, res) => {
     // Add code for getting stats (character)
 });
