@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { useNavigate } from 'react-router-dom';
 
 interface CustomMesh extends THREE.Group {
   userData: {
@@ -21,11 +22,11 @@ let containerElement: HTMLElement;
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
-export function startCarousel(container: HTMLElement) {
-  if (!scene) init(container);
+export function startCarousel(container: HTMLElement, navigate?: (path: string) =>void) {
+  if (!scene) init(container, navigate);
 }
 
-function init(container: HTMLElement) {
+function init(container: HTMLElement, navigate?: (path: string) => void) {
   containerElement = container;
   scene = new THREE.Scene();
 
@@ -69,12 +70,15 @@ function init(container: HTMLElement) {
     'assets/models/cog.glb',
   ];
   const labels = ['Daily Quests', 'Gym Quests', 'Bonus Quests', 'Leaderboard', 'Settings'];
+
+
+  // these are all tests to make sure redirection works properly
   const urls = [
-    'https://example.com/page1',
-    'https://example.com/page2',
-    'https://example.com/page3',
-    'https://example.com/page4',
-    'https://example.com/page5',
+    '/CardPage',
+    '/CardPage',
+    '/CardPage',
+    '/CardPage',
+    '/CardPage',
   ];
 
   const loader = new GLTFLoader();
@@ -194,7 +198,15 @@ function init(container: HTMLElement) {
         clicked = clicked.parent!;
       }
       if (clicked && clicked.userData.url) {
-        window.open(clicked.userData.url, '_blank');
+        // if navigate decides to work (ig it doesnt like to sometimes???)
+        if (navigate) {
+          navigate(clicked.userData.url);
+        } else {
+          // if not, just href (navigate is faster tho )
+          window.location.href = clicked.userData.url;
+        }
+
+        
       }
     }
   });
