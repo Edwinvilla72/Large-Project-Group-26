@@ -5,44 +5,8 @@ const authRoutes = require('./routes/authRoutes');
 const cors = require("cors");
 const bodyParser = require("body-parser");
 
-//dotenv.config();
-//connectDB();
-const MongoClient = require('mongodb').MongoClient;
-const url = 'mongodb+srv://Edwin123:12345@cluster0.jqhcjet.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
-const client = new MongoClient(url);
-client.connect();
-
-// test
-client.connect()
-    .then(async () => {
-        console.log("✅ Connected to MongoDB!");
-
-        // Quick test: List databases
-        const databasesList = await client.db().admin().listDatabases();
-        console.log("📂 Databases:");
-        databasesList.databases.forEach(db => console.log(` - ${db.name}`));
-    })
-    .catch(err => {
-        console.error("❌ Failed to connect to MongoDB:", err);
-    });
-
-
-
-app.use(cors());
-app.use(bodyParser.json());
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader(
-        'Access-Control-Allow-Headers',
-        'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-    );
-    res.setHeader(
-        'Access-Control-Allow-Methods',
-        'GET, POST, PATCH, DELETE, OPTIONS'
-    );
-    next();
-});
-app.listen(5000); // start Node + Express server on port 5000
+dotenv.config();
+connectDB();
 
 
 const app = express();
