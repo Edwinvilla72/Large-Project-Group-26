@@ -19,6 +19,17 @@ function Login() {
     const obj = { login: loginName, password: loginPassword };
     const js = JSON.stringify(obj);
 
+
+    //! FOR LOCAL TESTING
+    //TODO================================
+    const user = {
+      FirstName: 'test', //res.FirstName,
+      LastName: 'test', //res.LastName,
+      _id: '0' //res._id
+    };
+    navigate('/Dashboard');
+    //TODO================================
+
     try {
       const response = await fetch('/api/login', {
         method: 'POST',
