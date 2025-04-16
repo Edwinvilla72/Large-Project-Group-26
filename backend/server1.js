@@ -1,13 +1,31 @@
 const express = require('express');
-const dotenv = require('dotenv');
+const dotenv = require('dotenv').config();
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const User = require('./models/User');
+const Workout = require('./models/Workout');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs'); // or 'bcrypt' if you're using that instead
 
-//dotenv.config();
-//connectDB();
-const MongoClient = require('mongodb').MongoClient;
+
+function authenticateToken(req, res, next) {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (!token) return res.sendStatus(401);
+
+    jwt.verify(token, process.env.JWT_SECRET || 'secret', (err, user) => {
+        if (err) return res.sendStatus(403);
+        req.user = user; // this gets attached to req
+        next();
+    });
+}
+
+
+connectDB();
+/*const MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb+srv://Edwin123:12345@cluster0.jqhcjet.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 const client = new MongoClient(url);
 client.connect();
@@ -43,7 +61,7 @@ app.use((req, res, next) => {
     next();
 });
 app.listen(5000); // start Node + Express server on port 5000
-
+*/
 
 const app = express();
 app.use(express.json());
@@ -51,36 +69,80 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 
 app.post('/api/register', async (req, res) => {
-    const { username, email, password } = req.body;
-    const hashed = await bcrypt.hash(password, 10);
-    const user = new User ({
-        username,
-        email,
-        password: hashed,
-        character: {
-            name: username + "'s Hero",
-            level: 1,
-            xp: 0,
-            dailyQuests: [], // Change this to the function that generates daily quests for a user.
-            weeklyQuests: [], // Change this to the function that generates weekly quests for a user.
-            questProgress: [0,0,0,0,0,0,0,0,0,0],
-            questComp: 0,
-            //stats: { strength: 5, stamina: 5, agility: 5 },
-        },
-        friends: [],
-    });
-    await user.save();
-    res.status(201).send('User registered');
+
+    try {
+        const { FirstName, LastName, username, password,email } = req.body;
+
+        if (!FirstName || !LastName || !username || !password) {
+            return res.status(400).json({ error: "Please fill out all fields." });
+        }
+
+        //const db = client.db("fitgame");
+        //const users = db.collection("Users");
+
+        // check for existing username
+        const existing = await User.findOne({ Login: username });
+        if (existing) {
+            return res.status(409).json({ error: "Username already exists. Please choose another." });
+        }
+
+        const userCount = await User.countDocuments();
+        const newUser = new User({
+            // UserId, // TODO: UserId increment
+            FirstName,
+            LastName,
+            Login: username,
+            Password: password,
+            UserId:(userCount + 1).toString(),
+            Email: email || "",
+            character: {
+                name: username + "'s Hero",
+                level: 1,
+                xp: 0
+            }
+        });
+
+        //const result = await users.insertOne(newUser);
+        await newUser.save();
+
+        res.status(201).json({ error: "" });
+    } catch (e) {
+        res.status(500).json({ error: "Registration failed: " + e.message });
+    }
 });
 
-app.post('/api/login', async (req, res) => {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email });
-    if (!user) return res.status(404).send('User not found');
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) return res.status(403).send('Invalid credentials');
-    const token = jwt.sign({ id: user._id }, 'secret');
-    res.json({ token });
+
+
+app.post('/api/login', async (req, res, next) => {
+    const { Login, Password } = req.body;
+
+    if (!Login || !Password) {
+        return res.status(400).json({ error: "Missing login or password" });
+    }
+
+    try {
+        const user = await User.findOne({ Login: Login, Password: Password });
+
+        if (user.length === 0) {
+            return res.status(401).json({ error: "Invalid username or password" });
+        }
+
+        if (!user.loginTimestamps) user.loginTimestamps = [];
+        user.loginTimestamps.push(new Date());
+
+        await user.save();
+
+        return res.status(200).json({
+            _id: user.UserId || user._id,
+            FirstName: user.FirstName,
+            LastName: user.LastName,
+            error: ""
+        });
+
+    } catch (e) {
+        console.error("Login error:", e);
+        return res.status(500).json({ error: "An error occurred during login" });
+    }
 });
 
 // Quests (Fitness Tasks)
@@ -116,23 +178,57 @@ app.post('/api/completeQuest', authenticateToken, async (req, res) => {
 
 //logging workouts and posting it to db
 app.post("/api/logWorkout", async (req, res) => {
+    try {
     const { UserId, type, duration, reps } = req.body;
 
-    const workout = {
+    const workout = new Workout({
         UserId,
         type,
         duration,
-        reps,
-        timestamp: new DataTransfer()
-    };
-    try {
-        const db = client.db("fitgame");
-        await db.collection("workouts").insertOne(workout);
+        reps
+    });
+
+        await workout.save();
         res.status(200).json({ message: "Workout logged" });
     } catch (err) {
         res.status(500).json({ error: "Failed to log workout" });
     }
 });
+
+//retrieve workouts by day or workout
+app.get('/api/getWorkout', async (req, res) => {
+    try{
+        const { UserId, type, date} = req.query;
+
+        if(!UserId){
+            return res.status(404).send('User not found');
+        }
+
+        const filter = {UserId:UserId};
+
+        if(type){
+            filter.type = type;
+        }
+
+        if(date){
+            const start = new Date(date);
+            const end = new Date(date);
+            end.setDate(start.getDate());
+
+            filter.timestamp = { $gte: start, $lt: end };
+        }
+
+        const workouts = await Workout.find(filter).sort({ timestamp: -1 });
+        res.json(workouts);
+
+    }catch (err) {
+        console.error("Workout fetch error:", err);
+        res.status(500).json({ error: "Failed to retrieve workouts" });
+    }
+
+
+});
+
 
 // Get Leaderboard (Top XP Users)
 app.get('/api/leaderboard', async (req, res) => {

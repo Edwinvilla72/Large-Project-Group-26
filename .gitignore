@@ -5,7 +5,7 @@ node_modules/
 dist/
 
 # local env
-.env
+backend/.env
 
 # system files
 .DS_Store
