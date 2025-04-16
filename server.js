@@ -221,6 +221,7 @@ app.post('/api/register', async (req, res) => {
       }
   
       const newUser = {
+        // UserId, // TODO: UserId increment
         FirstName,
         LastName,
         Login: username, 

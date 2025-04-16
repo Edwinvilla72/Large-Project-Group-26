@@ -1,5 +1,6 @@
 import { hover } from 'framer-motion';
 import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 interface CustomMesh extends THREE.Mesh {
   position: THREE.Vector3;
@@ -73,8 +74,22 @@ function init(container: HTMLElement) {
   scene.add(directionalLight);
 
   // Boxes
-  const geometry = new THREE.BoxGeometry();
-  const material = new THREE.MeshStandardMaterial({ color: 0xffffff });
+  const modelPaths = [
+    '/models/water.glb',    // basic quests
+    '/models/Dumbell.glb',  // gym quests
+    '/models/Dice.glb',     // bonus quests
+    '/models/Trophy.glb',   // leaderboard
+    '/models/Gears.glb'     // settings
+  ];
+  
+  const labels = [
+    "Daily Quests",
+    "Gym Quests",
+    "Bonus Quests",
+    "Leaderboard",
+    "Settings"
+  ];
+  
   const urls = [
     'https://example.com/page1',
     'https://example.com/page2',
@@ -82,29 +97,35 @@ function init(container: HTMLElement) {
     'https://example.com/page4',
     'https://example.com/page5'
   ];
+  
+  const loader = new GLTFLoader();
 
-
-  // creating labels for each model
-  const labels = [
-    "Daily Quests", 
-    "Gym Quests",
-    "Bonus Quests",
-    "Leaderboard", 
-    "Settings"
-  ];
-
-  for (let i = 0; i < 5; i++) {
-    const model = new THREE.Mesh(geometry, material) as unknown as CustomMesh;
-    model.scale.set(1, 1, 1);
-    model.userData = {
-      originalScale: new THREE.Vector3(1, 1, 1),
-      targetScale: new THREE.Vector3(1, 1, 1),
-      url: urls[i],
-      label: labels[i],
-    };
-    scene.add(model);
-    models.push(model);
-  }
+  modelPaths.forEach((path, i) => {
+    loader.load(
+      path,
+      (gltf) => {
+        const model = gltf.scene as unknown as CustomMesh;
+        model.scale.set(1, 1, 1);
+        model.userData = {
+          originalScale: new THREE.Vector3(1, 1, 1),
+          targetScale: new THREE.Vector3(1, 1, 1),
+          url: urls[i],
+          label: labels[i]
+        };
+        scene.add(model);
+        models.push(model);
+  
+        // Only update positions after all models are loaded
+        if (models.length === modelPaths.length) {
+          updateModelPositions();
+        }
+      },
+      undefined,
+      (error) => {
+        console.error(`Failed to load model at ${path}`, error);
+      }
+    );
+  });
 
   updateModelPositions();
 
