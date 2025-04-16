@@ -75,11 +75,11 @@ function init(container: HTMLElement) {
 
   // Boxes
   const modelPaths = [
-    '../models/water.glb',    // basic quests
-    '../models/Dumbell.glb',  // gym quests
-    '../models/Dice.glb',     // bonus quests
-    '../models/Trophy.glb',   // leaderboard
-    '../models/Gears.glb'     // settings
+    '../assets/models/water.glb',    // basic quests
+    '../assets/models/Dumbell.glb',  // gym quests
+    '../assets/models/Dice.glb',     // bonus quests
+    '../assets/models/Trophy.glb',   // leaderboard
+    '../assets/models/Gears.glb'     // settings
   ];
   
   const labels = [
