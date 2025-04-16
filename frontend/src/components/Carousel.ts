@@ -74,7 +74,7 @@ function init(container: HTMLElement, navigate?: (path: string) => void) {
 
   // these are all tests to make sure redirection works properly
   const urls = [
-    '/CardPage',
+    '/BasicQuests',
     '/CardPage',
     '/CardPage',
     '/CardPage',

@@ -1,12 +1,15 @@
 import React, { useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { startCarousel } from '../components/Carousel';
+
 
 const Dashboard = () => {
   const canvasRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (canvasRef.current) {
-      startCarousel(canvasRef.current); // Attach to this container
+      startCarousel(canvasRef.current, navigate); // Attach to this container
     }
   }, []);
 

@@ -9,10 +9,6 @@ import { useNavigate } from 'react-router-dom'; // if you're using React Router
 
 function CardUI() {
 
-    
-
-
-
     //!  old stuff
     let _ud: any = localStorage.getItem('user_data');
     let ud = JSON.parse(_ud);
