@@ -1,101 +1,39 @@
+
 import React, { useState } from 'react';
-import './SettingsPage.css';
+import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion'; // to animate pages ooooooo
+import Dashboard from './Dashboard';
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
-const workoutOptions = [
-  'Bench Press',
-  'Shoulder Press',
-  'Tricep Dips',
-  'Pull Ups',
-  'Bent-over Rows',
-  'Bicep Curls',
-  'Back Squats',
-  'Weighted Lunges',
-  'Calf Raises',
-];
+function Settings() {
 
-const SettingsPage: React.FC = () => {
-  const [workoutsByDay, setWorkoutsByDay] = useState<{ [day: string]: string[] }>(
-    weekdays.reduce((acc, day) => ({ ...acc, [day]: [] }), {})
-  );
+    const navigate = useNavigate();
 
-  const addWorkout = (day: string) => {
-    setWorkoutsByDay(prev => ({
-      ...prev,
-      [day]: [...prev[day], workoutOptions[0]], // default to first option
-    }));
-  };
+     function back() {
+        // window reload necessary for the models to load back up as things are rn
+        // cannot use navigate 
+        window.location.href = "/Dashboard";
+        
+     }
+    
 
-  const removeWorkout = (day: string, index: number) => {
-    setWorkoutsByDay(prev => ({
-      ...prev,
-      [day]: prev[day].filter((_, i) => i !== index),
-    }));
-  };
-
-  const updateWorkout = (day: string, index: number, value: string) => {
-    const updated = [...workoutsByDay[day]];
-    updated[index] = value;
-    setWorkoutsByDay(prev => ({
-      ...prev,
-      [day]: updated,
-    }));
-  };
-
-  const handleDeleteAccount = () => {
-    alert('Account deletion initiated.');
-  };
-
-  return (
-    <div className="settings-container">
-      <h2>Edit Weekly Routine</h2>
-      <div className="workout-grid">
-        <div className="grid-header">
-          {weekdays.map(day => (
-            <div key={day} className="day-header">{day}</div>
-          ))}
+    return (
+        <motion.div
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: -100, opacity: 0 }}
+        transition={{ duration: 0.4 }}
+        >
+            
+        <div className="neon-login-container">
+          <h1 className="neon-title">Settings</h1>
+          <p>This is a test!</p>
         </div>
-        <div className="grid-body">
-          {[...Array(5)].map((_, rowIndex) => (
-            <div key={rowIndex} className="grid-row">
-              {weekdays.map(day => (
-                <div key={day} className="grid-cell">
-                  {workoutsByDay[day][rowIndex] !== undefined ? (
-                    <div className="workout-row">
-                      <select
-                        value={workoutsByDay[day][rowIndex]}
-                        onChange={e => updateWorkout(day, rowIndex, e.target.value)}
-                      >
-                        {workoutOptions.map(option => (
-                          <option key={option} value={option}>
-                            {option}
-                          </option>
-                        ))}
-                      </select>
-                      <button
-                        className="remove-btn"
-                        onClick={() => removeWorkout(day, rowIndex)}
-                      >
-                        ✕
-                      </button>
-                    </div>
-                  ) : rowIndex === workoutsByDay[day].length ? (
-                    <button className="add-btn" onClick={() => addWorkout(day)}>+ Add</button>
-                  ) : null}
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="delete-button-container">
-        <button className="delete-button" onClick={handleDeleteAccount}>
-          Delete Account
-        </button>
-      </div>
-    </div>
-  );
-};
-
-export default SettingsPage;
+        <br></br>
+        <button className="button" onClick={back}>Back</button>
+      </motion.div>
+    );
+}
+export default Settings;
