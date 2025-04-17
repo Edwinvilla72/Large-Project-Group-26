@@ -75,10 +75,10 @@ function init(container: HTMLElement, navigate?: (path: string) => void) {
   // these are all tests to make sure redirection works properly
   const urls = [
     '/BasicQuests',
-    '/CardPage',
-    '/CardPage',
-    '/CardPage',
-    '/CardPage',
+    '/GymQuests',
+    '/BonusQuests',
+    '/Laderboard',
+    '/Settings',
   ];
 
   const loader = new GLTFLoader();

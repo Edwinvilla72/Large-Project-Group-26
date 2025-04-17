@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { startCarousel } from '../components/Carousel';
-
+import { motion } from 'framer-motion'; // to animate pages ooooooo
 
 const Dashboard = () => {
   const canvasRef = useRef<HTMLDivElement>(null);
@@ -14,6 +14,13 @@ const Dashboard = () => {
   }, []);
 
   return (
+    <motion.div
+    initial={{ y: -100, opacity: 0 }}
+    animate={{ y: 0, opacity: 1 }}
+    exit={{ y: -100, opacity: 0 }}
+    transition={{ duration: 0.4 }}
+    >
+  
     <div style={{ height: '100vh', width: '80vw', position: 'relative', overflow: 'hidden' }}>
       {/* Text content positioned on top */}
       <div style={{
@@ -35,6 +42,7 @@ const Dashboard = () => {
       {/* Canvas container goes under */}
       <div ref={canvasRef} style={{ width: '100%', height: '100%' }} />
     </div>
+    </motion.div>
   );
 };
 

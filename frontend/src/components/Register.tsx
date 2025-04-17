@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // if you're using React Router
+import { useNavigate } from 'react-router-dom'; 
 import { motion } from 'framer-motion'; // to animate pages ooooooo
 
 // insert code here

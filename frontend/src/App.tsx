@@ -8,7 +8,8 @@ import ForgotPass from './pages/FP/ForgotPassPage';
 import FPSecurityQuestion from './pages/FP/FPSecurityQuestionPage';
 import ChangePassword from './pages/FP/ChangePasswordPage';
 import Dashboard from './components/Dashboard';
-import BasicQuests from './components/BasicQuests';
+import BasicQuestsPage from './pages/BasicQuestsPage';
+import BonusQuestsPage from './pages/BonusQuestsPage';
 
 
 function AnimatedRoutes() {
@@ -26,7 +27,8 @@ function AnimatedRoutes() {
 
 
         <Route path="/Dashboard" element={<Dashboard/>} />
-        <Route path="/Dashboard" element={<BasicQuests/>} />
+        <Route path="/BasicQuests" element={<BasicQuestsPage/>} />
+        <Route path="/BonusQuests" element={<BonusQuestsPage/>} />
 
 
       </Routes>
