@@ -20,27 +20,12 @@ const SettingsPage: React.FC = () => {
     weekdays.reduce((acc, day) => ({ ...acc, [day]: [] }), {})
   );
 
-<<<<<<< Updated upstream
   const addWorkout = (day: string) => {
     setWorkoutsByDay(prev => ({
       ...prev,
       [day]: [...prev[day], workoutOptions[0]], // default to first option
     }));
   };
-=======
-    // moves back to the dashboard (reloads the page for THREE,js to work right)
-    function back() {
-        // window reload necessary for the models to load back up as things are rn
-        // cannot use navigate 
-        window.location.href = "/Dashboard";
-     }
-    
-     function deleteAccount() {
-      // window reload necessary for the models to load back up as things are rn
-      // cannot use navigate 
-      window.location.href = "/Dashboard"; // ! ===CHANGEEE===
-   }
->>>>>>> Stashed changes
 
   const removeWorkout = (day: string, index: number) => {
     setWorkoutsByDay(prev => ({
@@ -71,7 +56,6 @@ const SettingsPage: React.FC = () => {
             <div key={day} className="day-header">{day}</div>
           ))}
         </div>
-<<<<<<< Updated upstream
         <div className="grid-body">
           {[...Array(5)].map((_, rowIndex) => (
             <div key={rowIndex} className="grid-row">
@@ -115,14 +99,3 @@ const SettingsPage: React.FC = () => {
 };
 
 export default SettingsPage;
-=======
-        <br></br>
-        <button className="button" onClick={back}>Back</button>
-        <br></br><br></br>
-        <input type="button" className="neon-btn" value="Delete My Account" onClick={deleteAccount} />
-
-      </motion.div>
-    );
-}
-export default Settings;
->>>>>>> Stashed changes
