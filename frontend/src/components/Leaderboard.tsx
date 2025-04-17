@@ -1,4 +1,3 @@
-/*
 import React, { useState } from 'react';
 import { users, User } from '/home/colorstest/Desktop/Test React/my-new-project/src/data/users';
 import './Leaderboard.css';
@@ -27,6 +26,7 @@ const Leaderboard: React.FC = () => {
           value={type}
           onChange={(e) => setType(e.target.value as LeaderboardType)}
         >
+<<<<<<< Updated upstream
           <option value="global">Global</option>
           <option value="followers">Followers</option>
         </select>
@@ -44,5 +44,25 @@ const Leaderboard: React.FC = () => {
   );
 };
 
+=======
+
+
+
+            
+        <div className="neon-login-container">
+          <h1 className="neon-title">Leaderboard</h1>
+          <p>This is a test!</p>
+        </div>
+        <br></br>
+        <button className="button" onClick={back}>Back</button>
+
+
+
+
+
+
+      </motion.div>
+    );
+}
+>>>>>>> Stashed changes
 export default Leaderboard;
-*/
