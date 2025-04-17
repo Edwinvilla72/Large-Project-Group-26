@@ -10,7 +10,9 @@ import ChangePassword from './pages/FP/ChangePasswordPage';
 import Dashboard from './components/Dashboard';
 import BasicQuestsPage from './pages/BasicQuestsPage';
 import BonusQuestsPage from './pages/BonusQuestsPage';
-
+import GymQuestsPage from './pages/GymQuestsPage';
+import LeaderboardPage from './pages/LeaderboardPage';
+import SettingsPage from './pages/SettingsPage';
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -27,8 +29,14 @@ function AnimatedRoutes() {
 
 
         <Route path="/Dashboard" element={<Dashboard/>} />
+
         <Route path="/BasicQuests" element={<BasicQuestsPage/>} />
         <Route path="/BonusQuests" element={<BonusQuestsPage/>} />
+        <Route path="/GymQuests" element={<GymQuestsPage/>} />
+        <Route path="/Leaderboard" element={<LeaderboardPage/>} />
+        <Route path="/Settings" element={<SettingsPage/>} />
+
+
 
 
       </Routes>

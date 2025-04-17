@@ -77,7 +77,7 @@ function init(container: HTMLElement, navigate?: (path: string) => void) {
     '/BasicQuests',
     '/GymQuests',
     '/BonusQuests',
-    '/Laderboard',
+    '/Leaderboard',
     '/Settings',
   ];
 
