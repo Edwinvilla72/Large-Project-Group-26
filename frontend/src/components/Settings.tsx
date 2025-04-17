@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './SettingsPage.css';
+import 'Large-Project-Group-26\frontend\src\styles\SettingsPage.css';
 
 const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
