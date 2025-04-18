@@ -16,7 +16,7 @@ function Login() {
 
   const doLogin = async (event: React.FormEvent) => {
     event.preventDefault();
-    const obj = { login: loginName, password: loginPassword };
+    const obj = { Login: loginName.trim(), Password: loginPassword.trim() };
     const js = JSON.stringify(obj);
 
 

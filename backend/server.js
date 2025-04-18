@@ -1,7 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv').config();
 const connectDB = require('./config/db');
-const authRoutes = require('./routes/authRoutes');
+// const authRoutes = require('./routes/authRoutes');
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const User = require('./models/User');
@@ -28,8 +28,11 @@ connectDB();
 
 const app = express();
 app.use(express.json());
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use('/api/auth', authRoutes);
+//app.use('/api/auth', authRoutes);
 
 app.post('/api/register', async (req, res) => {
 
@@ -84,16 +87,26 @@ app.post('/api/login', async (req, res, next) => {
     }
 
     try {
-        const user = await User.findOne({ Login: Login, Password: Password });
+        //const user = await User.findOne({ Login: Login, Password: Password });
 
-        if (user.length === 0) {
-            return res.status(401).json({ error: "Invalid username or password" });
+        // if (!user) {
+        //     return res.status(401).json({ error: "Invalid username or password" });
+        // }
+
+        const user = await User.findOne({ Login });
+
+        if (!user) {
+          return res.status(401).json({ error: "Invalid username" });
+        }
+        
+        if (user.Password !== Password) {
+          return res.status(401).json({ error: "Invalid password" });
         }
 
         if (!user.loginTimestamps) user.loginTimestamps = [];
-        user.loginTimestamps.push(new Date());
-
-        await user.save();
+        await User.findByIdAndUpdate(user._id, {
+            $push: { loginTimestamps: new Date() }
+        });
 
         return res.status(200).json({
             _id: user.UserId || user._id,
