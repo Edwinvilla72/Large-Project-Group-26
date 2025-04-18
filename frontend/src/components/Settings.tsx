@@ -50,7 +50,8 @@ const SettingsPage: React.FC = () => {
   function back() {
     // window reload necessary for the models to load back up as things are rn
     // cannot use navigate 
-    window.location.href = "/Dashboard"; 
+    window.location.href = "/Dashboard";
+    
  }
 
   return (

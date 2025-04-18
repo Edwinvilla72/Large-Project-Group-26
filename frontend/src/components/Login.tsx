@@ -22,12 +22,12 @@ function Login() {
 
     //! FOR LOCAL TESTING
     //TODO================================
-    //const user = {
-      //FirstName: 'test', //res.FirstName,
-      //LastName: 'test', //res.LastName,
-      //_id: '0' //res._id
-    //};
-    //navigate('/Dashboard');
+    const user = {
+      FirstName: 'test', //res.FirstName,
+      LastName: 'test', //res.LastName,
+      _id: '0' //res._id
+    };
+    navigate('/Dashboard');
     //TODO================================
 
     try {
