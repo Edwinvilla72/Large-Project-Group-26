@@ -59,7 +59,6 @@ app.post('/api/register', async (req, res) => {
             LastName,
             Login: username,
             Password: password,
-            UserId:(userCount + 1).toString(),
             Email: email || "",
             character: {
                 name: username + "'s Hero",

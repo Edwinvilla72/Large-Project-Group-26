@@ -9,11 +9,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    UserId: {
-        type: String,
-        required: true,
-        unique: true
-    },
     Login: {
         type: String,
         required: true,

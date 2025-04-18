@@ -4,9 +4,12 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   server: {
-    port: 3000,
+    port: 5173,
     host: true,
-    allowedHosts: ['merntest.fitgame.space'],
+    allowedHosts: ['localhost', 'merntest.fitgame.space'],
+    proxy: {
+      '/api': 'http://localhost:3000',
+    },
   },
 
   plugins: [react()],
