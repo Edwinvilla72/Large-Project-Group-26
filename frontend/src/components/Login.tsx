@@ -8,9 +8,8 @@ function Login() {
   const [loginPassword, setPassword] = useState('');
   const navigate = useNavigate();
 
-const handleSetLoginName = (e: React.ChangeEvent<HTMLInputElement>) => setLoginName(e.target.value);
-const handleSetPassword = (e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value);
-
+  const handleSetLoginName = (e: any) => setLoginName(e.target.value);
+  const handleSetPassword = (e: any) => setPassword(e.target.value);
 
   const RegisterButton = () => navigate('/register');
   const ForgotPassword = () => navigate('/ForgotPass');
@@ -32,7 +31,7 @@ const handleSetPassword = (e: React.ChangeEvent<HTMLInputElement>) => setPasswor
     //TODO================================
 
     try {
-      const response = await fetch('https://merntest.fitgame.space/api/login', {
+      const response = await fetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: js
