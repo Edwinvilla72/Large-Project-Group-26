@@ -6,7 +6,7 @@ const app = express();
 const MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb+srv://Edwin123:12345@cluster0.jqhcjet.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 const client = new MongoClient(url);
-
+client.connect();
 
 // test
 client.connect()
@@ -267,7 +267,7 @@ app.get('/api/leaderboard', async (req, res) => {
     .limit(20)
     .toArray();
 
-    const formatted = users.map(u => ({
+    const formatted = user.map(u => ({
       username: u.Login,
       level: u.character?.level ?? 1,
       xp: u.character?.xp ?? 0,
