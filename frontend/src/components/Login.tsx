@@ -8,13 +8,14 @@ function Login() {
   const [loginPassword, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleSetLoginName = (e: any) => setLoginName(e.target.value);
-  const handleSetPassword = (e: any) => setPassword(e.target.value);
+const handleSetLoginName = (e: React.ChangeEvent<HTMLInputElement>) => setLoginName(e.target.value);
+const handleSetPassword = (e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value);
+
 
   const RegisterButton = () => navigate('/register');
   const ForgotPassword = () => navigate('/ForgotPass');
 
-  const doLogin = async (event: any) => {
+  const doLogin = async (event: React.FormEvent) => {
     event.preventDefault();
     const obj = { login: loginName, password: loginPassword };
     const js = JSON.stringify(obj);
@@ -22,16 +23,16 @@ function Login() {
 
     //! FOR LOCAL TESTING
     //TODO================================
-    // const user = {
-    //   FirstName: 'test', //res.FirstName,
-    //   LastName: 'test', //res.LastName,
-    //   _id: '0' //res._id
-    // };
-    // navigate('/Dashboard');
+    //const user = {
+      //FirstName: 'test', //res.FirstName,
+      //LastName: 'test', //res.LastName,
+      //_id: '0' //res._id
+    //};
+    //navigate('/Dashboard');
     //TODO================================
 
     try {
-      const response = await fetch('/api/login', {
+      const response = await fetch('https://merntest.fitgame.space/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: js
