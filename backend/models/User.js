@@ -38,9 +38,11 @@ const userSchema = new mongoose.Schema({
         // }
     },
     friends: {
-        type: [Number],
-        required: true,
-    },
+  type: [mongoose.Schema.Types.ObjectId],
+  ref: 'User',
+  default: []
+},
+
     loginTimestamps: {
         type: [Date],
         default: []

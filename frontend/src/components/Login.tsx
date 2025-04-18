@@ -19,17 +19,6 @@ function Login() {
     const obj = { Login: loginName.trim(), Password: loginPassword.trim() };
     const js = JSON.stringify(obj);
 
-
-    //! FOR LOCAL TESTING
-    //TODO================================
-    //const user = {
-      //FirstName: 'test', //res.FirstName,
-      //LastName: 'test', //res.LastName,
-      //_id: '0' //res._id
-    //};
-    //navigate('/Dashboard');
-    //TODO================================
-
     try {
       const response = await fetch('/api/login', {
         method: 'POST',
@@ -55,10 +44,14 @@ function Login() {
         LastName: res.LastName,
         _id: res._id
       };
-
+      
+      // ✅ Save entire object if you want, or just the ID if you prefer
       localStorage.setItem('user_data', JSON.stringify(user));
+      localStorage.setItem('user_id', res._id); // This line is new and important
+      
       setMessage('');
-      navigate('/Dashboard'); // loggin in now sends user to Dashboard instead of CardsUI
+      navigate('/Dashboard');
+      
     } catch (error: any) {
       console.error('Login error:', error);
       setMessage('Server error. Please try again later.');

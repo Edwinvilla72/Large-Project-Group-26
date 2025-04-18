@@ -1,3 +1,4 @@
+// ===== Settings.tsx =====
 import React, { useState } from 'react';
 import '../styles/Settings.css';
 
@@ -23,7 +24,7 @@ const SettingsPage: React.FC = () => {
   const addWorkout = (day: string) => {
     setWorkoutsByDay(prev => ({
       ...prev,
-      [day]: [...prev[day], workoutOptions[0]], // default to first option
+      [day]: [...prev[day], workoutOptions[0]],
     }));
   };
 
@@ -43,16 +44,36 @@ const SettingsPage: React.FC = () => {
     }));
   };
 
+  const handleSaveRoutine = async () => {
+    const storedData = localStorage.getItem("user_data");
+    if (!storedData) {
+      console.error("No user data found in localStorage.");
+      return;
+    }
+    const userId = JSON.parse(storedData)._id;
+
+    try {
+      const res = await fetch('http://localhost:3000/api/routine', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, routine: workoutsByDay })
+      });
+
+      const data = await res.json();
+      if (res.ok) alert("Routine saved!");
+      else console.error(data.message);
+    } catch (err) {
+      console.error("Failed to save routine:", err);
+    }
+  };
+
   const handleDeleteAccount = () => {
     alert('Account deletion initiated.');
   };
 
   function back() {
-    // window reload necessary for the models to load back up as things are rn
-    // cannot use navigate 
     window.location.href = "/Dashboard";
-    
- }
+  }
 
   return (
     <div className="settings-container">
@@ -75,17 +96,10 @@ const SettingsPage: React.FC = () => {
                         onChange={e => updateWorkout(day, rowIndex, e.target.value)}
                       >
                         {workoutOptions.map(option => (
-                          <option key={option} value={option}>
-                            {option}
-                          </option>
+                          <option key={option} value={option}>{option}</option>
                         ))}
                       </select>
-                      <button
-                        className="remove-btn"
-                        onClick={() => removeWorkout(day, rowIndex)}
-                      >
-                        ✕
-                      </button>
+                      <button className="remove-btn" onClick={() => removeWorkout(day, rowIndex)}>✕</button>
                     </div>
                   ) : rowIndex === workoutsByDay[day].length ? (
                     <button className="add-btn" onClick={() => addWorkout(day)}>+ Add</button>
@@ -96,12 +110,11 @@ const SettingsPage: React.FC = () => {
           ))}
         </div>
       </div>
+      <div><button className="save-button" onClick={handleSaveRoutine}>Save Routine</button></div>
       <div className="delete-button-container">
-        <button className="delete-button" onClick={handleDeleteAccount}>
-          Delete Account
-        </button>
+        <button className="delete-button" onClick={handleDeleteAccount}>Delete Account</button>
       </div>
-      <br></br>
+      <br />
       <button className="button" onClick={back}>Back</button>
     </div>
   );
