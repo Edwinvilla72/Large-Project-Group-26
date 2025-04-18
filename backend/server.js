@@ -54,7 +54,6 @@ app.post('/api/register', async (req, res) => {
 
         const userCount = await User.countDocuments();
         const newUser = new User({
-            // UserId, // TODO: UserId increment
             FirstName,
             LastName,
             Login: username,
@@ -108,7 +107,7 @@ app.post('/api/login', async (req, res, next) => {
         });
 
         return res.status(200).json({
-            _id: user.UserId || user._id,
+            _id: user._id,
             FirstName: user.FirstName,
             LastName: user.LastName,
             error: ""
