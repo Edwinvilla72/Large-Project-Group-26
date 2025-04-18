@@ -47,6 +47,13 @@ const SettingsPage: React.FC = () => {
     alert('Account deletion initiated.');
   };
 
+  function back() {
+    // window reload necessary for the models to load back up as things are rn
+    // cannot use navigate 
+    window.location.href = "/Dashboard";
+    
+ }
+
   return (
     <div className="settings-container">
       <h2>Edit Weekly Routine</h2>
@@ -94,6 +101,8 @@ const SettingsPage: React.FC = () => {
           Delete Account
         </button>
       </div>
+      <br></br>
+      <button className="button" onClick={back}>Back</button>
     </div>
   );
 };
