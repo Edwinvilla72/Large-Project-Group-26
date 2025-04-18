@@ -45,7 +45,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #3A0CA3, #7209B7);
+  background: linear-gradient(135deg, #009dff, #b445ff);
   height: 100vh;
   display: flex;
   align-items: center;
@@ -106,7 +106,7 @@ body {
 
 .neon-btn.secondary {
   margin-top: 10px;
-  background: linear-gradient(to right, #7209B7, #4361EE);
+  background: linear-gradient(to right, #9e19f7, #4361EE);
 }
 
 .forgot-link {

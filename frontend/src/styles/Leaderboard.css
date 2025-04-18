@@ -1,0 +1,76 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #009dff, #b445ff);
+    margin: 0;
+    padding: 20px;
+  }
+  
+  .leaderboard-container {
+    max-width: 600px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(128, 0, 128, 0.2);
+    padding: 24px;
+    border: 2px solid #d1b3e0;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .header h2 {
+    color: #6a0dad;
+  }
+  
+  select {
+    padding: 6px 10px;
+    border: 1px solid #a76ebc;
+    border-radius: 6px;
+    background-color: #f4e6ff;
+    color: #4b007d;
+    font-weight: bold;
+  }
+  
+  select:focus {
+    outline: none;
+    border-color: #6a0dad;
+  }
+  
+  .leaderboard-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+  }
+  
+  .leaderboard-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #e2d0f0;
+    transition: background 0.2s;
+  }
+  
+  .leaderboard-item:hover {
+    background: #f4e6ff;
+  }
+  
+  .rank {
+    width: 30px;
+    font-weight: bold;
+    color: #6a0dad;
+  }
+  
+  .username {
+    flex: 1;
+    text-align: left;
+    color: #4b007d;
+  }
+  
+  .xp {
+    font-weight: bold;
+    color: #a05dbb;
+  }
+  
