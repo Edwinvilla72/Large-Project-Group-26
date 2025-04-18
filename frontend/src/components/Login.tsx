@@ -8,13 +8,13 @@ function Login() {
   const [loginPassword, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleSetLoginName = (e: React.ChangeEvent<HTMLInputElement>) => setLoginName(e.target.value);
-  const handleSetPassword = (e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value);  
+  const handleSetLoginName = (e: any) => setLoginName(e.target.value);
+  const handleSetPassword = (e: any) => setPassword(e.target.value);
 
   const RegisterButton = () => navigate('/register');
   const ForgotPassword = () => navigate('/ForgotPass');
 
-  const doLogin = async (event: React.FormEvent) => {
+  const doLogin = async (event: any) => {
     event.preventDefault();
     const obj = { login: loginName, password: loginPassword };
     const js = JSON.stringify(obj);

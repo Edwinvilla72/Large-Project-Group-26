@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import { users, User } from '../data/users'; // for testing! I need to implement api for this soon
 import '../styles/Leaderboard.css';
+import React, {useEffect, useState } from 'react';
 
 type LeaderboardType = 'global' | 'followers';
 
 interface LeaderboardUser {
-  username: string;
+  username: string, 
   level: number;
   xp: number;
 }
@@ -12,17 +13,6 @@ interface LeaderboardUser {
 const Leaderboard: React.FC = () => {
   const [type, setType] = useState<LeaderboardType>('global');
   const [users, setUsers] = useState<LeaderboardUser[]>([]);
-
-  useEffect(() => {
-    fetch('http://localhost:5000/api/leaderboard')
-      .then(res => res.json())
-      .then(data => {
-        setUsers(data);
-      })
-      .catch(err => {
-        console.error("Failed to fetch leaderboard:", err);
-      });
-  }, []);
 
   const getRankDisplay = (index: number) => {
     if (index === 0) return '🥇 ';
@@ -32,10 +22,11 @@ const Leaderboard: React.FC = () => {
   };
 
   function back() {
-    window.location.href = "/Dashboard";
-  }
+    // window reload necessary for the models to load back up as things are rn
+    // cannot use navigate 
+    window.location.href = "/Dashboard"; 
+ }
 
-  // You can filter by followers here if that logic is added
   const filteredUsers = users.slice(0, 20);
 
   return (
@@ -59,9 +50,10 @@ const Leaderboard: React.FC = () => {
           </li>
         ))}
       </ul>        
-      <br />
+      <br></br>
       <button className="button" onClick={back}>Back</button>
     </div>
+    
   );
 };
 

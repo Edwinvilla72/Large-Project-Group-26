@@ -259,23 +259,24 @@ app.delete('/api/removeFriend', async (req, res) => {
 // Get Leaderboard (Top XP Users)
 app.get('/api/leaderboard', async (req, res) => {
   try {
-    const db = client.db("fitgame");
+   
+    const db = client.db("fitgame"); // gets the database
     const users = await db.collection("Users")
-      .find({})
-      .sort({ 'character.xp': -1 })
-      .limit(10)
-      .toArray();
+    .find({})
+    .sort({ 'character.xp': -1 })
+    .limit(20)
+    .toArray();
 
     const formatted = users.map(u => ({
       username: u.Login,
       level: u.character?.level ?? 1,
       xp: u.character?.xp ?? 0,
     }));
-
     res.json(formatted);
-  } catch (error) {
-    console.error("Leaderboard error:", error);
-    res.status(500).json({ error: "Failed to load leaderboard" });
+  }
+  catch (error) {
+    console.error("Leaderboard error: ", error);
+    res.status(500).json({error: "Failed to load leaderboard"});
   }
 });
 
