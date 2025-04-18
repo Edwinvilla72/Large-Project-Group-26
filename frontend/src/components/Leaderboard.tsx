@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
 import { users, User } from '../data/users'; // for testing! I need to implement api for this soon
 import '../styles/Leaderboard.css';
+import React, {useEffect, useState } from 'react';
 
 type LeaderboardType = 'global' | 'followers';
 
+interface LeaderboardUser {
+  username: string, 
+  level: number;
+  xp: number;
+}
+
 const Leaderboard: React.FC = () => {
   const [type, setType] = useState<LeaderboardType>('global');
+  const [users, setUsers] = useState<LeaderboardUser[]>([]);
 
-  const filteredUsers: User[] = users
-    .filter(user => type === 'global' || user.isFollowed)
-    .sort((a, b) => b.xp - a.xp)
-    .slice(0, 20);
   const getRankDisplay = (index: number) => {
     if (index === 0) return '🥇 ';
     if (index === 1) return '🥈 ';
@@ -21,9 +24,10 @@ const Leaderboard: React.FC = () => {
   function back() {
     // window reload necessary for the models to load back up as things are rn
     // cannot use navigate 
-    window.location.href = "/Dashboard";
-    
+    window.location.href = "/Dashboard"; 
  }
+
+  const filteredUsers = users.slice(0, 20);
 
   return (
     <div className="leaderboard-container">

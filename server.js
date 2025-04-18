@@ -242,6 +242,45 @@ app.post('/api/register', async (req, res) => {
   });
   
   
+  app.get('/api/getAllFriends', async (req, res) => {
+    // Add code for gathering friends (cycle through friends array in user object)
+});
+
+app.post('/api/addFriend', async (req, res) => {
+    // Add code for adding friends
+    // Arrays auto increase in size, utilize .push to add to the friends array that exists in the user object. pretty simple
+});
+
+app.delete('/api/removeFriend', async (req, res) => {
+    // Add code for deleting friends
+});
+
+
+// Get Leaderboard (Top XP Users)
+app.get('/api/leaderboard', async (req, res) => {
+  try {
+   
+    const db = client.db("fitgame"); // gets the database
+    const users = await db.collection("Users")
+    .find({})
+    .sort({ 'character.xp': -1 })
+    .limit(20)
+    .toArray();
+
+    const formatted = user.map(u => ({
+      username: u.Login,
+      level: u.character?.level ?? 1,
+      xp: u.character?.xp ?? 0,
+    }));
+    res.json(formatted);
+  }
+  catch (error) {
+    console.error("Leaderboard error: ", error);
+    res.status(500).json({error: "Failed to load leaderboard"});
+  }
+});
+
+
 // search cards
 app.post('/api/searchcards', async (req, res, next) => {
     // incoming: userId, search
