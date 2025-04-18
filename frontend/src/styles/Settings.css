@@ -94,3 +94,145 @@ body {
     .delete-button:hover {
       background-color: #d62828;
     }
+    .settings-container {
+      padding: 2rem;
+      text-align: center;
+    }
+    
+    .routine-grid {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    
+    .routine-column {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 120px;
+      background: rgba(255, 255, 255, 0.07);
+      padding: 1rem;
+      border-radius: 12px;
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+    }
+    
+    .day-title {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      color: white;
+    }
+    
+    .group-dropdown {
+      margin-bottom: 0.75rem;
+      width: 100%;
+    }
+    
+    .workout-cell {
+      margin-bottom: 0.5rem;
+    }
+    
+    .workout-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .workout-row select {
+      max-width: 100px;
+    }
+    
+    .add-btn {
+      background-color: #00d4ff;
+      border: none;
+      border-radius: 4px;
+      padding: 0.3rem 0.6rem;
+      cursor: pointer;
+    }
+    
+    .buttons-row {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    
+    .save-button,
+    .delete-button,
+    .button {
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+    /* Grid container */
+.routine-grid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+/* Each day's column */
+.routine-column {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 16px;
+  border-radius: 10px;
+  min-width: 140px;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+/* Dropdowns */
+.group-dropdown, .workout-row select {
+  width: 100%;
+  padding: 4px;
+  margin-top: 6px;
+  margin-bottom: 8px;
+}
+
+/* Workout row */
+.workout-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+/* Add and remove buttons */
+.add-btn, .remove-btn {
+  background-color: #00cfff;
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.remove-btn {
+  background-color: #111;
+}
+/* Each day's column */
+.routine-column {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  border-radius: 10px;
+  min-width: 140px;
+  text-align: center;
+  box-shadow: 0 10px 10px rgba(255, 255, 255, 0.1);
+  height: 250px; /* fixed height */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Scrollable workouts container inside each column */
+.workout-scroll {
+  overflow-y: auto;
+  flex-grow: 1;
+  width: 100%;
+  padding-right: 5px;
+}
