@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "🚨 Hello from test deploy!" >> /tmp/deploy-test.log
-cd /opt/bitnami/projects/cards || exit
+cd /opt/bitnami/projects/cards/backend || exit
 
 echo "🚀 Pulling latest code..."
 git pull origin main
@@ -12,7 +12,7 @@ echo "🔄 Restarting backend..."
 pm2 restart backend
 
 echo "🎨 Installing frontend dependencies..."
-cd frontend
+cd /opt/bitnami/projects/cards/frontend
 npm install
 
 echo "⚡ Restarting frontend..."
