@@ -61,7 +61,7 @@ app.post('/api/register', async (req, res) => {
             Password: password,
             Email: email || "",
             character: {
-                name: username + "'s Hero",
+                name: FirstName + "'s Hero",
                 level: 1,
                 xp: 0
             }
