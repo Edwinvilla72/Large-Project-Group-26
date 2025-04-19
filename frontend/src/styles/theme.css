@@ -1,0 +1,126 @@
+:root {
+    --highlight-blue: #00f0ff;
+    --accent-purple: #7209B7;
+    --button-blue: linear-gradient(to right, #4CC9F0, #4895EF);
+    --button-pink: linear-gradient(to right, #F72585, #B5179E);
+    --input-bg: rgba(255, 255, 255, 0.15);
+    --text-light: #ffffff;
+    --text-subtle: #ccc;
+    --shadow-glow: 0 0 15px rgba(0, 240, 255, 0.4);
+  }
+  
+  .fullscreen-background {
+    background: url('/assets/gymbackground.png') no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Stack Fitopia title above login box */
+  .login-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Fitopia title */
+  .fitopia-title {
+    font-size: 2.5rem;
+    color: var(--highlight-blue);
+    text-shadow: var(--shadow-glow);
+    margin-bottom: 1.5rem;
+  }
+  
+  
+  
+  /* Login/Register Container */
+  .neon-login-container {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(12px);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 2.5rem;
+    width: 360px;
+    text-align: center;
+    box-shadow: 0 0 25px rgba(0,0,0,0.5);
+  }
+  
+  /*  Headings */
+  .neon-title {
+    color: var(--highlight-blue);
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem;
+    text-shadow: var(--shadow-glow);
+  }
+  
+  .neon-subtext {
+    color: var(--text-subtle);
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  /*  Input Fields */
+  .neon-login-container input[type="text"],
+  .neon-login-container input[type="password"],
+  .neon-login-container input[type="email"] {
+    width: 85%;
+    padding: 12px;
+    margin: 12px 0;
+    background: var(--input-bg);
+    border: none;
+    border-radius: 10px;
+    color: var(--text-light);
+    font-size: 16px;
+    outline: none;
+    text-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+  }
+  
+  .neon-login-container input::placeholder {
+    color: var(--text-subtle);
+  }
+  
+  /*  Buttons */
+  .neon-btn {
+    background: var(--button-blue);
+    border: none;
+    padding: 12px 20px;
+    border-radius: 12px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 85%;
+    transition: transform 0.2s ease;
+    text-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+  }
+  
+  .neon-btn:hover {
+    transform: scale(1.05);
+  }
+  
+  .neon-btn.secondary {
+    background: var(--button-pink);
+    margin-top: 12px;
+  }
+  
+  /*  Forgot Password Link */
+  .forgot-link {
+    margin-top: 16px;
+    background: none;
+    border: none;
+    color: var(--highlight-blue);
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  
+  /*  Error or Success Message */
+  .login-msg {
+    margin-top: 1rem;
+    font-size: 0.95rem;
+  }
+  

@@ -45,11 +45,11 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #009dff, #b445ff);
+   background: linear-gradient(135deg, #009dff, #b445ff); 
   height: 100vh;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center; 
 }
 
 .neon-login-container {

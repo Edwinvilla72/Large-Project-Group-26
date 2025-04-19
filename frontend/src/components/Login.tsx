@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import '../styles/theme.css';
 
 function Login() {
   const [message, setMessage] = useState('');
@@ -14,9 +15,9 @@ function Login() {
   const RegisterButton = () => navigate('/register');
   const ForgotPassword = () => navigate('/ForgotPass');
 
-  const doLogin = async (event: React.FormEvent) => {
+  const doLogin = async (event: any) => {
     event.preventDefault();
-    const obj = { Login: loginName.trim(), Password: loginPassword.trim() };
+    const obj = { login: loginName, password: loginPassword };
     const js = JSON.stringify(obj);
 
     try {
@@ -27,6 +28,7 @@ function Login() {
       });
 
       const text = await response.text();
+
       if (!response.ok) {
         const errRes = JSON.parse(text);
         setMessage(errRes.error || 'Login failed.');
@@ -34,6 +36,7 @@ function Login() {
       }
 
       const res = JSON.parse(text);
+
       if (!res._id || res._id <= 0) {
         setMessage('User/Password combination incorrect');
         return;
@@ -44,14 +47,10 @@ function Login() {
         LastName: res.LastName,
         _id: res._id
       };
-      
-      // ✅ Save entire object if you want, or just the ID if you prefer
+
       localStorage.setItem('user_data', JSON.stringify(user));
-      localStorage.setItem('user_id', res._id); // This line is new and important
-      
       setMessage('');
-      navigate('/Dashboard');
-      
+      navigate('/cards');
     } catch (error: any) {
       console.error('Login error:', error);
       setMessage('Server error. Please try again later.');
@@ -59,22 +58,27 @@ function Login() {
   };
 
   return (
-    <motion.div
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      exit={{ y: -100, opacity: 0 }}
-      transition={{ duration: 0.4 }}
-    >
-      <div className="neon-login-container">
-        <h1 className="neon-title">LOGIN</h1>
-        <input type="text" placeholder="Username" onChange={handleSetLoginName} />
-        <input type="password" placeholder="Password" onChange={handleSetPassword} />
-        <input type="submit" className="neon-btn" value="Login" onClick={doLogin} />
-        <input type="button" className="neon-btn secondary" value="Create an Account" onClick={RegisterButton} />
-        <button className="forgot-link" onClick={ForgotPassword}>Forgot Password?</button>
-        {message && <p className="login-msg">{message}</p>}
+    <div className="fullscreen-background">
+      <div className="login-stack">
+        <h1 className="fitopia-title">🏋️‍♂️Fitopia🏃‍♂️</h1>
+        <motion.div
+          initial={{ y: -100, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: -100, opacity: 0 }}
+          transition={{ duration: 0.4 }}
+        >
+          <div className="neon-login-container">
+            <h2 className="neon-title">LOGIN</h2>
+            <input type="text" placeholder="Username" onChange={handleSetLoginName} />
+            <input type="password" placeholder="Password" onChange={handleSetPassword} />
+            <input type="submit" className="neon-btn" value="Login" onClick={doLogin} />
+            <input type="button" className="neon-btn secondary" value="Create an Account" onClick={RegisterButton} />
+            <button className="forgot-link" onClick={ForgotPassword}>Forgot Password?</button>
+            {message && <p className="login-msg">{message}</p>}
+          </div>
+        </motion.div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
