@@ -1,4 +1,4 @@
-import PageTitle from '../components/PageTitle.tsx';
+// import PageTitle from '../components/PageTitle.tsx';
 import Login from '../components/Login.tsx';
 import Register from '../components/Register.tsx';
 import CardUI from '../components/CardUI.tsx';
@@ -6,9 +6,8 @@ import CardUI from '../components/CardUI.tsx';
 
 
 const LoginPage = () => {
-    return (
-        <Login />
-    );
-};
+    return <Login />;
+  };
+  
 
 export default LoginPage;
