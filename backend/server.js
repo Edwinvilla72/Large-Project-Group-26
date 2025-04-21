@@ -433,4 +433,5 @@ app.use('/api/routine', require('./routes/routineRoutes'));
 
 
 // ===== Server =====//
-app.listen(3000, '0.0.0.0', () => console.log('API running on http://localhost:3000'));
+const PORT = process.env.PORT || 3002;
+app.listen(PORT, '0.0.0.0', () => console.log('API running on port ${PORT}!'));
