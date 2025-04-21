@@ -188,7 +188,7 @@ const SettingsPage: React.FC = () => {
     const userId = JSON.parse(storedData)._id;
 
     try {
-      const res = await fetch('http://localhost:3000/api/routine', {
+      const res = await fetch('/api/routine', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId, routine: workoutsByDay })
