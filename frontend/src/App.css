@@ -1,8 +1,18 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* FULL reset for body and root layout */
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card {
+  padding: 2em;
 }
 
 .logo {
@@ -11,6 +21,7 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
@@ -33,23 +44,22 @@
   }
 }
 
-.card {
-  padding: 2em;
-}
-
 .read-the-docs {
   color: #888;
 }
+
+
+/* below is the old app.css body with the default gradient and background styling, gonna keep it commented out just in case
 
 body {
   margin: 0;
   padding: 0;
   font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #009dff, #b445ff);
+   background: linear-gradient(135deg, #009dff, #b445ff); 
   height: 100vh;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center; 
 }
 
 .neon-login-container {
@@ -125,4 +135,5 @@ body {
   color: #ffb3c1;
   font-size: 0.9rem;
 }
-
+  
+*/
