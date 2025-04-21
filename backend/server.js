@@ -278,13 +278,6 @@ app.get('/api/leaderboard', async (req, res) => {
     }
   });  
 
-  // get stats(?)
-app.get('/api/getStats', async (req, res) => {
-    // Add code for getting stats (character)
-});
-
-
-
 app.get('/api/getQuests', async (req, res) => {
     // Add code for getting quests
 });
