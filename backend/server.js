@@ -11,6 +11,11 @@ const bcrypt = require('bcryptjs'); // or 'bcrypt' if you're using that instead
 const app = express();
 
 
+app.get('/', (req, res) => {
+    res.send('Backend is running!');
+});
+
+
 // cors
 const cors = require('cors');
 app.use(cors({
