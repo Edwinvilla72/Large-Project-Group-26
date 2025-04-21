@@ -278,13 +278,6 @@ app.get('/api/leaderboard', async (req, res) => {
     }
   });  
 
-  // get stats(?)
-app.get('/api/getStats', async (req, res) => {
-    // Add code for getting stats (character)
-});
-
-
-
 app.get('/api/getQuests', async (req, res) => {
     // Add code for getting quests
 });
@@ -449,6 +442,27 @@ app.post('/api/quests/complete', async (req, res) => {
 
 app.post('/api/updateProfile', async (req, res) => {
     const { userId, field } = req.body;
+});
+
+app.get('/api/get-security-question', async (req, res) => {
+    const { Login } = req.query;
+
+    if (!Login) return res.status(400).json({ error: 'Missing username/login' });
+
+    try {
+      
+      const user  = User.findOne({ Login });
+
+      if (!user) return res.status(404).json({ error: 'User was not found' });
+
+      res.status(200).json({
+        SecQAns: user.SecQAns
+      });
+
+    } catch (err) {
+      console.error("Error getting security info:", err);
+      res.status(500).json({ error: 'Server error while gathering security info' });
+    }
 });
 
 
