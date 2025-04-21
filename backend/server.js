@@ -373,5 +373,5 @@ app.use('/api/routine', require('./routes/routineRoutes'));
 
 
 
-// ===== Server =====
-app.listen(3000, () => console.log('API running on http://localhost:3000'));
+// ===== Server =====//
+app.listen(3000, '0.0.0.0', () => console.log('API running on http://localhost:3000'));
