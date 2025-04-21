@@ -54,7 +54,7 @@ app.post('/api/register', async (req, res) => {
     try {
         const { FirstName, LastName, Login, Password, SecQNum, SecQAns } = req.body;
 
-        if (!FirstName || !LastName || !Login || !Password || !SecQNum || !SecQAns) {
+        if (!FirstName || !LastName || !Login || !Password || !SecQAns) {
             return res.status(400).json({ error: "Please fill out all fields." });
         }
 
@@ -391,7 +391,27 @@ app.delete('/api/removeFriend', async (req, res) => {
 });
 
 app.get('/api/getProfile', async (req, res) => {
-    // Add code for loading profile (specifically username, first/last name stuff like that)
+    try {
+      const { userId } = req.query;
+
+      if (!userId) return res.status(400).json({ error: 'Missing userId' });
+
+      const user = await User.findById(userId);
+
+      if (!user) return res.status(404).json({ error: 'User not found' });
+
+      res.status(200).json({
+        FirstName: user.FirstName,
+        LastName: user.LastName,
+        level: user.character.level,
+        xp: user.character.xp,
+        questComp: user.character.questComp
+      });
+    }
+    catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Server error fetching profile' });
+    }
 });
 
 // logs completion of quests (awards user with XP)
@@ -412,6 +432,7 @@ app.post('/api/quests/complete', async (req, res) => {
   
       user.character.xp = totalXP;
       user.character.level = newLevel;
+      user.character.questComp++;
   
       await user.save();
   
@@ -427,7 +448,7 @@ app.post('/api/quests/complete', async (req, res) => {
   });
 
 app.post('/api/updateProfile', async (req, res) => {
-    // Add code for updating information on profile (first/last name and probably password too?)
+    const { userId, field } = req.body;
 });
 
 
