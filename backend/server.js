@@ -281,27 +281,57 @@ app.get('/api/getQuests', async (req, res) => {
 
 app.get('/api/getAllFriends', async (req, res) => {
     // Add code for gathering friends (cycle through friends array in user object)
+    try {
+      const { userId } = req.query;
+
+      if (!userId) {
+        return res.status(400).json({ error: 'Missing UserId' });
+      }
+
+      const user = await User.findById(userId);
+
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      const friends = await User.find({ _id: { $in: user.friends } });
+
+      const result = friends.map(friend => ({
+        Login: friend.username,
+        FirstName: friend.firstName,
+        LastName: friend.lastName
+      }));
+
+      if (!user.friends || user.friends.length === 0) {
+        return res.status(204).end();
+      }
+
+      return res.status(200).json(result);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Server error fetching following list' });
+    }
 });
 
 // add friend
 const mongoose = require('mongoose'); // at the top if not imported
 
 app.post('/api/addFriend', async (req, res) => {
-  const { userId, friendId } = req.body;
+  const { userId, friendUser } = req.body;
 
-  if (!userId || !friendId) {
-    return res.status(400).json({ error: 'Missing userId or friendId' });
+  if (!userId || !friendUser) {
+    return res.status(400).json({ error: 'Missing userId or friendUser' });
   }
 
   try {
     const user = await User.findById(userId);
-    const friend = await User.findById(friendId);
+    const friend = await User.findOne({Login: friendUser});
 
     if (!user || !friend) {
       return res.status(404).json({ error: 'User or Friend not found' });
     }
 
-    const friendObjectId = new mongoose.Types.ObjectId(friendId);
+    const friendObjectId = new mongoose.Types.ObjectId(friend._id);
 
     if (user.friends.includes(friendObjectId)) {
       return res.status(409).json({ error: 'Friend already added' });
@@ -320,6 +350,34 @@ app.post('/api/addFriend', async (req, res) => {
 
 app.delete('/api/removeFriend', async (req, res) => {
     // Add code for deleting friends
+    try {
+      const { userId, friendUser } = req.params;
+
+      if (!userId || !friendUser) {
+        return res.status(400).json({ error: 'Missing userId or friendUser' });
+      }
+
+      const user = await User.findById(userId);
+      const friend = await User.findOne({Login: friendUser}); 
+
+      if (!user || !friend ) {
+        return res.status(404).json({ error: 'User/friend not found' });
+      }
+
+      const friendId = friend._id.toString();
+
+      if (!user.friends.some(id => id.toString() === friendId)) {
+        return res.status(400).json({ error:`You are not following ${friendUser}.` });
+      }
+
+      user.friends = user.friends.filter(id => id.toString() !== friendId);
+      await user.save();
+  
+      return res.status(200).json({ message: `You are no longer following ${friendUser}.`})
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Server error fetching following list' });
+    }
 });
 
 app.get('/api/getProfile', async (req, res) => {
@@ -357,10 +415,6 @@ app.post('/api/quests/complete', async (req, res) => {
       res.status(500).json({ error: 'Server error while awarding XP' });
     }
   });
-  
-  
-
-
 
 app.post('/api/updateProfile', async (req, res) => {
     // Add code for updating information on profile (first/last name and probably password too?)
