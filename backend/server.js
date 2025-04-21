@@ -54,7 +54,7 @@ app.post('/api/register', async (req, res) => {
     try {
         const { FirstName, LastName, Login, Password, SecQNum, SecQAns } = req.body;
 
-        if (!FirstName || !LastName || !Login || !Password || SecQNum || SecQAns) {
+        if (!FirstName || !LastName || !Login || !Password || !SecQNum || !SecQAns) {
             return res.status(400).json({ error: "Please fill out all fields." });
         }
 
@@ -69,7 +69,7 @@ app.post('/api/register', async (req, res) => {
 
         const SecQAnsHash = await bcrypt.hash(SecQAns, 10);
         const PasswordHash = await bcrypt.hash(Password, 10);
-        
+
         const newUser = new User({
             FirstName,
             LastName,
