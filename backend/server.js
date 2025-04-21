@@ -302,9 +302,9 @@ app.get('/api/getAllFriends', async (req, res) => {
       const friends = await User.find({ _id: { $in: user.friends } });
 
       const result = friends.map(friend => ({
-        Login: friend.username,
-        FirstName: friend.firstName,
-        LastName: friend.lastName
+        Login: friend.Login,
+        FirstName: friend.FirstName,
+        LastName: friend.LastName
       }));
 
       if (!user.friends || user.friends.length === 0) {
