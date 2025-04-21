@@ -7,13 +7,39 @@ const ForgotPass = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
 
-  // sends user to security question if username exists
-  function SecurityQuestions() {
-    const obj = { username: username };
+  // Called when user clicks "Reset Password"
+  async function SecurityQuestions() {
+    const obj = { username }; // send only the username to the backend
     const js = JSON.stringify(obj);
 
-    alert(`If username was found in DB, send them to security questions. If not, show error.`);
-    navigate('/FPSecurityQuestion');
+    try {
+      // POST request to fetch the user's security question number
+      const response = await fetch('/api/get-security-question', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: js
+      });
+
+      const data = await response.json();
+
+      // If username not found or invalid response
+      if (!response.ok || !data.SecQNum) {
+        alert("Username not found or invalid.");
+        return;
+      }
+
+      // Save username and security question index to localStorage
+      localStorage.setItem('user_data', JSON.stringify({
+        username: username,
+        SecQNum: data.SecQNum
+      }));
+
+      // redirect to FPSecurityQuestionPage
+      navigate('/FPSecurityQuestion');
+    } catch (err) {
+      console.error("Error:", err);
+      alert("Server error. Try again later.");
+    }
   }
 
   return (
@@ -29,12 +55,16 @@ const ForgotPass = () => {
           <div className="neon-login-container">
             <h2 className="neon-title">Forgot your password?</h2>
             <p className="neon-subtext">Enter your username</p>
+
+            {/* Username input */}
             <input
               type="text"
               value={username}
               onChange={e => setUsername(e.target.value)}
               placeholder="Username"
             />
+
+            {/* Reset button that triggers API call */}
             <input
               type="button"
               className="neon-btn"
