@@ -77,7 +77,7 @@ const Leaderboard: React.FC = () => {
   const handleAddFriend = async () => {
     const userData = localStorage.getItem('user_data');
     if (!userData) {
-      setAddFriendMessage("You must be logged in to add a friend.");
+      setAddFriendMessage("You must be logged in to follow someone.");
       return;
     }
 
@@ -94,14 +94,14 @@ const Leaderboard: React.FC = () => {
       const result = await response.json();
 
       if (!response.ok) {
-        setAddFriendMessage(result.error || "Failed to add friend.");
+        setAddFriendMessage(result.error || "Failed to follow user.");
       } else {
-        setAddFriendMessage("Friend added successfully!");
+        setAddFriendMessage("User followed!");
         setFriendUser('');
       }
     } catch (err) {
-      console.error("Add friend error:", err);
-      setAddFriendMessage("Error adding friend.");
+      console.error("User follow error:", err);
+      setAddFriendMessage("Error following user.");
     }
   };
 
@@ -139,11 +139,11 @@ const Leaderboard: React.FC = () => {
       <div className="add-friend-form">
         <input
           type="text"
-          placeholder="Enter Friend's Username"
+          placeholder="Username of followee"
           value={friendUser}
           onChange={(e) => setFriendUser(e.target.value)}
         />
-        <button onClick={handleAddFriend} className="button">Add Friend</button>
+        <button onClick={handleAddFriend} className="button">Follow User</button>
         {addFriendMessage && <p style={{ color: 'white' }}>{addFriendMessage}</p>}
       </div>
 
