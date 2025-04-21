@@ -18,6 +18,14 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    SecQNum: {
+        type: Number,
+        required: true
+    },
+    SecQAns: {
+        type: String,
+        required: true
+    },
     character: {
         name: String,
         level: Number,

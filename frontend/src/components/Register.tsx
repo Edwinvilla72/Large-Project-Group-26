@@ -7,8 +7,8 @@ import '../styles/theme.css';
 function Register() {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [Login, setLogin] = useState('');
+    const [Password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
     const [message, setMessage] = useState('');
     const [isError, setIsError] = useState(false);
@@ -20,14 +20,14 @@ function Register() {
         event.preventDefault();
       
         // if any fields are empty, error
-        if (!firstName || !lastName || !username || !password || !passwordConfirm) {
+        if (!firstName || !lastName || !Login || !Password || !passwordConfirm) {
             setMessage("Please fill in all fields.");
             setIsError(true);
             return;
         }
 
         // password confirmation check
-        if (password !== passwordConfirm) {
+        if (Password !== passwordConfirm) {
             setMessage("Passwords do not match.");
             setIsError(true);
             return;
@@ -37,8 +37,8 @@ function Register() {
         const obj = {
             FirstName: firstName,
             LastName: lastName,
-            Login: username,
-            Password: password
+            Login,
+            Password
             // don't need to add confirm password
         };
 
@@ -97,8 +97,8 @@ function Register() {
 
                         <input type="text" value={firstName} onChange={e => setFirstName(e.target.value)} placeholder="First Name" />
                         <input type="text" value={lastName} onChange={e => setLastName(e.target.value)} placeholder="Last Name" />
-                        <input type="text" value={username} onChange={e => setUsername(e.target.value)} placeholder="Username" />
-                        <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" />
+                        <input type="text" value={Login} onChange={e => setLogin(e.target.value)} placeholder="Username" />
+                        <input type="password" value={Password} onChange={e => setPassword(e.target.value)} placeholder="Password" />
                         <input type="password" value={passwordConfirm} onChange={e => setPasswordConfirm(e.target.value)} placeholder="Confirm Password" />
 
                         <input type="button" className="neon-btn" value="Create an Account" onClick={doRegister} />

@@ -52,9 +52,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.post('/api/register', async (req, res) => {
 
     try {
-        const { FirstName, LastName, username, password,email } = req.body;
+        const { FirstName, LastName, Login, Password, SecQNum, SecQAns } = req.body;
 
-        if (!FirstName || !LastName || !username || !password) {
+        if (!FirstName || !LastName || !Login || !Password || SecQNum || SecQAns) {
             return res.status(400).json({ error: "Please fill out all fields." });
         }
 
@@ -62,18 +62,21 @@ app.post('/api/register', async (req, res) => {
         //const users = db.collection("Users");
 
         // check for existing username
-        const existing = await User.findOne({ Login: username });
+        const existing = await User.findOne({ Login });
         if (existing) {
             return res.status(409).json({ error: "Username already exists. Please choose another." });
         }
 
-        const userCount = await User.countDocuments();
+        const SecQAnsHash = await bcrypt.hash(SecQAns, 10);
+        const PasswordHash = await bcrypt.hash(Password, 10);
+        
         const newUser = new User({
             FirstName,
             LastName,
-            Login: username,
-            Password: password,
-            Email: email || "",
+            Login,
+            Password: PasswordHash,
+            SecQNum,
+            SecQAns: SecQAnsHash,
             friends: [], // added friends to new users
             character: {
                 name: FirstName + "'s Hero",
@@ -112,8 +115,10 @@ app.post('/api/login', async (req, res, next) => {
         if (!user) {
           return res.status(401).json({ error: "Invalid username" });
         }
+
+        const isMatch = await bcrypt.compare(Password, user.Password);
         
-        if (user.Password !== Password) {
+        if (!isMatch) {
           return res.status(401).json({ error: "Invalid password" });
         }
 
