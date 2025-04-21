@@ -13,7 +13,7 @@ const Leaderboard: React.FC = () => {
   const [type, setType] = useState<LeaderboardType>('global');
   const [users, setUsers] = useState<LeaderboardUser[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [friendId, setFriendId] = useState('');
+  const [friendUser, setFriendUser] = useState('');
   const [addFriendMessage, setAddFriendMessage] = useState<string | null>(null);
 
   useEffect(() => {
@@ -88,7 +88,7 @@ const Leaderboard: React.FC = () => {
       const response = await fetch('/api/addFriend', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, friendId })
+        body: JSON.stringify({ userId, friendUser })
       });
 
       const result = await response.json();
@@ -97,7 +97,7 @@ const Leaderboard: React.FC = () => {
         setAddFriendMessage(result.error || "Failed to add friend.");
       } else {
         setAddFriendMessage("Friend added successfully!");
-        setFriendId('');
+        setFriendUser('');
       }
     } catch (err) {
       console.error("Add friend error:", err);
@@ -139,9 +139,9 @@ const Leaderboard: React.FC = () => {
       <div className="add-friend-form">
         <input
           type="text"
-          placeholder="Enter Friend's User ID"
-          value={friendId}
-          onChange={(e) => setFriendId(e.target.value)}
+          placeholder="Enter Friend's Username"
+          value={friendUser}
+          onChange={(e) => setFriendUser(e.target.value)}
         />
         <button onClick={handleAddFriend} className="button">Add Friend</button>
         {addFriendMessage && <p style={{ color: 'white' }}>{addFriendMessage}</p>}
