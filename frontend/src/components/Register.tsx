@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
-import { motion } from 'framer-motion'; // to animate pages ooooooo
+import { motion } from 'framer-motion';
+import '../styles/theme.css';
 
 // insert code here
 function Register() {
@@ -14,8 +15,7 @@ function Register() {
     
     const navigate = useNavigate(); // for redirecting
 
-
-    // performs registeration after clicking the create an account button
+    // performs registration after clicking the create an account button
     async function doRegister(event: any): Promise<void> {
         event.preventDefault();
       
@@ -27,7 +27,7 @@ function Register() {
         }
 
         // password confirmation check
-        if (password != passwordConfirm) {
+        if (password !== passwordConfirm) {
             setMessage("Passwords do not match.");
             setIsError(true);
             return;
@@ -52,11 +52,12 @@ function Register() {
                 headers: {'Content-Type': 'application/json'},
                 body: js
             });
+
             // check response
             const text = await response.text();
             const res = JSON.parse(text);
 
-            //if any error exists, tell user and reject
+            // if any error exists, tell user and reject
             if (res.error && res.error.length > 0) {
                 setMessage("API Error: " + res.error);
                 setIsError(true);
@@ -76,42 +77,41 @@ function Register() {
         }
     }
 
-
-    let _ud: any = localStorage.getItem('user_data');
-    let ud = JSON.parse(_ud);
-
-
     // Button to return to login page
     function returnToLogin() {
         navigate('/');
     }
 
-
     return (
-        <motion.div
-          initial={{ y: -100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: -100, opacity: 0 }}
-          transition={{ duration: 0.4 }}
-        >
-          <div className="neon-login-container">
-            <h1 className="neon-title">Create Account</h1>
-    
-            <input type="text" value={firstName} onChange={e => setFirstName(e.target.value)} placeholder="First Name" />
-            <input type="text" value={lastName} onChange={e => setLastName(e.target.value)} placeholder="Last Name" />
-            <input type="text" value={username} onChange={e => setUsername(e.target.value)} placeholder="Username" />
-            <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" />
-            <input type="password" value={passwordConfirm} onChange={e => setPasswordConfirm(e.target.value)} placeholder="Confirm Password" />
-    
-            <input type="button" className="neon-btn" value="Create an Account" onClick={doRegister} />
-            <input type="button" className="neon-btn secondary" value="Return to Login" onClick={returnToLogin} />
-    
-            {message && (
-              <p className="login-msg" style={{ color: isError ? '#ff6b81' : '#66ffb3' }}>{message}</p>
-            )}
-          </div>
-        </motion.div>
-      );
+        <div className="fullscreen-background">
+            <div className="login-stack">
+                <h1 className="fitopia-title">🏋️‍♂️Fitopia🏃‍♂️</h1>
+                <motion.div
+                    initial={{ y: -100, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -100, opacity: 0 }}
+                    transition={{ duration: 0.4 }}
+                >
+                    <div className="neon-login-container">
+                        <h2 className="neon-title">Create Account</h2>
+
+                        <input type="text" value={firstName} onChange={e => setFirstName(e.target.value)} placeholder="First Name" />
+                        <input type="text" value={lastName} onChange={e => setLastName(e.target.value)} placeholder="Last Name" />
+                        <input type="text" value={username} onChange={e => setUsername(e.target.value)} placeholder="Username" />
+                        <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" />
+                        <input type="password" value={passwordConfirm} onChange={e => setPasswordConfirm(e.target.value)} placeholder="Confirm Password" />
+
+                        <input type="button" className="neon-btn" value="Create an Account" onClick={doRegister} />
+                        <input type="button" className="neon-btn secondary" value="Return to Login" onClick={returnToLogin} />
+
+                        {message && (
+                            <p className="login-msg" style={{ color: isError ? '#ff6b81' : '#66ffb3' }}>{message}</p>
+                        )}
+                    </div>
+                </motion.div>
+            </div>
+        </div>
+    );
 }
 
 export default Register;
