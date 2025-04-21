@@ -11,9 +11,9 @@ const bcrypt = require('bcryptjs'); // or 'bcrypt' if you're using that instead
 const app = express();
 
 
-app.get('/', (req, res) => {
-    res.send('Backend is running!');
-});
+// app.get('/', (req, res) => {
+//     res.send('Backend is running!');
+// });
 
 
 // cors
@@ -434,4 +434,4 @@ app.use('/api/routine', require('./routes/routineRoutes'));
 
 // ===== Server =====//
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, '0.0.0.0', () => console.log('API running on port ${PORT}!'));
+app.listen(PORT, '0.0.0.0', () => console.log(`API running on port ${PORT}!`));

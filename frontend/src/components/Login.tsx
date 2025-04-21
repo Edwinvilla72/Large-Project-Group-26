@@ -17,7 +17,7 @@ function Login() {
 
   const doLogin = async (event: any) => {
     event.preventDefault();
-    const obj = { login: loginName, password: loginPassword };
+    const obj = { Login: loginName, Password: loginPassword };
     const js = JSON.stringify(obj);
 
     try {

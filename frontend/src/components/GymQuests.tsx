@@ -31,7 +31,7 @@ function GymQuests() {
       const today = new Date().toLocaleString('en-US', { weekday: 'long' });
 
       try {
-        const res = await fetch(`http://localhost:3000/api/routine/${userId}`);
+        const res = await fetch(`/api/routine/${userId}`);
         const data = await res.json();
 
         if (!res.ok) {
@@ -74,7 +74,7 @@ function GymQuests() {
     const todayDate = new Date().toISOString().split("T")[0];
 
     try {
-      const res = await fetch("http://localhost:3000/api/quests/complete", {
+      const res = await fetch("/api/quests/complete", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, xp })

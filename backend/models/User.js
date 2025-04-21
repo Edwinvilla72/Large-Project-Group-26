@@ -14,11 +14,6 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-    Email: {
-        type: String,
-        required: false,
-        unique: true,
-    },
     Password: {
         type: String,
         required: true,
@@ -38,11 +33,10 @@ const userSchema = new mongoose.Schema({
         // }
     },
     friends: {
-  type: [mongoose.Schema.Types.ObjectId],
-  ref: 'User',
-  default: []
-},
-
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'User',
+        default: []
+    },
     loginTimestamps: {
         type: [Date],
         default: []

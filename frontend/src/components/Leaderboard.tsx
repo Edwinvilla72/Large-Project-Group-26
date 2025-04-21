@@ -18,7 +18,7 @@ const Leaderboard: React.FC = () => {
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
-      let url = 'http://localhost:3000/api/leaderboard';
+      let url = '/api/leaderboard';
 
       if (type === 'followers') {
         const userData = localStorage.getItem('user_data');
@@ -34,7 +34,7 @@ const Leaderboard: React.FC = () => {
             return;
           }
 
-          url = `http://localhost:3000/api/leaderboard/friends/${parsed._id}`;
+          url = `/api/leaderboard/friends/${parsed._id}`;
         } catch (e) {
           setError("Failed to parse user data.");
           return;
@@ -85,7 +85,7 @@ const Leaderboard: React.FC = () => {
     const userId = parsed._id;
 
     try {
-      const response = await fetch('http://localhost:3000/api/addFriend', {
+      const response = await fetch('/api/addFriend', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId, friendId })
