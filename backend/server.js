@@ -522,7 +522,7 @@ app.delete('api/delete-account', async (req, res) => {
     // TODO: Decide on verification key.
     if (verification_key === "GERBERDAGOAT4331") res.status(400).json({ error: "Invalid verification key" });
 
-    const user = User.deleteOne({_id: userId});
+    User.deleteOne({_id: userId});
 
     res.status(200).json({ msg: 'Account deleted.' });
 
