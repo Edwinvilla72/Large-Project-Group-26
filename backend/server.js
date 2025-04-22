@@ -164,7 +164,7 @@ app.post('/api/completeQuest', authenticateToken, async (req, res) => {
       // Update stats logic here
     }
     await user.save();
-    res.send('Quest completed and XP rewarded');
+    res.status(200).send('Quest completed and XP rewarded');
   } else {
     user.character.quests[questId] = progress;
     res.status(400).send('Not enough progress');
@@ -469,13 +469,17 @@ app.get('/api/get-security-question', async (req, res) => {
 app.post('/api/password-reset', async (req, res) => {
   const { oldPass, newPass, username } = req.body;
 
-  if (!username || !newPass) return res.status(400).json({ error: 'Missing username/new password' });
+  if (!username || !newPass || !oldPass) return res.status(400).json({ error: 'Missing username, password, or old password verification' });
 
   try {
-
     const user = User.findOne({ Login: username });
-    
-    
+    const isMatch = await bcrypt.compare(oldPass, user.Password);
+    if (!isMatch) return res.status(400).json({ error: 'Verification failed' });
+
+    user.Password = bcrypt.hash(newPass, 10);
+    await user.save();
+    res.status(200).send('Your password has been updated.');
+
   } catch (err) {
     console.error("Error resetting password:", err);
     res.status(500).json({ error: 'Server error while resetting password' });
