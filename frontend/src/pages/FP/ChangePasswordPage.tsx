@@ -24,17 +24,17 @@ const ChangePassword = () => {
         }
 
         // extract required info from localStorage
-        const username = ud?.username;
+        const userId = ud?.userId;
         const oldPass = ud?.oldPassword;
 
-        if (!username || !oldPass) {
+        if (!userId || !oldPass) {
             alert('Session expired or missing data. Please restart the reset process.');
             navigate('/ForgotPass');
             return;
         }
 
         const obj = {
-            username,
+            userId,
             oldPass, // the hash returned by backend after verifying security answer
             newPass: newPassword
         };

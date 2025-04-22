@@ -483,7 +483,7 @@ app.post('/api/security-check', async (req, res) => {
     if (!isMatch) return res.status(400).json({ error: 'Invalid answer' });
 
     res.status(200).json({
-      id: userId,
+      userId: userId,
       oldPass: user.Password
     });
 
@@ -494,12 +494,12 @@ app.post('/api/security-check', async (req, res) => {
 });
 
 app.post('/api/password-reset', async (req, res) => {
-  const { oldPass, newPass, username } = req.body;
+  const { oldPass, newPass, userId } = req.body;
 
-  if (!username || !newPass || !oldPass) return res.status(400).json({ error: 'Missing username, password, or old password verification' });
+  if (!userId || !newPass || !oldPass) return res.status(400).json({ error: 'Missing username, password, or old password verification' });
 
   try {
-    const user = await User.findOne({ Login: username });
+    const user = await User.findById(userId);
     const isMatch = await bcrypt.compare(oldPass, user.Password);
     if (!isMatch) return res.status(400).json({ error: 'Verification failed' });
 
