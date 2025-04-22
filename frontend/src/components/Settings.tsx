@@ -209,43 +209,51 @@ const SettingsPage: React.FC = () => {
   };
 
   // Delete account logic - requires typing 'delete' and uses secret key
-  const handleDeleteAccount = async () => {
-    const storedData = localStorage.getItem("user_data");
-    const userId = storedData ? JSON.parse(storedData)._id : null;
-
-    if (!userId) {
-      alert("User session not found. Please log in again.");
+  const handleDeleteAccount = () => {
+    if (!showDeleteVerification) {
+      setShowDeleteVerification(true); // show the input box on first click
       return;
     }
-
+  
     if (deleteInput.trim().toLowerCase() !== "delete") {
       alert("Please type 'delete' exactly to confirm account deletion.");
       return;
     }
-
-    try {
-      const res = await fetch('/api/delete-account', {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userId,
-          verification_key: "GERBERDAGOAT4331"
-        })
-      });
-
-      if (res.ok) {
-        alert("Account successfully deleted.");
-        localStorage.clear();
-        window.location.href = "/";
-      } else {
-        const data = await res.json();
-        alert("Deletion failed: " + (data.error || 'Unknown error'));
-      }
-    } catch (err) {
-      console.error("Error deleting account:", err);
-      alert("Server error. Try again later.");
+  
+    // proceed with deletion
+    const storedData = localStorage.getItem("user_data");
+    const userId = storedData ? JSON.parse(storedData)._id : null;
+  
+    if (!userId) {
+      alert("User session not found. Please log in again.");
+      return;
     }
+  
+    fetch('/api/delete-account', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        userId,
+        verification_key: "GERBERDAGOAT4331"
+      })
+    })
+      .then(res => {
+        if (res.ok) {
+          alert("Account successfully deleted.");
+          localStorage.clear();
+          window.location.href = "/";
+        } else {
+          return res.json().then(data => {
+            alert("Deletion failed: " + (data.error || 'Unknown error'));
+          });
+        }
+      })
+      .catch(err => {
+        console.error("Error deleting account:", err);
+        alert("Server error. Try again later.");
+      });
   };
+  
 
   function back() {
     window.location.href = "/Dashboard";
