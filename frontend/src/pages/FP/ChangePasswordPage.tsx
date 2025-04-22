@@ -34,9 +34,9 @@ const ChangePassword = () => {
         }
 
         const obj = {
-            userId,
-            oldPass, // the hash returned by backend after verifying security answer
-            newPass: newPassword
+            oldPass,
+            newPass: newPassword,
+            userId
         };
 
         const js = JSON.stringify(obj);
