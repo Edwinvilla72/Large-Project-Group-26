@@ -50,7 +50,6 @@ function Login() {
 
       localStorage.setItem('user_data', JSON.stringify(user));
       setMessage('');
-      navigate('/cards');
     } catch (error: any) {
       console.error('Login error:', error);
       setMessage('Server error. Please try again later.');

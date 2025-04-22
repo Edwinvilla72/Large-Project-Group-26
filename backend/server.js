@@ -456,7 +456,8 @@ app.get('/api/get-security-question', async (req, res) => {
     if (!user) return res.status(404).json({ error: 'User was not found' });
 
     res.status(200).json({
-      SecQAns: user.SecQAns
+      SecQAns: user.SecQAns,
+      oldPassword: user.Password
     });
 
   } catch (err) {
@@ -466,11 +467,14 @@ app.get('/api/get-security-question', async (req, res) => {
 });
 
 app.post('/api/password-reset', async (req, res) => {
-  const { newPass, username } = req.body;
+  const { oldPass, newPass, username } = req.body;
 
   if (!username || !newPass) return res.status(400).json({ error: 'Missing username/new password' });
 
   try {
+
+    const user = User.findOne({ Login: username });
+    
     
   } catch (err) {
     console.error("Error resetting password:", err);
