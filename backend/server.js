@@ -502,8 +502,7 @@ app.post('/api/password-reset', async (req, res) => {
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ error: 'User was not found' });
     
-    const isMatch = await bcrypt.compare(oldPass, user.Password);
-    if (!isMatch) return res.status(400).json({ error: 'Verification failed' });
+    if (oldPass !== user.Password) return res.status(400).json({ error: 'Verification failed' });
 
     user.Password = await bcrypt.hash(newPass, 10);
     await user.save();
