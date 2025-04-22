@@ -493,10 +493,6 @@ app.post('/api/security-check', async (req, res) => {
   }
 });
 
-app.post('/api/security-check2', async (req, res) => {
-  res.json({ msg: 'this is test' });
-});
-
 app.post('/api/password-reset', async (req, res) => {
   const { oldPass, newPass, username } = req.body;
 
