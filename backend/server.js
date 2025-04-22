@@ -456,13 +456,39 @@ app.get('/api/get-security-question', async (req, res) => {
     if (!user) return res.status(404).json({ error: 'User was not found' });
 
     res.status(200).json({
-      SecQAns: user.SecQAns,
-      oldPassword: user.Password
+      id: user._id,
+      SecQNum: user.SecQNum
     });
 
   } catch (err) {
     console.error("Error getting security info:", err);
     res.status(500).json({ error: 'Server error while gathering security info' });
+  }
+});
+
+app.post('/api/security-check', async (req, res) => {
+  const { userId, SecQAns } = req.query;
+
+  if (!userId || !SecQAns ) return res.status(400).json({ error: 'Missing user id/question answer' });
+
+  try {
+
+    const user = User.findById(userId);
+
+    if (!user) return res.status(404).json({ error: 'User was not found' });
+
+    const isMatch = await bcrypt.compare(SecQAns, user.SecQAns);
+
+    if (!isMatch) return res.status(400).json({ error: 'Invalid answer' });
+
+    res.status(200).json({
+      id: userId,
+      oldPass: user.Password
+    });
+
+  } catch (err) {
+    console.error("Error verifying security question:", err);
+    res.status(500).json({ error: 'Server error while verifying security question answer' });
   }
 });
 
