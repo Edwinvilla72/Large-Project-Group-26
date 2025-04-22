@@ -493,6 +493,10 @@ app.post('/api/security-check', async (req, res) => {
   }
 });
 
+app.get('/api/verify-security-check-exists', (req, res) => {
+  res.json({ message: 'yes, this server has /api/security-check' });
+});
+
 app.post('/api/password-reset', async (req, res) => {
   const { oldPass, newPass, username } = req.body;
 
