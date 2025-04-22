@@ -148,6 +148,9 @@ const SettingsPage: React.FC = () => {
     weekdays.reduce((acc, day) => ({ ...acc, [day]: groupOptions[0] }), {})
   );
 
+  const [deleteInput, setDeleteInput] = useState(''); // for delete confirmation
+
+  // Adds the first exercise of selected group to the list (defaulted)
   const addWorkout = (day: string) => {
     const group = muscleGroupByDay[day];
     const options = muscleGroups[group] || [];
@@ -176,9 +179,10 @@ const SettingsPage: React.FC = () => {
 
   const updateMuscleGroup = (day: string, group: string) => {
     setMuscleGroupByDay(prev => ({ ...prev, [day]: group }));
-    setWorkoutsByDay(prev => ({ ...prev, [day]: [] })); // clear old workouts
+    setWorkoutsByDay(prev => ({ ...prev, [day]: [] }));
   };
 
+  // Save routine button logic
   const handleSaveRoutine = async () => {
     const storedData = localStorage.getItem("user_data");
     if (!storedData) {
@@ -202,8 +206,43 @@ const SettingsPage: React.FC = () => {
     }
   };
 
-  const handleDeleteAccount = () => {
-    alert('Account deletion initiated.');
+  // Delete account logic - requires typing 'delete' and uses secret key
+  const handleDeleteAccount = async () => {
+    const storedData = localStorage.getItem("user_data");
+    const userId = storedData ? JSON.parse(storedData)._id : null;
+
+    if (!userId) {
+      alert("User session not found. Please log in again.");
+      return;
+    }
+
+    if (deleteInput.trim().toLowerCase() !== "delete") {
+      alert("Please type 'delete' exactly to confirm account deletion.");
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/delete-account', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId,
+          verification_key: "GERBERDAGOAT4331"
+        })
+      });
+
+      if (res.ok) {
+        alert("Account successfully deleted.");
+        localStorage.clear();
+        window.location.href = "/";
+      } else {
+        const data = await res.json();
+        alert("Deletion failed: " + (data.error || 'Unknown error'));
+      }
+    } catch (err) {
+      console.error("Error deleting account:", err);
+      alert("Server error. Try again later.");
+    }
   };
 
   function back() {
@@ -212,59 +251,69 @@ const SettingsPage: React.FC = () => {
 
   return (
     <div className="settings-container">
-    <h2>Edit Weekly Routine</h2>
-  
-    <div className="routine-grid">
-      {weekdays.map((day, colIndex) => {
-        const group = muscleGroupByDay[day];
-        const options = muscleGroups[group] || [];
-  
-        return (
-          <div key={day} className="routine-column">
-            <div className="day-title">{day}</div>
-  
-            <select
-              className="group-dropdown"
-              value={group}
-              onChange={(e) => updateMuscleGroup(day, e.target.value)}
-            >
-              {groupOptions.map((groupOpt) => (
-                <option key={groupOpt} value={groupOpt}>{groupOpt}</option>
-              ))}
-            </select>
-            <div className='workout-scroll'>
-            {[...Array(5)].map((_, rowIndex) => (
-              <div key={rowIndex} className="workout-cell">
-                {workoutsByDay[day][rowIndex] !== undefined ? (
-                  <div className="workout-row">
-                    <select
-                      value={workoutsByDay[day][rowIndex]}
-                      onChange={(e) => updateWorkout(day, rowIndex, e.target.value)}
-                    >
-                      {options.map((opt) => (
-                        <option key={opt} value={opt}>{opt}</option>
-                      ))}
-                    </select>
-                    <button onClick={() => removeWorkout(day, rowIndex)}>✕</button>
+      <h2>Edit Weekly Routine</h2>
+
+      <div className="routine-grid">
+        {weekdays.map((day, colIndex) => {
+          const group = muscleGroupByDay[day];
+          const options = muscleGroups[group] || [];
+
+          return (
+            <div key={day} className="routine-column">
+              <div className="day-title">{day}</div>
+
+              <select
+                className="group-dropdown"
+                value={group}
+                onChange={(e) => updateMuscleGroup(day, e.target.value)}
+              >
+                {groupOptions.map((groupOpt) => (
+                  <option key={groupOpt} value={groupOpt}>{groupOpt}</option>
+                ))}
+              </select>
+              <div className='workout-scroll'>
+                {[...Array(5)].map((_, rowIndex) => (
+                  <div key={rowIndex} className="workout-cell">
+                    {workoutsByDay[day][rowIndex] !== undefined ? (
+                      <div className="workout-row">
+                        <select
+                          value={workoutsByDay[day][rowIndex]}
+                          onChange={(e) => updateWorkout(day, rowIndex, e.target.value)}
+                        >
+                          {options.map((opt) => (
+                            <option key={opt} value={opt}>{opt}</option>
+                          ))}
+                        </select>
+                        <button onClick={() => removeWorkout(day, rowIndex)}>✕</button>
+                      </div>
+                    ) : rowIndex === workoutsByDay[day].length ? (
+                      <button className="add-btn" onClick={() => addWorkout(day)}>+ Add</button>
+                    ) : null}
                   </div>
-                ) : rowIndex === workoutsByDay[day].length ? (
-                  <button className="add-btn" onClick={() => addWorkout(day)}>+ Add</button>
-                ) : null}
+                ))}
               </div>
-            ))}
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
+
+      <div className="buttons-row">
+        <button className="save-button" onClick={handleSaveRoutine}>Save Routine</button>
+        <button className="delete-button" onClick={handleDeleteAccount}>Delete Account</button>
+        <button className="button" onClick={back}>Back</button>
+      </div>
+
+      <div className="delete-verification">
+        <p style={{ marginTop: "20px" }}>Type <strong>delete</strong> to confirm account deletion:</p>
+        <input
+          type="text"
+          value={deleteInput}
+          onChange={e => setDeleteInput(e.target.value)}
+          placeholder="Type delete here"
+        />
+      </div>
     </div>
-  
-    <div className="buttons-row">
-      <button className="save-button" onClick={handleSaveRoutine}>Save Routine</button>
-      <button className="delete-button" onClick={handleDeleteAccount}>Delete Account</button>
-      <button className="button" onClick={back}>Back</button>
-    </div>
-  </div>
-  )  
+  );
 };
 
 export default SettingsPage;
