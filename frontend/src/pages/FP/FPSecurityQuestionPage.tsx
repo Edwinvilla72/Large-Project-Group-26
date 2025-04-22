@@ -53,37 +53,42 @@ const FPSecurityQuestion = () => {
   }
 
   return (
-    <motion.div
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      exit={{ y: 100, opacity: 0 }}
-      transition={{ duration: 0.4 }}
-    >
-      <div className="neon-login-container">
-        <h1 className="neon-title">Hi, {ud?.FirstName || 'User'}!</h1>
+    <div className="fullscreen-background">
+      <div className="login-stack">
+        <h1 className="fitopia-title">🏋️‍♂️Fitopia🏃‍♂️</h1>
+        <motion.div
+          initial={{ y: -100, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 100, opacity: 0 }}
+          transition={{ duration: 0.4 }}
+        >
+          <div className="neon-login-container">
+            <h2 className="neon-title">Hi, {ud?.FirstName || 'User'}!</h2>
 
-        {/* display the user's security question */}
-        <p className="neon-subtext">Answer your security question:</p>
-        <p className="neon-subtext"><strong>{questionText}</strong></p><br />
+            {/* display the user's security question */}
+            <p className="neon-subtext">Answer your security question:</p>
+            <p className="neon-subtext"><strong>{questionText}</strong></p><br />
 
-        {/* answer input field */}
-        <input
-          type="text"
-          value={SecQAns}
-          onChange={e => setSecQAns(e.target.value)}
-          placeholder="Your Answer"
-        /><br />
+            {/* answer input field */}
+            <input
+              type="text"
+              value={SecQAns}
+              onChange={e => setSecQAns(e.target.value)}
+              placeholder="Your Answer"
+            /><br />
 
-        {/* on submit, verify the answer via API */}
-        <input
-          type="button"
-          id="FPUserButton"
-          className="neon-btn"
-          value="Reset Password"
-          onClick={verifyAnswer}
-        />
+            {/* on submit, verify the answer via API */}
+            <input
+              type="button"
+              id="FPUserButton"
+              className="neon-btn"
+              value="Reset Password"
+              onClick={verifyAnswer}
+            />
+          </div>
+        </motion.div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
