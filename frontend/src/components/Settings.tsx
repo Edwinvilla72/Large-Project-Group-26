@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import '../styles/Settings.css';
 
+const [showDeleteVerification, setShowDeleteVerification] = useState(false);
+const [deleteInput, setDeleteInput] = useState("");
+
 const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 const muscleGroups: Record<string, string[]> = {
@@ -184,6 +187,7 @@ const SettingsPage: React.FC = () => {
 
   // Save routine button logic
   const handleSaveRoutine = async () => {
+    setShowDeleteVerification(prev => !prev);
     const storedData = localStorage.getItem("user_data");
     if (!storedData) {
       console.error("No user data found in localStorage.");
@@ -299,18 +303,25 @@ const SettingsPage: React.FC = () => {
 
       <div className="buttons-row">
         <button className="save-button" onClick={handleSaveRoutine}>Save Routine</button>
-        <button className="delete-button" onClick={handleDeleteAccount}>Delete Account</button>
-        <button className="button" onClick={back}>Back</button>
-      </div>
+        <button className="delete-button" onClick={handleDeleteAccount}>
+          Delete Account
+        </button>
 
-      <div className="delete-verification">
-        <p style={{ marginTop: "20px" }}>Type <strong>delete</strong> to confirm account deletion:</p>
-        <input
-          type="text"
-          value={deleteInput}
-          onChange={e => setDeleteInput(e.target.value)}
-          placeholder="Type delete here"
-        />
+        {showDeleteVerification && (
+          <div className="delete-verification">
+            <p style={{ marginTop: "20px" }}>
+              Type <strong>delete</strong> to confirm account deletion:
+            </p>
+            <input
+              type="text"
+              value={deleteInput}
+              onChange={e => setDeleteInput(e.target.value)}
+              placeholder="Type delete here"
+            />
+          </div>
+        )}
+
+        <button className="button" onClick={back}>Back</button>
       </div>
     </div>
   );
