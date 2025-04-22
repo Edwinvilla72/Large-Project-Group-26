@@ -4,7 +4,7 @@ import { startCarousel } from '../components/Carousel';
 import { motion } from 'framer-motion'; // to animate pages ooooooo
 
 const Dashboard = () => {
-  const [user, setUser] = useState('');
+  const [user, setUser] = useState<{ FirstName: string, LastName: string, _id: string } | null>(null);
   const canvasRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
@@ -41,7 +41,7 @@ const Dashboard = () => {
         textShadow: '0px 0px 10px rgba(0,0,0,0.7)',
         pointerEvents: 'none' // so canvas still gets mouse events
       }}>
-        {user && <p>Welcome back {user.FirstName}!</p>}
+        {user?.FirstName && <p>Welcome back {user.FirstName}!</p>}
       </div>
 
       {/* Canvas container goes under */}
