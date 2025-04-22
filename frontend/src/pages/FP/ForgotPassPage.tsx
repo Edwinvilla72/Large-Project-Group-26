@@ -30,6 +30,7 @@ const ForgotPass = () => {
       // Save username, security question index, and userId to localStorage
       localStorage.setItem('user_data', JSON.stringify({
         username: username,
+        FirstName: data.FirstName,
         SecQNum: data.SecQNum,
         userId: data.id
       }));

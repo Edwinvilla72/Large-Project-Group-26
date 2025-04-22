@@ -457,6 +457,7 @@ app.get('/api/get-security-question', async (req, res) => {
 
     res.status(200).json({
       id: user._id,
+      FirstName: user.FirstName,
       SecQNum: user.SecQNum
     });
 
