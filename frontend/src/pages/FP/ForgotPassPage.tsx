@@ -8,7 +8,8 @@ const ForgotPass = () => {
   const [username, setUsername] = useState('');
 
   // Called when user clicks "Reset Password"
-  async function SecurityQuestions(){
+  async function SecurityQuestions() {
+
     try {
       const response = await fetch(`/api/get-security-question?username=${encodeURIComponent(username)}`, {
         method: 'GET',
@@ -21,7 +22,7 @@ const ForgotPass = () => {
       const data = await response.json();
 
       // If username not found or invalid response
-      if (!response.ok || !data.SecQNum || !data.id) {
+      if (!response.ok || data.SecQNum === undefined || !data.id) {
         alert("Username not found or invalid.");
         return;
       }
