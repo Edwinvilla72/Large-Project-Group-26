@@ -451,7 +451,7 @@ app.get('/api/get-security-question', async (req, res) => {
 
   try {
 
-    const user = User.findOne({ Login: username });
+    const user = await User.findOne({ Login: username });
 
     if (!user) return res.status(404).json({ error: 'User was not found' });
 
