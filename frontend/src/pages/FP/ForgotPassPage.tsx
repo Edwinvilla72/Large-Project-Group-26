@@ -21,7 +21,7 @@ const ForgotPass = () => {
       const data = await response.json();
 
       // If username not found or invalid response
-      if (!response.ok || !data.SecQNum || !data.userId) {
+      if (!response.ok || !data.SecQNum || !data.id) {
         alert("Username not found or invalid.");
         return;
       }
@@ -30,7 +30,7 @@ const ForgotPass = () => {
       localStorage.setItem('user_data', JSON.stringify({
         username: username,
         SecQNum: data.SecQNum,
-        userId: data.userId
+        userId: data.id
       }));
 
       // redirect to FPSecurityQuestionPage
