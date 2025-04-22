@@ -8,17 +8,15 @@ const ForgotPass = () => {
   const [username, setUsername] = useState('');
 
   // Called when user clicks "Reset Password"
-  async function SecurityQuestions() {
-    const obj = { username }; // send only the username to the backend
-    const js = JSON.stringify(obj);
-
+  async function SecurityQuestions(){
     try {
-      // POST request to fetch the user's security question number + userId
-      const response = await fetch('/api/get-security-question', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: js
+      const response = await fetch(`/api/get-security-question?username=${encodeURIComponent(username)}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
+  
 
       const data = await response.json();
 
