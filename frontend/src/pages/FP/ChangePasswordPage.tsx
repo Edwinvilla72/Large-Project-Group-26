@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // if you're using React Router
 import { motion } from 'framer-motion'; // to animate pages ooooooo
 
-
 const ChangePassword = () => {
     const navigate = useNavigate(); // for redirecting
     let _ud: any = localStorage.getItem('user_data');
@@ -11,13 +10,57 @@ const ChangePassword = () => {
     const [newPassword, setNewPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
 
-    function SecurityQuestions() {
-        var obj = { newPassword: newPassword, confirmNewPassword: confirmNewPassword };
-        var js = JSON.stringify(obj);
-        alert(`if username was found on db, send them to answer their security questions.\nIf not, say no user found`);
+    // called when the user clicks to reset their password
+    async function SecurityQuestions() {
+        // check for empty fields and mismatched passwords
+        if (!newPassword || !confirmNewPassword) {
+            alert('Please fill in both fields.');
+            return;
+        }
 
-        // sends user (if they exist) to answer their security question
-        window.location.href = '/';
+        if (newPassword !== confirmNewPassword) {
+            alert('Passwords do not match.');
+            return;
+        }
+
+        // extract required info from localStorage
+        const username = ud?.username;
+        const oldPass = ud?.oldPassword;
+
+        if (!username || !oldPass) {
+            alert('Session expired or missing data. Please restart the reset process.');
+            navigate('/ForgotPass');
+            return;
+        }
+
+        const obj = {
+            username,
+            oldPass, // the hash returned by backend after verifying security answer
+            newPass: newPassword
+        };
+
+        const js = JSON.stringify(obj);
+
+        try {
+            const response = await fetch('/api/password-reset', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: js
+            });
+
+            const text = await response.text();
+
+            if (!response.ok) {
+                alert('Password reset failed: ' + text);
+                return;
+            }
+
+            alert('Password successfully reset!');
+            navigate('/');
+        } catch (err) {
+            console.error("Error during password reset:", err);
+            alert("Server error. Please try again later.");
+        }
     }
 
     // motion.div is for animating the page
@@ -46,6 +89,7 @@ const ChangePassword = () => {
                     placeholder="Confirm New Password"
                 /><br />
 
+                {/* Reset button that calls backend to finalize password change */}
                 <input
                     type="button"
                     id="FPUserButton"
