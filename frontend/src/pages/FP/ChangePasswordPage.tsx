@@ -25,7 +25,7 @@ const ChangePassword = () => {
 
         // extract required info from localStorage
         const userId = ud?.userId;
-        const oldPass = ud?.oldPassword;
+        const oldPass = ud?.oldPass;
 
         if (!userId || !oldPass) {
             alert('Session expired or missing data. Please restart the reset process.');

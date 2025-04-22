@@ -33,15 +33,15 @@ const FPSecurityQuestion = () => {
       const data = await response.json();
 
       // if answer is incorrect 
-      if (!response.ok || !data.userId || !data.SecQAns) {
+      if (!response.ok || !data.userId || !data.oldPass) {
         alert("Incorrect answer. Please try again.");
         return;
       }
 
-      // store oldPassword and userId 
+      // store oldPass and userId 
       localStorage.setItem('user_data', JSON.stringify({
         ...ud,
-        oldPassword: data.oldPassword,
+        oldPass: data.oldPass,
         userId: data.userId
       }));
 
