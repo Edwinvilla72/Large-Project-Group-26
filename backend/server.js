@@ -519,7 +519,7 @@ app.delete('/api/delete-account', async (req, res) => {
   try {
     if (!userId || !verification_key) res.status(400).json({ error: 'Missing userId/verification key' });
     
-    if (verification_key === "GERBERDAGOAT4331") res.status(400).json({ error: "Invalid verification key" });
+    if (verification_key !== "GERBERDAGOAT4331") res.status(400).json({ error: "Invalid verification key" });
 
     await User.deleteOne({_id: userId});
 
