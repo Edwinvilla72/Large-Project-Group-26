@@ -467,7 +467,7 @@ app.get('/api/get-security-question', async (req, res) => {
   }
 });
 
-app.post('/api/security-check', async (req, res) => {
+app.post('/api/security-check2', async (req, res) => {
   const { userId, SecQAns } = req.body;
 
   if (!userId || !SecQAns ) return res.status(400).json({ error: 'Missing user id/question answer' });
