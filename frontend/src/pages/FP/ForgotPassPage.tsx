@@ -13,7 +13,7 @@ const ForgotPass = () => {
     const js = JSON.stringify(obj);
 
     try {
-      // POST request to fetch the user's security question number
+      // POST request to fetch the user's security question number + userId
       const response = await fetch('/api/get-security-question', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -23,15 +23,16 @@ const ForgotPass = () => {
       const data = await response.json();
 
       // If username not found or invalid response
-      if (!response.ok || !data.SecQNum) {
+      if (!response.ok || !data.SecQNum || !data.userId) {
         alert("Username not found or invalid.");
         return;
       }
 
-      // Save username and security question index to localStorage
+      // Save username, security question index, and userId to localStorage
       localStorage.setItem('user_data', JSON.stringify({
         username: username,
-        SecQNum: data.SecQNum
+        SecQNum: data.SecQNum,
+        userId: data.userId
       }));
 
       // redirect to FPSecurityQuestionPage
