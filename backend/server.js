@@ -456,7 +456,7 @@ app.get('/api/get-security-question', async (req, res) => {
     if (!user) return res.status(404).json({ error: 'User was not found' });
 
     res.status(200).json({
-      id: user._id,
+      userId: user._id,
       FirstName: user.FirstName,
       SecQNum: user.SecQNum
     });
@@ -468,7 +468,7 @@ app.get('/api/get-security-question', async (req, res) => {
 });
 
 app.post('/api/security-check', async (req, res) => {
-  const { userId, SecQAns } = req.query;
+  const { userId, SecQAns } = req.body;
 
   if (!userId || !SecQAns ) return res.status(400).json({ error: 'Missing user id/question answer' });
 

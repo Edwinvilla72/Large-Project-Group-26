@@ -22,7 +22,7 @@ const ForgotPass = () => {
       const data = await response.json();
 
       // If username not found or invalid response
-      if (!response.ok || data.SecQNum === undefined || !data.id) {
+      if (!response.ok || data.SecQNum === undefined || !data.userId) {
         alert("Username not found or invalid.");
         return;
       }
@@ -32,7 +32,7 @@ const ForgotPass = () => {
         username: username,
         FirstName: data.FirstName,
         SecQNum: data.SecQNum,
-        userId: data.id
+        userId: data.userId
       }));
 
       // redirect to FPSecurityQuestionPage
