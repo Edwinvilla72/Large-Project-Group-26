@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
 import '../styles/Settings.css';
-
-const [showDeleteVerification, setShowDeleteVerification] = useState(false);
-const [deleteInput, setDeleteInput] = useState("");
-
 const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 const muscleGroups: Record<string, string[]> = {
@@ -143,6 +139,8 @@ const muscleGroups: Record<string, string[]> = {
 const groupOptions = Object.keys(muscleGroups);
 
 const SettingsPage: React.FC = () => {
+  const [showDeleteVerification, setShowDeleteVerification] = useState(false);
+
   const [workoutsByDay, setWorkoutsByDay] = useState<{ [day: string]: string[] }>(
     weekdays.reduce((acc, day) => ({ ...acc, [day]: [] }), {})
   );
