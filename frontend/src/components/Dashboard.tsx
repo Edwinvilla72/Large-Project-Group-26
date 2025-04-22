@@ -1,13 +1,18 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { startCarousel } from '../components/Carousel';
 import { motion } from 'framer-motion'; // to animate pages ooooooo
 
 const Dashboard = () => {
+  const [user, setUser] = useState('');
   const canvasRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
+    const user = localStorage.getItem('user_data');
+    if (user) {
+      setUser(JSON.parse(user));
+    }
     if (canvasRef.current) {
       startCarousel(canvasRef.current, navigate); // Attach to this container
     }
@@ -36,7 +41,7 @@ const Dashboard = () => {
         textShadow: '0px 0px 10px rgba(0,0,0,0.7)',
         pointerEvents: 'none' // so canvas still gets mouse events
       }}>
-        Welcome back!
+        {user && <p>Welcome back {user.FirstName}!</p>}
       </div>
 
       {/* Canvas container goes under */}
