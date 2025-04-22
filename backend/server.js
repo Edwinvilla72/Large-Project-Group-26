@@ -474,7 +474,7 @@ app.post('/api/security-check', async (req, res) => {
 
   try {
 
-    const user = User.findById(userId);
+    const user = await User.findById(userId);
 
     if (!user) return res.status(404).json({ error: 'User was not found' });
 
