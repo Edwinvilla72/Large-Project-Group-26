@@ -514,6 +514,24 @@ app.post('/api/password-reset', async (req, res) => {
   }
 });
 
+app.delete('api/delete-account', async (req, res) => {
+  const {userId, verification_key} = req.body;
+  try {
+    if (!userId || !verification_key) res.status(400).json({ error: 'Missing userId/verification key' });
+    
+    // TODO: Decide on verification key.
+    if (verification_key === "GERBERDAGOAT4331") res.status(400).json({ error: "Invalid verification key" });
+
+    const user = User.deleteOne({_id: userId});
+
+    res.status(200).json({ msg: 'Account deleted.' });
+
+  } catch (err) {
+    console.error("Error deleting account:", err);
+    res.status(500).json({ error: 'Server error when deleting account' });
+  }
+});
+
 
 // settings routine
 app.use('/api/routine', require('./routes/routineRoutes'));
