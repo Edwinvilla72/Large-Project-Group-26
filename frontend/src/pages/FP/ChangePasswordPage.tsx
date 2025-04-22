@@ -65,40 +65,45 @@ const ChangePassword = () => {
 
     // motion.div is for animating the page
     return (
-        <motion.div
-            initial={{ y: -100, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -100, opacity: 0 }}
-            transition={{ duration: 0.4 }}
-        >
-            <div className="neon-login-container">
-                <h1 className="neon-title">Great!</h1>
-                <p className="neon-subtext">Now enter your new password!</p>
+        <div className="fullscreen-background">
+            <div className="login-stack">
+                <h1 className="fitopia-title">🏋️‍♂️Fitopia🏃‍♂️</h1>
+                <motion.div
+                    initial={{ y: -100, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -100, opacity: 0 }}
+                    transition={{ duration: 0.4 }}
+                >
+                    <div className="neon-login-container">
+                        <h2 className="neon-title">Great!</h2>
+                        <p className="neon-subtext">Now enter your new password!</p>
 
-                <input
-                    type="password"
-                    value={newPassword}
-                    onChange={e => setNewPassword(e.target.value)}
-                    placeholder="New Password"
-                /><br />
+                        <input
+                            type="password"
+                            value={newPassword}
+                            onChange={e => setNewPassword(e.target.value)}
+                            placeholder="New Password"
+                        /><br />
 
-                <input
-                    type="password"
-                    value={confirmNewPassword}
-                    onChange={e => setConfirmNewPassword(e.target.value)}
-                    placeholder="Confirm New Password"
-                /><br />
+                        <input
+                            type="password"
+                            value={confirmNewPassword}
+                            onChange={e => setConfirmNewPassword(e.target.value)}
+                            placeholder="Confirm New Password"
+                        /><br />
 
-                {/* Reset button that calls backend to finalize password change */}
-                <input
-                    type="button"
-                    id="FPUserButton"
-                    className="neon-btn"
-                    value="Reset Password"
-                    onClick={SecurityQuestions}
-                />
+                        {/* Reset button that calls backend to finalize password change */}
+                        <input
+                            type="button"
+                            id="FPUserButton"
+                            className="neon-btn"
+                            value="Reset Password"
+                            onClick={SecurityQuestions}
+                        />
+                    </div>
+                </motion.div>
             </div>
-        </motion.div>
+        </div>
     );
 }
 export default ChangePassword;
