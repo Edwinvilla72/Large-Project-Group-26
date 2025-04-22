@@ -476,7 +476,7 @@ app.post('/api/password-reset', async (req, res) => {
     const isMatch = await bcrypt.compare(oldPass, user.Password);
     if (!isMatch) return res.status(400).json({ error: 'Verification failed' });
 
-    user.Password = bcrypt.hash(newPass, 10);
+    user.Password = await bcrypt.hash(newPass, 10);
     await user.save();
     res.status(200).send('Your password has been updated.');
 
