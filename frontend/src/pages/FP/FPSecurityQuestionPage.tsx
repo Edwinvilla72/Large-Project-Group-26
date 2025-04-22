@@ -33,7 +33,7 @@ const FPSecurityQuestion = () => {
       const data = await response.json();
 
       // if answer is incorrect 
-      if (!response.ok || !data.oldPassword || !data.userId) {
+      if (!response.ok || !data.userId || !data.SecQAns) {
         alert("Incorrect answer. Please try again.");
         return;
       }
