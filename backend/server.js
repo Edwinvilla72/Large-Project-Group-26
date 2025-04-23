@@ -70,8 +70,8 @@ app.post('/api/register', async (req, res) => {
       { $match: { type: "daily" } },
       { $sample: { size: 3 } }
     ]);
-    
-    const selectedDaily = selectedDailyDocs.map(q => q._id);    
+
+    const selectedDaily = selectedDailyDocs.map(q => q._id);
 
     if (selectedDaily.length < 3) {
       return res.status(500).json({ error: "Not enough daily quests in the database." });
@@ -145,33 +145,41 @@ app.post('/api/login', async (req, res, next) => {
 });
 
 // Quests (Fitness Tasks)
-app.get('/api/quests', authenticateToken, async (req, res) => {
+app.get('/api/quests', async (req, res) => {
   const quests = await Quest.find();
   res.json(quests);
 });
 
 // User Progress
-app.post('/api/completeQuest', authenticateToken, async (req, res) => {
-  const { questId, progress } = req.body;
-  const quest = await Quest.findById(questId);
-  if (!quest) return res.status(404).send('Quest not found');
+app.post('/api/completeQuest', async (req, res) => {
+  const { userId, questId } = req.body;
 
-  if (progress >= quest.requirement) {
-    const user = await User.findById(req.user.id);
-    user.character.xp += quest.xpReward;
+  try {
+    const quest = await Quest.findById(questId);
+    if (!quest) return res.status(404).json({ error: 'Quest not found' });
+
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ error: 'User not found' });
+
+    const levelThreshold = 100;
+    const totalXP = user.character.xp + quest.xp;
+    const newLevel = Math.floor(totalXP / levelThreshold) + 1; // Users start at level 1
+
+    user.character.xp = totalXP;
+    user.character.level = newLevel;
     user.character.questComp++;
-    user.character.quests[questId] = quest.requirement;
-    // Leveling logic (placeholder)
-    if (user.character.xp >= user.character.level * 100) {
-      user.character.level++;
-      user.character.xp = 0; // Optionally subtract instead
-      // Update stats logic here
-    }
+
     await user.save();
-    res.status(200).send('Quest completed and XP rewarded');
-  } else {
-    user.character.quests[questId] = progress;
-    res.status(400).send('Not enough progress');
+
+    res.status(200).json({
+      message: 'Quest completed and XP awarded',
+      xp: user.character.xp,
+      level: user.character.level
+    });
+
+  } catch (err) {
+    console.error("Quest completion error:", err);
+    res.status(500).json({ error: 'Server error completing quest' });
   }
 });
 
@@ -336,7 +344,7 @@ app.post('/api/follow', async (req, res) => {
 
     if (!user || !followee) return res.status(404).json({ error: 'User/Followee not found.' });
 
-    if (userId === followee._id.toString()) return res.status(409).json({ error: 'You cannot follow yourself.'});
+    if (userId === followee._id.toString()) return res.status(409).json({ error: 'You cannot follow yourself.' });
 
     if (user.friends.includes(followee._id)) return res.status(409).json({ error: 'User already followed.' });
 
@@ -470,7 +478,7 @@ app.get('/api/get-security-question', async (req, res) => {
 app.post('/api/security-check', async (req, res) => {
   const { userId, SecQAns } = req.body;
 
-  if (!userId || !SecQAns ) return res.status(400).json({ error: 'Missing user id/question answer' });
+  if (!userId || !SecQAns) return res.status(400).json({ error: 'Missing user id/question answer' });
 
   try {
 
@@ -501,7 +509,7 @@ app.post('/api/password-reset', async (req, res) => {
   try {
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ error: 'User was not found' });
-    
+
     if (oldPass !== user.Password) return res.status(400).json({ error: 'Verification failed' });
 
     user.Password = await bcrypt.hash(newPass, 10);
@@ -515,13 +523,13 @@ app.post('/api/password-reset', async (req, res) => {
 });
 
 app.delete('/api/delete-account', async (req, res) => {
-  const {userId, verification_key} = req.body;
+  const { userId, verification_key } = req.body;
   try {
     if (!userId || !verification_key) res.status(400).json({ error: 'Missing userId/verification key' });
-    
+
     if (verification_key !== "GERBERDAGOAT4331") res.status(400).json({ error: "Invalid verification key" });
 
-    await User.deleteOne({_id: userId});
+    await User.deleteOne({ _id: userId });
 
     res.status(200).json({ msg: 'Account deleted.' });
 
