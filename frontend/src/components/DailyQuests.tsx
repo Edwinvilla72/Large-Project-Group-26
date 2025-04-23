@@ -10,7 +10,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 type Quest = {
     _id: string;
     Title: string;
-    description: string;
+    Description: string;
     xp: number;
     requirement: number;
     type: string;
@@ -21,6 +21,33 @@ function DailyQuests() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const [timeLeft, setTimeLeft] = useState('');
+    const [completed, setCompleted] = useState<string[]>([]);
+
+
+    const calculateTimeLeft = () => {
+        const now = new Date();
+        const midnight = new Date();
+        midnight.setHours(24, 0, 0, 0);
+
+        const diff = midnight.getTime() - now.getTime();
+
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const seconds = Math.floor((diff / 1000) % 60);
+
+        return `${hours.toString().padStart(2, '0')}h ${minutes
+            .toString()
+            .padStart(2, '0')}m ${seconds.toString().padStart(2, '0')}s`;
+    };
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setTimeLeft(calculateTimeLeft());
+        }, 1000);
+        return () => clearInterval(interval);
+    }, []);
+
 
     useEffect(() => {
         const fetchQuests = async () => {
@@ -79,18 +106,59 @@ function DailyQuests() {
             <div className="neon-login-container">
                 <h1 className="neon-title">Daily Quests</h1>
 
+                <p style={{ marginTop: '10px', fontSize: '1.1rem', fontWeight: 'bold' }}>
+                    ⏳ Time Left: {timeLeft}
+                </p>
+
                 {loading ? (
                     <p>Loading...</p>
                 ) : error ? (
                     <p className="error-msg">{error}</p>
                 ) : quests.length > 0 ? (
                     <ul>
-                        {quests.map((quest) => (
-                            <li key={quest._id}>
-                                <strong>{quest.Title || 'Unnamed Quest'}</strong><br />
-                                XP: {quest.xp} | Requirement: {quest.requirement}
-                            </li>
-                        ))}
+                        {quests.map((quest) => {
+                            const isDone = completed.includes(quest._id);
+
+                            return (
+                                <li key={quest._id} style={{ marginBottom: '15px', opacity: isDone ? 0.6 : 1 }}>
+                                    <strong style={{ textDecoration: isDone ? 'line-through' : 'none' }}>
+                                        {quest.Title || 'Unnamed Quest'}
+                                    </strong><br />
+                                    {quest.Description && <em>{quest.Description}</em>}<br />
+                                    XP: {quest.xp} | Requirement: {quest.requirement}<br />
+
+                                    {!isDone && (
+                                        <button
+                                            onClick={async () => {
+                                                const userData = localStorage.getItem('user_data');
+                                                const { _id } = userData ? JSON.parse(userData) : {};
+
+                                                try {
+                                                    const res = await fetch('https://merntest.fitgame.space/api/quests/complete', {
+                                                        method: 'POST',
+                                                        headers: { 'Content-Type': 'application/json' },
+                                                        body: JSON.stringify({ userId: _id, xp: quest.xp })
+                                                    });
+
+                                                    const data = await res.json();
+                                                    if (res.ok) {
+                                                        setCompleted((prev) => [...prev, quest._id]);
+                                                    } else {
+                                                        alert(data.error || 'Failed to complete quest.');
+                                                    }
+                                                } catch (err) {
+                                                    console.error("Quest completion failed:", err);
+                                                }
+                                            }}
+                                            className="button"
+                                            style={{ marginTop: '6px', fontSize: '0.8rem' }}
+                                        >
+                                            ✅ Complete
+                                        </button>
+                                    )}
+                                </li>
+                            );
+                        })}
                     </ul>
                 ) : (
                     <p>No daily quests assigned.</p>
