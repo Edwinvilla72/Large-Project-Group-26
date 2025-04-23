@@ -94,7 +94,9 @@ function DailyQuests() {
         fetchQuests();
     }, []);
 
-    const back = () => navigate('/Dashboard');
+    const back = () => {
+        window.location.href = "/Dashboard";
+    };
 
     return (
         <motion.div
