@@ -67,7 +67,7 @@ const Leaderboard: React.FC = () => {
     if (index === 0) return '🥇 ';
     if (index === 1) return '🥈 ';
     if (index === 2) return '🥉 ';
-    return `${index + 1} `;
+    return `${index + 1}`;
   };
 
   const back = () => {
@@ -88,7 +88,7 @@ const Leaderboard: React.FC = () => {
       const response = await fetch('/api/follow', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, followUser })
+        body: JSON.stringify({ userId, followUser: followUser.trim() })
       });
 
       const result = await response.json();
@@ -142,10 +142,16 @@ const Leaderboard: React.FC = () => {
           placeholder="Username of followee"
           value={followUser}
           onChange={(e) => setFollowUser(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && handleFollow()}
         />
         <button onClick={handleFollow} className="button">Follow User</button>
-        {followMessage && <p style={{ color: 'white' }}>{followMessage}</p>}
       </div>
+
+      {followMessage && (
+        <p style={{ color: 'white', textAlign: 'center', marginTop: '8px' }}>
+          {followMessage}
+        </p>
+      )}
 
       <br />
       <button className="button" onClick={back}>Back</button>
