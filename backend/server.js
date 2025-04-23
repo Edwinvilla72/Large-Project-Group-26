@@ -333,7 +333,7 @@ app.post('/api/follow', async (req, res) => {
 
     if (!user || !followee) return res.status(404).json({ error: 'User/Followee not found' });
 
-    if (userId === followee._id) return res.status(409).json({ error: 'You cannot follow yourself'});
+    if (userId === followee._id.toString()) return res.status(409).json({ error: 'You cannot follow yourself'});
 
     if (user.friends.includes(followee._id)) return res.status(409).json({ error: 'User already followed' });
 
