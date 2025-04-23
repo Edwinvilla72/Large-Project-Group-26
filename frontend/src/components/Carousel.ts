@@ -48,7 +48,7 @@ function init(container: HTMLElement, navigate?: (path: string) => void) {
   const height = container.clientHeight;
 
   camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-  camera.position.set(0, 2.2, 8);
+  camera.position.set(0, 0.9, 8);
   camera.lookAt(0, 0, 0);
 
   renderer = new THREE.WebGLRenderer({ antialias: true });
