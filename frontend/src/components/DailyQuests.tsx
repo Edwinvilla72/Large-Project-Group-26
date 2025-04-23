@@ -34,7 +34,7 @@ function DailyQuests() {
             const { _id } = JSON.parse(userData);
 
             try {
-                const response = await fetch('http://localhost:3000/api/getDailyQuests', {
+                const response = await fetch('/api/getDailyQuests', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
