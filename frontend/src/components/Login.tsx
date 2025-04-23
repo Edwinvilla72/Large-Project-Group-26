@@ -69,9 +69,11 @@ function Login() {
         >
           <div className="neon-login-container">
             <h2 className="neon-title">LOGIN</h2>
+            <form onSubmit={doLogin}>
             <input type="text" placeholder="Username" onChange={handleSetLoginName} />
             <input type="password" placeholder="Password" onChange={handleSetPassword} />
             <input type="submit" className="neon-btn" value="Login" onClick={doLogin} />
+            </form>
             <input type="button" className="neon-btn secondary" value="Create an Account" onClick={RegisterButton} />
             <button className="forgot-link" onClick={ForgotPassword}>Forgot Password?</button>
             {message && <p className="login-msg">{message}</p>}

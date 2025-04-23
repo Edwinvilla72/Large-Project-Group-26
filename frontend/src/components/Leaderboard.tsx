@@ -139,7 +139,7 @@ const Leaderboard: React.FC = () => {
       <div className="add-friend-form">
         <input
           type="text"
-          placeholder="Username of followee"
+          placeholder="Username of follower"
           value={followUser}
           onChange={(e) => setFollowUser(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleFollow()}

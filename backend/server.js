@@ -151,10 +151,16 @@ app.post('/api/login', async (req, res) => {
 
     await user.save();
 
+    let fullDailyQuests = [];
+    if (user.character.dailyQuests && user.character.dailyQuests.length > 0) {
+      fullDailyQuests = await Quest.find({ _id: { $in: user.character.dailyQuests } });
+    }
+
     return res.status(200).json({
       _id: user._id,
       FirstName: user.FirstName,
       LastName: user.LastName,
+      dailyQuests: fullDailyQuests,
       error: ""
     });
 
@@ -311,8 +317,29 @@ app.get('/api/leaderboard/friends/:userId', async (req, res) => {
   }
 });
 
-app.get('/api/getQuests', async (req, res) => {
+app.post('/api/getDailyQuests', async (req, res) => {
   // Add code for getting quests
+  try {
+    const { userId } = req.body;
+
+    if (!userId) {
+      return res.status(400).json({ error: "Missing userId" });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const questIds = user.character.dailyQuests || [];
+
+    const quests = await Quest.find({ _id: { $in: questIds } });
+
+    res.status(200).json({ dailyQuests: quests });
+  } catch (err) {
+    console.error("Error in getDailyQuests:", err);
+    res.status(500).json({ error: "Server error while retrieving quests" });
+  }
 });
 
 app.get('/api/getAllFollowees', async (req, res) => {
