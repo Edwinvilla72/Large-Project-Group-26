@@ -6,6 +6,7 @@ const routineRoutes = require('./routes/routineRoutes');
 const bodyParser = require("body-parser");
 const User = require('./models/User');
 const Workout = require('./models/Workout');
+const Quest = require('./models/Quest');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs'); // or 'bcrypt' if you're using that instead
 const app = express();
@@ -50,7 +51,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //app.use('/api/auth', authRoutes);
 
 app.post('/api/register', async (req, res) => {
-
   try {
     const { FirstName, LastName, Login, Password, SecQNum, SecQAns } = req.body;
 
@@ -58,10 +58,6 @@ app.post('/api/register', async (req, res) => {
       return res.status(400).json({ error: "Please fill out all fields." });
     }
 
-    //const db = client.db("fitgame");
-    //const users = db.collection("Users");
-
-    // check for existing username
     const existing = await User.findOne({ Login });
     if (existing) {
       return res.status(409).json({ error: "Username already exists. Please choose another." });
@@ -70,6 +66,17 @@ app.post('/api/register', async (req, res) => {
     const SecQAnsHash = await bcrypt.hash(SecQAns, 10);
     const PasswordHash = await bcrypt.hash(Password, 10);
 
+    const selectedDailyDocs = await Quest.aggregate([
+      { $match: { type: "daily" } },
+      { $sample: { size: 3 } }
+    ]);
+    
+    const selectedDaily = selectedDailyDocs.map(q => q._id);    
+
+    if (selectedDaily.length < 3) {
+      return res.status(500).json({ error: "Not enough daily quests in the database." });
+    }
+
     const newUser = new User({
       FirstName,
       LastName,
@@ -77,23 +84,25 @@ app.post('/api/register', async (req, res) => {
       Password: PasswordHash,
       SecQNum,
       SecQAns: SecQAnsHash,
-      friends: [], // added friends to new users
+      friends: [],
       character: {
         name: FirstName + "'s Hero",
         level: 1,
         xp: 0,
-        questComp: 0
+        questComp: 0,
+        dailyQuests: selectedDaily
       }
     });
 
-    //const result = await users.insertOne(newUser);
     await newUser.save();
 
     res.status(201).json({ error: "" });
   } catch (e) {
+    console.error("Registration error:", e);
     res.status(500).json({ error: "Registration failed: " + e.message });
   }
 });
+
 
 
 // login api
@@ -105,12 +114,6 @@ app.post('/api/login', async (req, res, next) => {
   }
 
   try {
-    //const user = await User.findOne({ Login: Login, Password: Password });
-
-    // if (!user) {
-    //     return res.status(401).json({ error: "Invalid username or password" });
-    // }
-
     const user = await User.findOne({ Login });
 
     if (!user) {
