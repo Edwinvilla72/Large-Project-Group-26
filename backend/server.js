@@ -324,26 +324,26 @@ app.post('/api/follow', async (req, res) => {
   const { userId, followUser } = req.body;
 
   if (!userId || !followUser) {
-    return res.status(400).json({ error: 'Missing userId or followUser' });
+    return res.status(400).json({ error: 'Missing userId or followUser.' });
   }
 
   try {
     const user = await User.findById(userId);
     const followee = await User.findOne({ Login: followUser });
 
-    if (!user || !followee) return res.status(404).json({ error: 'User/Followee not found' });
+    if (!user || !followee) return res.status(404).json({ error: 'User/Followee not found.' });
 
-    if (userId === followee._id.toString()) return res.status(409).json({ error: 'You cannot follow yourself'});
+    if (userId === followee._id.toString()) return res.status(409).json({ error: 'You cannot follow yourself.'});
 
-    if (user.friends.includes(followee._id)) return res.status(409).json({ error: 'User already followed' });
+    if (user.friends.includes(followee._id)) return res.status(409).json({ error: 'User already followed.' });
 
     user.friends.push(followee._id);
     await user.save();
 
-    res.status(200).json({ message: 'User has been followed' });
+    res.status(200).json({ message: 'User has been followed.' });
   } catch (err) {
     console.error("Add friend error:", err);
-    res.status(500).json({ error: 'Server error adding friend' });
+    res.status(500).json({ error: 'Server error adding friend.' });
   }
 });
 
