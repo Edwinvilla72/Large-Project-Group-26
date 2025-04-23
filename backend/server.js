@@ -136,14 +136,14 @@ app.post('/api/login', async (req, res) => {
       );
     };
 
-    if (isNewDay(user.character.lastDailyRefresh)) {
+    if (isNewDay(user.lastDailyRefresh)) {
       const newDaily = await Quest.aggregate([
         { $match: { type: "daily" } },
         { $sample: { size: 3 } }
       ]);
 
       user.character.dailyQuests = newDaily.map(q => q._id.toString());
-      user.character.lastDailyRefresh = new Date();
+      user.lastDailyRefresh = new Date();
     }
 
     if (!user.loginTimestamps) user.loginTimestamps = [];
