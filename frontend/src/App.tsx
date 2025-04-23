@@ -8,8 +8,8 @@ import ForgotPass from './pages/FP/ForgotPassPage';
 import FPSecurityQuestion from './pages/FP/FPSecurityQuestionPage';
 import ChangePassword from './pages/FP/ChangePasswordPage';
 import Dashboard from './components/Dashboard';
-import BasicQuestsPage from './pages/BasicQuestsPage';
-import BonusQuestsPage from './pages/BonusQuestsPage';
+import DailyQuestsPage from './pages/DailyQuestsPage';
+import AchievementsPage from './pages/AchievementsPage';
 import GymQuestsPage from './pages/GymQuestsPage';
 import LeaderboardPage from './pages/LeaderboardPage';
 import SettingsPage from './pages/SettingsPage';
@@ -30,8 +30,8 @@ function AnimatedRoutes() {
 
         <Route path="/Dashboard" element={<Dashboard/>} />
 
-        <Route path="/BasicQuests" element={<BasicQuestsPage/>} />
-        <Route path="/BonusQuests" element={<BonusQuestsPage/>} />
+        <Route path="/DailyQuests" element={<DailyQuestsPage/>} />
+        <Route path="/Achievements" element={<AchievementsPage/>} />
         <Route path="/GymQuests" element={<GymQuestsPage/>} />
         <Route path="/Leaderboard" element={<LeaderboardPage/>} />
         <Route path="/Settings" element={<SettingsPage/>} />
