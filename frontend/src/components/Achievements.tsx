@@ -7,7 +7,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 
-function BonusQuests() {
+function Achievements() {
 
     const navigate = useNavigate();
 
@@ -28,7 +28,7 @@ function BonusQuests() {
         >
             
         <div className="neon-login-container">
-          <h1 className="neon-title">Bonus Quests</h1>
+          <h1 className="neon-title">Achievements</h1>
           <p>This is a test!</p>
         </div>
         <br></br>
@@ -36,4 +36,4 @@ function BonusQuests() {
       </motion.div>
     );
 }
-export default BonusQuests;
+export default Achievements;

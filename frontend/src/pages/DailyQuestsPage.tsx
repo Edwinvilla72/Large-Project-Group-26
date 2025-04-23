@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion'; // to animate pages ooooooo
-import BasicQuests from '../components/BasicQuests';
+import DailyQuests from '../components/DailyQuests';
 
-function BasicQuestsPage() {
+function DailyQuestsPage() {
     
     
     
     
     return (
         <div>
-            <BasicQuests />
+            <DailyQuests />
             
         </div>
     );
 }
-export default BasicQuestsPage;
+export default DailyQuestsPage;

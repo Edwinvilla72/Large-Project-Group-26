@@ -7,7 +7,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 
-function BasicQuests() {
+function DailyQuests() {
 
     const navigate = useNavigate();
 
@@ -28,7 +28,7 @@ function BasicQuests() {
         >
             
         <div className="neon-login-container">
-          <h1 className="neon-title">Basic Quests</h1>
+          <h1 className="neon-title">Daily Quests</h1>
           <p>This is a test!</p>
         </div>
         <br></br>
@@ -36,4 +36,4 @@ function BasicQuests() {
       </motion.div>
     );
 }
-export default BasicQuests;
+export default DailyQuests;

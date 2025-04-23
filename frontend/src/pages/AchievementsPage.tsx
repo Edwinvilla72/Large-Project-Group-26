@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion'; // to animate pages ooooooo
-import BonusQuests from '../components/BonusQuests';
+import Achievements from '../components/Achievements';
 
-function BonusQuestsPage() {
+function AchievementsPage() {
     
     
     
     
     return (
         <div>
-            <BonusQuests />
+            <Achievements />
             
         </div>
     );
 }
-export default BonusQuestsPage;
+export default AchievementsPage;

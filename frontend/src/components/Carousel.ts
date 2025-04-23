@@ -69,7 +69,7 @@ function init(container: HTMLElement, navigate?: (path: string) => void) {
     'assets/models/Trophy.glb',
     'assets/models/cog.glb',
   ];
-  const labels = ['Basic Quests', 'Gym Quests', 'Bonus Quests', 'Leaderboard', 'Settings'];
+  const labels = ['Daily Quests', 'Gym Quests', 'Bonus Quests', 'Leaderboard', 'Settings'];
 
 
   // these are all tests to make sure redirection works properly
