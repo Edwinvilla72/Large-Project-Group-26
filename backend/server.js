@@ -427,7 +427,9 @@ app.get('/api/getProfile', async (req, res) => {
       LastName: user.LastName,
       level: user.character.level,
       xp: user.character.xp,
-      questComp: user.character.questComp
+      questComp: user.character.questComp,
+      dailyQuests: user.character.dailyQuests,
+      achievements: user.character.achievements
     });
   }
   catch (err) {
