@@ -69,7 +69,7 @@ function GymQuests() {
     const storedData = localStorage.getItem("user_data");
     if (!storedData) return;
     const userId = JSON.parse(storedData)._id;
-    const xp = quests[index].rewardXP;
+    const xp = Number(quests[index].rewardXP);
     const questTitle = quests[index].title;
     const todayDate = new Date().toISOString().split("T")[0];
 
