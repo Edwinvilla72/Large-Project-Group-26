@@ -227,7 +227,10 @@ function updateModelPositions() {
     const theta = angle + (index * (Math.PI * 2)) / models.length;
     model.position.x = Math.sin(theta) * radius;
     model.position.z = Math.cos(theta) * radius;
-    model.position.y = model === models[6] ? 0.6 : 0; // lift only index 0
+    if (index !== 0)
+    model.position.y = 0;
+    else if (index === 0)
+    model.position.y = 0.6;
     model.scale.lerp(model.userData.targetScale, 0.1);
     model.rotation.y = 0;
   });
