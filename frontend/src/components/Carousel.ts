@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { useNavigate } from 'react-router-dom';
+import { q } from 'framer-motion/client';
 
 interface CustomMesh extends THREE.Group {
   userData: {
@@ -96,11 +97,6 @@ function init(container: HTMLElement, navigate?: (path: string) => void) {
     
         let scaleFactor = 1.5 / Math.max(size.x, size.y, size.z || 1);
     
-        // CUSTOM FIXES:
-        if (i === 0) root.position.y += 1.2;          // Water bottle raised slightly
-        if (i === 2) scaleFactor *= 0.7; // Dice model (Bonus Quests) too big
-        if (i === 4) root.rotation.x = -Math.PI / 2; // Cog model (Settings) laying flat, stand it up
-    
         root.scale.setScalar(scaleFactor);
     
         const rootWithMeta = root as CustomMesh;
@@ -117,6 +113,11 @@ function init(container: HTMLElement, navigate?: (path: string) => void) {
         if (models.length === modelPaths.length) {
           updateModelPositions();
         }
+        
+        // CUSTOM FIXES:
+        if (i === 0) root.position.y += 1.2;          // Water bottle raised slightly
+        if (i === 2) scaleFactor *= 0.7; // Dice model (Bonus Quests) too big
+        if (i === 4) root.rotation.x = -Math.PI / 2; // Cog model (Settings) laying flat, stand it up
       },
       undefined,
       (error) => {
@@ -227,10 +228,7 @@ function updateModelPositions() {
     const theta = angle + (index * (Math.PI * 2)) / models.length;
     model.position.x = Math.sin(theta) * radius;
     model.position.z = Math.cos(theta) * radius;
-    if (index !== 0)
     model.position.y = 0;
-    else if (index === 0)
-    model.position.y = 0.4;
     model.scale.lerp(model.userData.targetScale, 0.1);
     model.rotation.y = 0;
   });
