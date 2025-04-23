@@ -35,7 +35,7 @@ const Dashboard = () => {
         right: 0,
         textAlign: 'center',
         zIndex: 10, // 👈 make sure it's high enough
-        fontSize: '2rem',
+        fontSize: '2.5rem',
         fontWeight: 'bold',
         color: 'white',
         textShadow: '0px 0px 10px rgba(0,0,0,0.7)',
