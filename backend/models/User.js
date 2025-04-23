@@ -48,7 +48,10 @@ const userSchema = new mongoose.Schema({
         type: [Date],
         default: []
     },
-    
+    lastDailyRefresh: {
+        type: Date,
+        default: new Date(0) // epoch time (way in the past)
+    }  
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema, 'Users');

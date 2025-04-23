@@ -107,7 +107,7 @@ app.post('/api/register', async (req, res) => {
 
 
 // login api
-app.post('/api/login', async (req, res, next) => {
+app.post('/api/login', async (req, res) => {
   const { Login, Password } = req.body;
 
   if (!Login || !Password) {
@@ -122,15 +122,34 @@ app.post('/api/login', async (req, res, next) => {
     }
 
     const isMatch = await bcrypt.compare(Password, user.Password);
-
     if (!isMatch) {
       return res.status(401).json({ error: "Invalid password" });
     }
 
+    const isNewDay = (lastDate) => {
+      const now = new Date();
+      const last = new Date(lastDate);
+      return (
+        now.getFullYear() !== last.getFullYear() ||
+        now.getMonth() !== last.getMonth() ||
+        now.getDate() !== last.getDate()
+      );
+    };
+
+    if (isNewDay(user.character.lastDailyRefresh)) {
+      const newDaily = await Quest.aggregate([
+        { $match: { type: "daily" } },
+        { $sample: { size: 3 } }
+      ]);
+
+      user.character.dailyQuests = newDaily.map(q => q._id.toString());
+      user.character.lastDailyRefresh = new Date();
+    }
+
     if (!user.loginTimestamps) user.loginTimestamps = [];
-    await User.findByIdAndUpdate(user._id, {
-      $push: { loginTimestamps: new Date() }
-    });
+    user.loginTimestamps.push(new Date());
+
+    await user.save();
 
     return res.status(200).json({
       _id: user._id,
@@ -144,6 +163,7 @@ app.post('/api/login', async (req, res, next) => {
     return res.status(500).json({ error: "An error occurred during login" });
   }
 });
+
 
 // Quests (Fitness Tasks)
 app.get('/api/quests', async (req, res) => {
