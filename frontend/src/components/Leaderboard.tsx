@@ -13,8 +13,8 @@ const Leaderboard: React.FC = () => {
   const [type, setType] = useState<LeaderboardType>('global');
   const [users, setUsers] = useState<LeaderboardUser[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [followUser, setfollowUser] = useState('');
-  const [addFolloweeMessage, setAddFolloweeMessage] = useState<string | null>(null);
+  const [followUser, setFollowUser] = useState('');
+  const [followMessage, setFollowMessage] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
@@ -74,10 +74,10 @@ const Leaderboard: React.FC = () => {
     window.location.href = "/Dashboard";
   };
 
-  const handleAddFollowee = async () => {
+  const handleFollow = async () => {
     const userData = localStorage.getItem('user_data');
     if (!userData) {
-      setAddFolloweeMessage("You must be logged in to follow someone.");
+      setFollowMessage("You must be logged in to follow someone.");
       return;
     }
 
@@ -85,7 +85,7 @@ const Leaderboard: React.FC = () => {
     const userId = parsed._id;
 
     try {
-      const response = await fetch('/api/addFollowee', {
+      const response = await fetch('/api/follow', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId, followUser })
@@ -94,14 +94,14 @@ const Leaderboard: React.FC = () => {
       const result = await response.json();
 
       if (!response.ok) {
-        setAddFolloweeMessage(result.error || "Failed to follow user.");
+        setFollowMessage(result.error || "Failed to follow user.");
       } else {
-        setAddFolloweeMessage("User followed!");
-        setfollowUser('');
+        setFollowMessage("User followed!");
+        setFollowUser('');
       }
     } catch (err) {
       console.error("User follow error:", err);
-      setAddFolloweeMessage("Error following user.");
+      setFollowMessage("Error following user.");
     }
   };
 
@@ -141,10 +141,10 @@ const Leaderboard: React.FC = () => {
           type="text"
           placeholder="Username of followee"
           value={followUser}
-          onChange={(e) => setfollowUser(e.target.value)}
+          onChange={(e) => setFollowUser(e.target.value)}
         />
-        <button onClick={handleAddFollowee} className="button">Follow User</button>
-        {addFolloweeMessage && <p style={{ color: 'white' }}>{addFolloweeMessage}</p>}
+        <button onClick={handleFollow} className="button">Follow User</button>
+        {followMessage && <p style={{ color: 'white' }}>{followMessage}</p>}
       </div>
 
       <br />
