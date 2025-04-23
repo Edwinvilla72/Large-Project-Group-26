@@ -283,8 +283,8 @@ app.get('/api/getQuests', async (req, res) => {
   // Add code for getting quests
 });
 
-app.get('/api/getAllFriends', async (req, res) => {
-  // Add code for gathering friends (cycle through friends array in user object)
+app.get('/api/getAllFollowees', async (req, res) => {
+  // Add code for gathering followees (cycle through friends array in user object)
   try {
     const { userId } = req.query;
 
@@ -298,15 +298,15 @@ app.get('/api/getAllFriends', async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    const friends = await User.find({ _id: { $in: user.friends } });
+    const followees = await User.find({ _id: { $in: user.friends } });
 
-    const result = friends.map(friend => ({
-      Login: friend.Login,
-      FirstName: friend.FirstName,
-      LastName: friend.LastName
+    const result = followees.map(followee => ({
+      Login: followee.Login,
+      FirstName: followee.FirstName,
+      LastName: followee.LastName
     }));
 
-    if (!user.friends || user.friends.length === 0) {
+    if (!user.friends || user.followees.length === 0) {
       return res.status(204).end();
     }
 
@@ -320,31 +320,27 @@ app.get('/api/getAllFriends', async (req, res) => {
 // add friend
 const mongoose = require('mongoose'); // at the top if not imported
 
-app.post('/api/addFriend', async (req, res) => {
-  const { userId, friendUser } = req.body;
+app.post('/api/follow', async (req, res) => {
+  const { userId, followUser } = req.body;
 
-  if (!userId || !friendUser) {
-    return res.status(400).json({ error: 'Missing userId or friendUser' });
+  if (!userId || !followUser) {
+    return res.status(400).json({ error: 'Missing userId or followUser' });
   }
 
   try {
     const user = await User.findById(userId);
-    const friend = await User.findOne({ Login: friendUser });
+    const followee = await User.findOne({ Login: followUser });
 
-    if (!user || !friend) {
-      return res.status(404).json({ error: 'User or Friend not found' });
-    }
+    if (!user || !followee) return res.status(404).json({ error: 'User/Followee not found' });
 
-    const friendObjectId = new mongoose.Types.ObjectId(friend._id);
+    if (userId === followee._id) return res.status(409).json({ error: 'You cannot follow yourself'});
 
-    if (user.friends.includes(friendObjectId)) {
-      return res.status(409).json({ error: 'Friend already added' });
-    }
+    if (user.friends.includes(followee._id)) return res.status(409).json({ error: 'User already followed' });
 
-    user.friends.push(friendObjectId);
+    user.friends.push(followee._id);
     await user.save();
 
-    res.status(200).json({ message: 'Friend added successfully' });
+    res.status(200).json({ message: 'User has been followed' });
   } catch (err) {
     console.error("Add friend error:", err);
     res.status(500).json({ error: 'Server error adding friend' });
@@ -352,32 +348,32 @@ app.post('/api/addFriend', async (req, res) => {
 });
 
 
-app.delete('/api/removeFriend', async (req, res) => {
+app.delete('/api/unfollow', async (req, res) => {
   // Add code for deleting friends
   try {
-    const { userId, friendUser } = req.params;
+    const { userId, followUser } = req.params;
 
-    if (!userId || !friendUser) {
-      return res.status(400).json({ error: 'Missing userId or friendUser' });
+    if (!userId || !followUser) {
+      return res.status(400).json({ error: 'Missing userId or followUser' });
     }
 
     const user = await User.findById(userId);
-    const friend = await User.findOne({ Login: friendUser });
+    const followee = await User.findOne({ Login: followUser });
 
-    if (!user || !friend) {
+    if (!user || !followee) {
       return res.status(404).json({ error: 'User/friend not found' });
     }
 
-    const friendId = friend._id.toString();
+    const followeeId = followee._id.toString();
 
-    if (!user.friends.some(id => id.toString() === friendId)) {
-      return res.status(400).json({ error: `You are not following ${friendUser}.` });
+    if (!user.friends.some(id => id.toString() === followeeId)) {
+      return res.status(400).json({ error: `You are not following ${followUser}.` });
     }
 
-    user.friends = user.friends.filter(id => id.toString() !== friendId);
+    user.friends = user.friends.filter(id => id.toString() !== followeeId);
     await user.save();
 
-    return res.status(200).json({ message: `You are no longer following ${friendUser}.` })
+    return res.status(200).json({ message: `You are no longer following ${followUser}.` })
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error fetching following list' });

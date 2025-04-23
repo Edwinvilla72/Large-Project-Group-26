@@ -13,8 +13,8 @@ const Leaderboard: React.FC = () => {
   const [type, setType] = useState<LeaderboardType>('global');
   const [users, setUsers] = useState<LeaderboardUser[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [friendUser, setFriendUser] = useState('');
-  const [addFriendMessage, setAddFriendMessage] = useState<string | null>(null);
+  const [followUser, setfollowUser] = useState('');
+  const [addFolloweeMessage, setAddFolloweeMessage] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
@@ -74,10 +74,10 @@ const Leaderboard: React.FC = () => {
     window.location.href = "/Dashboard";
   };
 
-  const handleAddFriend = async () => {
+  const handleAddFollowee = async () => {
     const userData = localStorage.getItem('user_data');
     if (!userData) {
-      setAddFriendMessage("You must be logged in to follow someone.");
+      setAddFolloweeMessage("You must be logged in to follow someone.");
       return;
     }
 
@@ -85,23 +85,23 @@ const Leaderboard: React.FC = () => {
     const userId = parsed._id;
 
     try {
-      const response = await fetch('/api/addFriend', {
+      const response = await fetch('/api/addFollowee', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, friendUser })
+        body: JSON.stringify({ userId, followUser })
       });
 
       const result = await response.json();
 
       if (!response.ok) {
-        setAddFriendMessage(result.error || "Failed to follow user.");
+        setAddFolloweeMessage(result.error || "Failed to follow user.");
       } else {
-        setAddFriendMessage("User followed!");
-        setFriendUser('');
+        setAddFolloweeMessage("User followed!");
+        setfollowUser('');
       }
     } catch (err) {
       console.error("User follow error:", err);
-      setAddFriendMessage("Error following user.");
+      setAddFolloweeMessage("Error following user.");
     }
   };
 
@@ -140,11 +140,11 @@ const Leaderboard: React.FC = () => {
         <input
           type="text"
           placeholder="Username of followee"
-          value={friendUser}
-          onChange={(e) => setFriendUser(e.target.value)}
+          value={followUser}
+          onChange={(e) => setfollowUser(e.target.value)}
         />
-        <button onClick={handleAddFriend} className="button">Follow User</button>
-        {addFriendMessage && <p style={{ color: 'white' }}>{addFriendMessage}</p>}
+        <button onClick={handleAddFollowee} className="button">Follow User</button>
+        {addFolloweeMessage && <p style={{ color: 'white' }}>{addFolloweeMessage}</p>}
       </div>
 
       <br />
