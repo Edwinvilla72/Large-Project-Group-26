@@ -230,7 +230,7 @@ function updateModelPositions() {
     if (index !== 0)
     model.position.y = 0;
     else if (index === 0)
-    model.position.y = 0.6;
+    model.position.y = 0.4;
     model.scale.lerp(model.userData.targetScale, 0.1);
     model.rotation.y = 0;
   });
