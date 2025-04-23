@@ -187,10 +187,10 @@ app.post('/api/completeQuest', async (req, res) => {
 //logging workouts and posting it to db
 app.post("/api/logWorkout", async (req, res) => {
   try {
-    const { UserId, type, duration, reps } = req.body;
+    const { userId, type, duration, reps } = req.body;
 
     const workout = new Workout({
-      UserId,
+      userId,
       type,
       duration,
       reps
@@ -206,13 +206,13 @@ app.post("/api/logWorkout", async (req, res) => {
 //retrieve workouts by day or workout
 app.get('/api/getWorkout', async (req, res) => {
   try {
-    const { UserId, type, date } = req.query;
+    const { userId, type, date } = req.query;
 
-    if (!UserId) {
+    if (!usingserId) {
       return res.status(404).send('User not found');
     }
 
-    const filter = { UserId: UserId };
+    const filter = { userId: userId };
 
     if (type) {
       filter.type = type;
