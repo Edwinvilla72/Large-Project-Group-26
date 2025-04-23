@@ -90,7 +90,8 @@ app.post('/api/register', async (req, res) => {
         level: 1,
         xp: 0,
         questComp: 0,
-        dailyQuests: selectedDaily
+        dailyQuests: selectedDaily,
+        achievements: []
       }
     });
 
