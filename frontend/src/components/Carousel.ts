@@ -97,7 +97,7 @@ function init(container: HTMLElement, navigate?: (path: string) => void) {
         let scaleFactor = 1.5 / Math.max(size.x, size.y, size.z || 1);
     
         // CUSTOM FIXES:
-        if (i === 0) root.position.y += 0.6;          // Water bottle raised slightly
+        if (i === 0) root.position.y += 1.2;          // Water bottle raised slightly
         if (i === 2) scaleFactor *= 0.7; // Dice model (Bonus Quests) too big
         if (i === 4) root.rotation.x = -Math.PI / 2; // Cog model (Settings) laying flat, stand it up
     
