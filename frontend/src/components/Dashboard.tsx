@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { startCarousel } from '../components/Carousel';
 import { motion } from 'framer-motion'; // to animate pages ooooooo
+import StepProgressBar from "./StepProgressBar"; 
 
 const Dashboard = () => {
   const [user, setUser] = useState<{ FirstName: string, LastName: string, _id: string } | null>(null);
@@ -42,6 +43,20 @@ const Dashboard = () => {
         pointerEvents: 'none' // so canvas still gets mouse events
       }}>
         {user?.FirstName && <p>Welcome back {user.FirstName}!</p>}
+      </div>
+      
+      <div
+        style={{
+          position: 'absolute',
+          top: '140px', // adjust as needed to sit nicely under the text
+          left: 0,
+          right: 0,
+          padding: '0 25px',
+          justifyContent: 'center',
+          zIndex: 9 // slightly under welcome message
+        }}
+      >
+        <StepProgressBar />
       </div>
 
       {/* Canvas container goes under */}

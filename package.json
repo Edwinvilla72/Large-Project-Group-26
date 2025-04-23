@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "react-step-progress-bar": "^1.0.3"
   }
 }
