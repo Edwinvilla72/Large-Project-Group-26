@@ -211,9 +211,16 @@ const SettingsPage: React.FC = () => {
   // Delete account logic - requires typing 'delete' and uses secret key
   const handleDeleteAccount = () => {
     if (!showDeleteVerification) {
-      setShowDeleteVerification(true); // show the input box on first click
+      setShowDeleteVerification(true);
       return;
     }
+    
+    // toggle off if already shown and input is blank
+    if (deleteInput.trim() === "") {
+      setShowDeleteVerification(false);
+      return;
+    }
+    
   
     if (deleteInput.trim().toLowerCase() !== "delete") {
       alert("Please type 'delete' exactly to confirm account deletion.");
@@ -309,26 +316,23 @@ const SettingsPage: React.FC = () => {
 
       <div className="buttons-row">
         <button className="save-button" onClick={handleSaveRoutine}>Save Routine</button>
-        <button className="delete-button" onClick={handleDeleteAccount}>
-          Delete Account
-        </button>
-
-        {showDeleteVerification && (
-          <div className="delete-verification">
-            <p style={{ marginTop: "20px" }}>
-              Type <strong>delete</strong> to confirm account deletion:
-            </p>
-            <input
-              type="text"
-              value={deleteInput}
-              onChange={e => setDeleteInput(e.target.value)}
-              placeholder="Type delete here"
-            />
-          </div>
-        )}
-
+        <button className="delete-button" onClick={handleDeleteAccount}>Delete Account</button>
         <button className="button" onClick={back}>Back</button>
       </div>
+
+      {showDeleteVerification && (
+        <div className="delete-verification">
+          <p style={{ marginTop: "20px" }}>
+            Type <strong>delete</strong> to confirm account deletion:
+          </p>
+          <input
+            type="text"
+            value={deleteInput}
+            onChange={e => setDeleteInput(e.target.value)}
+            placeholder="Type delete here"
+          />
+        </div>
+      )}
     </div>
   );
 };
