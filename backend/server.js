@@ -81,7 +81,8 @@ app.post('/api/register', async (req, res) => {
       character: {
         name: FirstName + "'s Hero",
         level: 1,
-        xp: 0
+        xp: 0,
+        questComp: 0
       }
     });
 
@@ -411,7 +412,7 @@ app.get('/api/getProfile', async (req, res) => {
 app.post('/api/quests/complete', async (req, res) => {
   const { userId, xp } = req.body;
 
-  if (!userId || typeof xp !== 'number') {
+  if (!userId || !xp) {
     return res.status(400).json({ error: 'Missing userId or xp value' });
   }
 
