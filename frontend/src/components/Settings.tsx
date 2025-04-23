@@ -185,7 +185,6 @@ const SettingsPage: React.FC = () => {
 
   // Save routine button logic
   const handleSaveRoutine = async () => {
-    setShowDeleteVerification(prev => !prev);
     const storedData = localStorage.getItem("user_data");
     if (!storedData) {
       console.error("No user data found in localStorage.");
