@@ -422,7 +422,7 @@ app.post('/api/quests/complete', async (req, res) => {
 
     const levelThreshold = 100;
     const totalXP = user.character.xp + xp;
-    const newLevel = Math.floor(totalXP / levelThreshold);
+    const newLevel = Math.floor(totalXP / levelThreshold) + 1; // Users start at level 1, thats why we are adding one.
 
     user.character.xp = totalXP;
     user.character.level = newLevel;
