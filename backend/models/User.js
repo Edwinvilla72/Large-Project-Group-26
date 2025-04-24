@@ -30,7 +30,16 @@ const userSchema = new mongoose.Schema({
         name: String,
         level: Number,
         xp: Number,
-        dailyQuests: [String],
+        dailyQuests: [{
+            questId: {
+              type: mongoose.Schema.Types.ObjectId,
+              required: true
+            },
+            completed: {
+              type: Boolean,
+              default: false
+            }
+          }],
         achievements: [{
             achievementId: {
                 type: mongoose.Schema.Types.ObjectId,

@@ -71,7 +71,11 @@ app.post('/api/register', async (req, res) => {
       { $sample: { size: 3 } }
     ]);
 
-    const selectedDaily = selectedDailyDocs.map(q => q._id);
+    const selectedDaily = selectedDailyDocs.map(q => ({
+      questId: q._id,
+      completed: false
+    }));
+    
 
     if (selectedDaily.length < 3) {
       return res.status(500).json({ error: "Not enough daily quests in the database." });
@@ -141,8 +145,12 @@ app.post('/api/login', async (req, res) => {
         { $match: { type: "daily" } },
         { $sample: { size: 3 } }
       ]);
-
-      user.character.dailyQuests = newDaily.map(q => q._id.toString());
+    
+      user.character.dailyQuests = newDaily.map(q => ({
+        questId: q._id,
+        completed: false
+      }));
+    
       user.lastDailyRefresh = new Date();
     }
 
@@ -331,9 +339,19 @@ app.post('/api/getDailyQuests', async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    const questIds = user.character.dailyQuests || [];
+    const questIds = user.character.dailyQuests?.map(q => q.questId) || [];
 
     const quests = await Quest.find({ _id: { $in: questIds } });
+
+    const dailyMap = {};
+    user.character.dailyQuests.forEach(q => {
+      dailyMap[q.questId.toString()] = q.completed;
+    });
+
+    const formatted = quests.map(q => ({
+      ...q.toObject(),
+      completed: dailyMap[q._id.toString()] || false
+    }));
 
     res.status(200).json({ dailyQuests: quests });
   } catch (err) {
@@ -467,7 +485,7 @@ app.get('/api/getProfile', async (req, res) => {
 
 // logs completion of quests (awards user with XP)
 app.post('/api/quests/complete', async (req, res) => {
-  const { userId, xp } = req.body;
+  const { userId, xp, questId } = req.body;
 
   if (!userId || !xp) {
     return res.status(400).json({ error: 'Missing userId or xp value' });
@@ -484,6 +502,11 @@ app.post('/api/quests/complete', async (req, res) => {
     user.character.xp = totalXP;
     user.character.level = newLevel;
     user.character.questComp++;
+
+    if (questId) {
+      const dailyEntry = user.character.dailyQuests.find(q => q.questId.toString() === quest._id.toString());
+      if (dailyEntry) dailyEntry.completed = true;
+    }
 
     await user.save();
 

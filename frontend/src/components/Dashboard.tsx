@@ -5,6 +5,12 @@ import { startCarousel, resetCarousel } from '../components/Carousel';
 import { motion } from 'framer-motion';
 
 const Dashboard = () => {
+
+  type Achievement = {
+    achievementId: string;
+    progress: number;
+  };
+
   const [user, setUser] = useState<{
     FirstName: string,
     LastName: string,
@@ -12,7 +18,7 @@ const Dashboard = () => {
     xp: number,
     questComp: number,
     dailyQuests: number,
-    achievements: string[]
+    achievements: Achievement[];
   } | null>(null);
 
   const canvasRef = useRef<HTMLDivElement>(null);
