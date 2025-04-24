@@ -15,6 +15,8 @@ const Leaderboard: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [followUser, setFollowUser] = useState('');
   const [followMessage, setFollowMessage] = useState<string | null>(null);
+  const [unfollowUser, setUnfollowUser] = useState('');
+  const [unfollowMessage, setUnfollowMessage] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
@@ -105,31 +107,50 @@ const Leaderboard: React.FC = () => {
     }
   };
 
+  const handleUnfollow = async () => {
+    const userData = localStorage.getItem('user_data');
+    if (!userData) {
+      setUnfollowMessage("You must be logged in to unfollow someone.");
+      return;
+    }
+
+    const parsed = JSON.parse(userData);
+    const userId = parsed._id;
+    const trimmed = unfollowUser.trim();
+
+    if (!trimmed) {
+      setUnfollowMessage("Please enter a username to unfollow.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/unfollow/${userId}/${trimmed}`, {
+        method: 'DELETE'
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        setUnfollowMessage(result.error || "Failed to unfollow user.");
+      } else {
+        setUnfollowMessage(`Unfollowed ${trimmed}!`);
+        setUnfollowUser('');
+      }
+    } catch (err) {
+      console.error("Unfollow user error:", err);
+      setUnfollowMessage("Error unfollowing user.");
+    }
+  };
+
   const filteredUsers = users.slice(0, 20);
 
   return (
-    <div className="leaderboard-container neon-login-container">
-      <div className="header" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <h2 style={{
-          color: '#00f0ff',
-          textShadow: '0 0 5px #00f0ff, 0 0 10px #00f0ff',
-          fontSize: '2rem'
-        }}>
-          Leaderboard
-        </h2>
+    <div className="leaderboard-container">
+      <div className="header">
+        <h2>Leaderboard</h2>
         <select
           value={type}
           onChange={(e) => setType(e.target.value as LeaderboardType)}
-          style={{
-            padding: '6px 10px',
-            borderRadius: '6px',
-            fontSize: '14px',
-            width: '140px',
-            backgroundColor: 'rgba(255,255,255,0.8)',
-            border: 'none',
-            color: '#333',
-            marginTop: '0.5rem'
-          }}
         >
           <option value="global">Global</option>
           <option value="followers">Followers</option>
@@ -165,13 +186,11 @@ const Leaderboard: React.FC = () => {
             border: 'none',
             width: '60%',
             fontSize: '16px',
-            backgroundColor: '#ffffff', // fully solid background
-            color: '#000',              // darker text for contrast
+            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+            color: '#333',
             boxShadow: '0 0 6px rgba(0, 0, 0, 0.2)',
-            outline: 'none',
-            position: 'relative',
-            zIndex: 10
-          }}          
+            outline: 'none'
+          }}
         />
         <button
           onClick={handleFollow}
@@ -191,6 +210,57 @@ const Leaderboard: React.FC = () => {
           Follow User
         </button>
       </div>
+
+      {followMessage && (
+        <p style={{ color: 'white', textAlign: 'center', marginTop: '8px' }}>
+          {followMessage}
+        </p>
+      )}
+
+      <div className="unfollow-friend-form" style={{ marginTop: '1rem', display: 'flex', gap: '12px', alignItems: 'center', justifyContent: 'center' }}>
+        <input
+          type="text"
+          placeholder="Username to unfollow"
+          value={unfollowUser}
+          onChange={(e) => setUnfollowUser(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && handleUnfollow()}
+          style={{
+            padding: '10px',
+            borderRadius: '6px',
+            border: 'none',
+            width: '60%',
+            fontSize: '16px',
+            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+            color: '#333',
+            boxShadow: '0 0 6px rgba(0, 0, 0, 0.2)',
+            outline: 'none'
+          }}
+        />
+        <button
+          onClick={handleUnfollow}
+          className="button"
+          style={{
+            whiteSpace: 'nowrap',
+            background: 'linear-gradient(to right, #f43f5e, #be123c)',
+            border: 'none',
+            borderRadius: '6px',
+            padding: '10px 16px',
+            color: 'white',
+            fontWeight: 'bold',
+            cursor: 'pointer',
+            boxShadow: '0 0 8px rgba(244, 63, 94, 0.6)'
+          }}
+        >
+          Unfollow User
+        </button>
+      </div>
+
+      {unfollowMessage && (
+        <p style={{ color: 'white', textAlign: 'center', marginTop: '8px' }}>
+          {unfollowMessage}
+        </p>
+      )}
+
       <button
         onClick={back}
         className="button"
@@ -208,12 +278,6 @@ const Leaderboard: React.FC = () => {
       >
         Back
       </button>
-
-      {followMessage && (
-        <p style={{ color: 'white', textAlign: 'center', marginTop: '8px' }}>
-          {followMessage}
-        </p>
-      )}
       <br />
     </div>
   );

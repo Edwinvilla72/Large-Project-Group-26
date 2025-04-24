@@ -432,7 +432,7 @@ app.post('/api/follow', async (req, res) => {
 });
 
 
-app.delete('/api/unfollow', async (req, res) => {
+app.delete('/api/unfollow/:userId/:followUser', async (req, res) => {
   // Add code for deleting friends
   try {
     const { userId, followUser } = req.params;
