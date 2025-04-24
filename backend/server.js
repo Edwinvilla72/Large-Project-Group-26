@@ -603,15 +603,13 @@ app.get('/api/getUserAchievements', async (req, res) => {
   const { userId } = req.query;
 
   try {
-    if (!userId) {
-      res.status(400).json({ error: 'Missing userId' });
+    if (!userId) res.status(400).json({ error: 'Missing userId' });
 
-      const user = await User.findById(userId);
+    const user = await User.findById(userId);
 
-      if (!user) res.status(404).json({ error: 'User not found' });
+    if (!user) res.status(404).json({ error: 'User not found' });
 
-      res.status(200).json(user.character.achievements);
-    } 
+    res.status(200).json(user.character.achievements);
   } catch (err) {
     console.error("Error getting user achievement list:", err);
     res.status(500).json({ error: 'Server error when retrieving user achievement list' });
