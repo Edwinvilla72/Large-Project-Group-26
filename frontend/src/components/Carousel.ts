@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { useNavigate } from 'react-router-dom';
 
 interface CustomMesh extends THREE.Group {
   userData: {
@@ -19,11 +18,16 @@ let angle = 0;
 let targetAngle = 0;
 const radius = 5;
 let containerElement: HTMLElement;
+let isDestroyed = false; // 🔥
+
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
-export function startCarousel(container: HTMLElement, navigate?: (path: string) =>void) {
-  if (!scene) init(container, navigate);
+export function startCarousel(container: HTMLElement, navigate?: (path: string) => void) {
+  if (!scene || isDestroyed) {
+    isDestroyed = false; // reset destruction flag
+    init(container, navigate);
+  }
 }
 
 function init(container: HTMLElement, navigate?: (path: string) => void) {
@@ -70,39 +74,28 @@ function init(container: HTMLElement, navigate?: (path: string) => void) {
     'assets/models/cog.glb',
   ];
   const labels = ['Daily Quests', 'Gym Quests', 'Achievements', 'Leaderboard', 'Settings'];
-
-
-  // these are all tests to make sure redirection works properly
-  const urls = [
-    '/DailyQuests',
-    '/GymQuests',
-    '/Achievements',
-    '/Leaderboard',
-    '/Settings',
-  ];
+  const urls = ['/DailyQuests', '/GymQuests', '/Achievements', '/Leaderboard', '/Settings'];
 
   const loader = new GLTFLoader();
+
+  models = [];
 
   modelPaths.forEach((path, i) => {
     loader.load(
       path,
       (gltf) => {
         const root = gltf.scene;
-    
-        // Normalize scale
         const box = new THREE.Box3().setFromObject(root);
         const size = new THREE.Vector3();
         box.getSize(size);
-    
+
         let scaleFactor = 1.5 / Math.max(size.x, size.y, size.z || 1);
-    
-        // CUSTOM FIXES:
-        if (i === 0) root.position.y += 1.2;          // Water bottle raised slightly
-        if (i === 2) scaleFactor *= 0.7; // Dice model (Bonus Quests) too big
-        if (i === 4) root.rotation.x = -Math.PI / 2; // Cog model (Settings) laying flat, stand it up
-    
+        if (i === 0) root.position.y += 1.2;
+        if (i === 2) scaleFactor *= 0.7;
+        if (i === 4) root.rotation.x = -Math.PI / 2;
+
         root.scale.setScalar(scaleFactor);
-    
+
         const rootWithMeta = root as CustomMesh;
         rootWithMeta.userData = {
           originalScale: root.scale.clone(),
@@ -110,10 +103,10 @@ function init(container: HTMLElement, navigate?: (path: string) => void) {
           url: urls[i],
           label: labels[i],
         };
-    
+
         scene.add(rootWithMeta);
         models.push(rootWithMeta);
-    
+
         if (models.length === modelPaths.length) {
           updateModelPositions();
         }
@@ -123,7 +116,6 @@ function init(container: HTMLElement, navigate?: (path: string) => void) {
         console.error(`Failed to load model at ${path}`, error);
       }
     );
-    
   });
 
   const buttonContainer = document.createElement('div');
@@ -142,18 +134,18 @@ function init(container: HTMLElement, navigate?: (path: string) => void) {
     const btn = document.createElement('button');
     btn.innerText = text;
     Object.assign(btn.style, {
-      background: "rgba(255, 106, 255, 0.1)", // frosted purple
+      background: "rgba(255, 106, 255, 0.1)",
       color: "white",
       border: "1.5px rgba(255, 106, 255, 0.7) solid",
-      borderRadius: "10px", // rounded square
+      borderRadius: "10px",
       width: "50px",
       height: "50px",
       fontSize: "1.5rem",
       fontWeight: "bold",
       fontFamily: "'Poppins', sans-serif",
-      display: "flex",           // ensure centering
-      alignItems: "center",      // vertical center
-      justifyContent: "center",  // horizontal center
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
       backdropFilter: "blur(6px)",
       cursor: "pointer",
       margin: "0 10px",
@@ -217,15 +209,11 @@ function init(container: HTMLElement, navigate?: (path: string) => void) {
         clicked = clicked.parent!;
       }
       if (clicked && clicked.userData.url) {
-        // if navigate decides to work (ig it doesnt like to sometimes???)
         if (navigate) {
           navigate(clicked.userData.url);
         } else {
-          // if not, just href (navigate is faster tho )
           window.location.href = clicked.userData.url;
         }
-
-        
       }
     }
   });
@@ -252,19 +240,22 @@ function updateModelPositions() {
   });
 }
 
-
 function rotateModels(direction: number) {
   targetAngle += direction * ((Math.PI * 2) / models.length);
 }
 
 function animate() {
+  if (isDestroyed) return; // 🛡️ stop loop after reset
   requestAnimationFrame(animate);
+  if (!renderer || !scene || !camera) return;
+
   angle += (targetAngle - angle) * 0.05;
   updateModelPositions();
   renderer.render(scene, camera);
 }
 
 export function resetCarousel() {
+  isDestroyed = true;
   if (renderer && containerElement) {
     containerElement.removeChild(renderer.domElement);
   }
