@@ -22,7 +22,10 @@ function DailyQuests() {
     const [error, setError] = useState('');
     const navigate = useNavigate();
     const [timeLeft, setTimeLeft] = useState('');
-    const [completed, setCompleted] = useState<string[]>([]);
+    const [completed, setCompleted] = useState<string[]>(() => {
+        const stored = localStorage.getItem('completedQuests');
+        return stored ? JSON.parse(stored) : [];
+    });
 
 
     const calculateTimeLeft = () => {
@@ -40,6 +43,18 @@ function DailyQuests() {
             .toString()
             .padStart(2, '0')}m ${seconds.toString().padStart(2, '0')}s`;
     };
+
+    useEffect(() => {
+        const today = new Date().toISOString().slice(0, 10); // e.g. '2025-04-23'
+        const storedDate = localStorage.getItem('questDate');
+
+        if (storedDate !== today) {
+            localStorage.removeItem('completedQuests');
+            localStorage.setItem('questDate', today);
+            setCompleted([]);
+        }
+    }, []);
+
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -69,7 +84,7 @@ function DailyQuests() {
                     body: JSON.stringify({ userId: _id })
                 });
 
-                console.log("🚀 Response Status:", response.status);
+                console.log("Response Status:", response.status);
                 const raw = await response.text();
                 console.log("🔍 Raw Response:", raw);
 
@@ -81,11 +96,11 @@ function DailyQuests() {
                 }
 
                 const data = JSON.parse(raw);
-                console.log("✅ Parsed Daily Quests:", data.dailyQuests);
+                console.log(" Parsed Daily Quests:", data.dailyQuests);
                 setQuests(data.dailyQuests || []);
                 setLoading(false);
             } catch (err) {
-                console.error("❌ Fetch error:", err);
+                console.error(" Fetch error:", err);
                 setError('Error fetching quests. Please try again later.');
                 setLoading(false);
             }
@@ -109,7 +124,7 @@ function DailyQuests() {
                 <h1 className="neon-title">Daily Quests</h1>
 
                 <p style={{ marginTop: '10px', fontSize: '1.1rem', fontWeight: 'bold' }}>
-                    ⏳ Time Left: {timeLeft}
+                     Time Left: {timeLeft}
                 </p>
 
                 {loading ? (
@@ -117,8 +132,9 @@ function DailyQuests() {
                 ) : error ? (
                     <p className="error-msg">{error}</p>
                 ) : quests.length > 0 ? (
-                    <ul>
-                        {quests.map((quest) => {
+                    <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
+
+                    {quests.map((quest) => {
                             const isDone = completed.includes(quest._id);
 
                             return (
@@ -145,17 +161,24 @@ function DailyQuests() {
                                                     const data = await res.json();
                                                     if (res.ok) {
                                                         setCompleted((prev) => [...prev, quest._id]);
+                                                        if (res.ok) {
+                                                            const updated = [...completed, quest._id];
+                                                            setCompleted(updated);
+                                                            localStorage.setItem('completedQuests', JSON.stringify(updated));
+                                                        }
+
                                                     } else {
                                                         alert(data.error || 'Failed to complete quest.');
                                                     }
                                                 } catch (err) {
                                                     console.error("Quest completion failed:", err);
                                                 }
+
                                             }}
                                             className="button"
                                             style={{ marginTop: '6px', fontSize: '0.8rem' }}
                                         >
-                                            ✅ Complete
+                                             Complete
                                         </button>
                                     )}
                                 </li>
