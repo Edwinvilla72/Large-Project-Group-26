@@ -27,7 +27,7 @@ body {
 
 
 .header h2 {
-  color: #6a0dad;
+  color: linear-gradient(135deg, #009dff, #b445ff);
 }
 
 select {
@@ -56,10 +56,6 @@ select:focus {
   padding: 12px 0;
   border-bottom: 1px solid #e2d0f0;
   transition: background 0.2s;
-}
-
-.leaderboard-item:hover {
-  background: #555555;
 }
 
 .rank {
