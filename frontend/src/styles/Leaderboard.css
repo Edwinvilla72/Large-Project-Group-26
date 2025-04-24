@@ -66,9 +66,10 @@ body {
   .username {
     flex: 1;
     text-align: left;
-    color: #4b007d;
-  }
-  
+    color: #ffffff; 
+    font-weight: 600;
+    text-shadow: 0 0 6px rgba(0, 0, 0, 0.4); 
+    
   .xp {
     font-weight: bold;
     color: #a05dbb;
