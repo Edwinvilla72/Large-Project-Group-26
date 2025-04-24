@@ -108,12 +108,28 @@ const Leaderboard: React.FC = () => {
   const filteredUsers = users.slice(0, 20);
 
   return (
-    <div className="leaderboard-container">
-      <div className="header">
-        <h2>Leaderboard</h2>
+    <div className="leaderboard-container neon-login-container">
+      <div className="header" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <h2 style={{
+          color: '#00f0ff',
+          textShadow: '0 0 5px #00f0ff, 0 0 10px #00f0ff',
+          fontSize: '2rem'
+        }}>
+          Leaderboard
+        </h2>
         <select
           value={type}
           onChange={(e) => setType(e.target.value as LeaderboardType)}
+          style={{
+            padding: '6px 10px',
+            borderRadius: '6px',
+            fontSize: '14px',
+            width: '140px',
+            backgroundColor: 'rgba(255,255,255,0.8)',
+            border: 'none',
+            color: '#333',
+            marginTop: '0.5rem'
+          }}
         >
           <option value="global">Global</option>
           <option value="followers">Followers</option>
@@ -149,11 +165,13 @@ const Leaderboard: React.FC = () => {
             border: 'none',
             width: '60%',
             fontSize: '16px',
-            backgroundColor: 'rgba(255, 255, 255, 0.9)',
-            color: '#333',
+            backgroundColor: '#ffffff', // fully solid background
+            color: '#000',              // darker text for contrast
             boxShadow: '0 0 6px rgba(0, 0, 0, 0.2)',
-            outline: 'none'
-          }}
+            outline: 'none',
+            position: 'relative',
+            zIndex: 10
+          }}          
         />
         <button
           onClick={handleFollow}
