@@ -263,3 +263,13 @@ function animate() {
   updateModelPositions();
   renderer.render(scene, camera);
 }
+
+export function resetCarousel() {
+  if (renderer && containerElement) {
+    containerElement.removeChild(renderer.domElement);
+  }
+  scene = undefined as any;
+  camera = undefined as any;
+  renderer = undefined as any;
+  models = [];
+}

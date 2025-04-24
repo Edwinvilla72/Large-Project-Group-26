@@ -3,6 +3,8 @@ import { useNavigate} from 'react-router-dom';
 import StepProgressBar from "./StepProgressBar"; 
 import { startCarousel } from '../components/Carousel';
 import { motion } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
+import { resetCarousel } from '../components/Carousel';
 
 const Dashboard = () => {
   const [user, setUser] = useState<{
@@ -18,6 +20,7 @@ const Dashboard = () => {
   const canvasRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -40,7 +43,7 @@ const Dashboard = () => {
       }
 
       try {
-        const res = await fetch(`/api/getProfile/${parsed._id}`);
+        const res = await fetch(`/api/getProfile?userId=${parsed._id}`);
         const data = await res.json();
 
         if (data?.error) {
@@ -59,9 +62,10 @@ const Dashboard = () => {
     if (canvasRef.current) {
       startCarousel(canvasRef.current, navigate);
     }
-  }, [navigate]);
+  }, [navigate, location.key]);
 
   const handleLogout = () => {
+    resetCarousel();
     localStorage.removeItem("token");
     localStorage.removeItem("user_data");
     navigate("/");
@@ -69,6 +73,7 @@ const Dashboard = () => {
 
   return (
     <motion.div
+      key={location.key}
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       exit={{ y: -100, opacity: 0 }}
