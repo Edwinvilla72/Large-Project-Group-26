@@ -41,10 +41,6 @@ function Achievements() {
         const allData = await allRes.json();
         const userData = await userRes.json();
 
-        // Log and dynamically handle both raw array or object structure
-        console.log(" allAchievements:", allData);
-        console.log(" userProgress:", userData);
-
         const allAchievements = Array.isArray(allData) ? allData : allData.achievements;
         const userAchievements = Array.isArray(userData) ? userData : userData.achievements;
 
@@ -70,6 +66,11 @@ function Achievements() {
     window.location.href = "/Dashboard";
   };
 
+  // 🔍 Only show achievements with matching progress
+  const visibleAchievements = achievements.filter((ach) =>
+      userProgress.find((a) => a.achievementId === ach._id)
+  );
+
   return (
       <motion.div
           initial={{ y: -100, opacity: 0 }}
@@ -84,9 +85,9 @@ function Achievements() {
               <p>Loading...</p>
           ) : error ? (
               <p className="error-msg">{error}</p>
-          ) : achievements.length > 0 ? (
+          ) : visibleAchievements.length > 0 ? (
               <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
-                {achievements.map((ach) => {
+                {visibleAchievements.map((ach) => {
                   const progress = getProgress(ach._id);
                   return (
                       <li key={ach._id} style={{ marginBottom: '15px' }}>
@@ -97,7 +98,7 @@ function Achievements() {
                 })}
               </ul>
           ) : (
-              <p>No achievements available.</p>
+              <p>You haven't started any achievements yet.</p>
           )}
 
           <br />
