@@ -59,13 +59,13 @@ select:focus {
 }
 
 .leaderboard-item:hover {
-  background: #f4e6ff;
+  background: #555555;
 }
 
 .rank {
   width: 30px;
   font-weight: bold;
-  color: #6a0dad;
+  color: #a05dbb;
 }
 
 .username {
