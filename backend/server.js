@@ -603,33 +603,29 @@ app.get('/api/getUserAchievements', async (req, res) => {
   const { userId } = req.query;
 
   try {
-<<<<<<< Updated upstream
-    if (!userId) res.status(400).json({ error: 'Missing userId' });
+    if (!userId) {
+      return res.status(400).json({ error: 'Missing userId' });
+    }
 
     const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
 
-    if (!user) res.status(404).json({ error: 'User not found' });
+    const formattedAchievements = Array.isArray(user.character.achievements)
+        ? user.character.achievements.map((ach) => ({
+          achievementId: ach.achievementId.toString(),
+          progress: ach.progress
+        }))
+        : [];
 
-    res.status(200).json(user.character.achievements);
-=======
-    if (!userId) return res.status(400).json({ error: 'Missing userId' });
-
-    const user = await User.findById(userId);
-    if (!user) return res.status(404).json({ error: 'User not found' });
-
-    const formattedAchievements = (user.character.achievements || []).map((ach) => ({
-      achievementId: ach.achievementId.toString(),
-      progress: ach.progress
-    }));
-
-
-    res.status(200).json({ achievements: formattedAchievements });
->>>>>>> Stashed changes
+    return res.status(200).json({ achievements: formattedAchievements });
   } catch (err) {
     console.error("Error getting user achievement list:", err);
-    res.status(500).json({ error: 'Server error when retrieving user achievement list' });
+    res.status(500).json({ error: "Server error when retrieving user achievement list" });
   }
 });
+
 
 
 

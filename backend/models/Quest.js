@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
 const questSchema = new mongoose.Schema({
-  title: {
+  Title: {
     type: String,
     required: true
   },
-  description: {
+  Description: {
     type: String,
     required: true
   },

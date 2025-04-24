@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 type Achievement = {
   _id: string;
-  title: string;
-  description: string;
+  Title: string;
+  Description: string;
   xp: number;
   requirement: number;
   type: string;
@@ -17,7 +15,6 @@ type UserAchievement = {
   achievementId: string;
   progress: number;
 };
-
 
 function Achievements() {
   const [achievements, setAchievements] = useState<Achievement[]>([]);
@@ -44,8 +41,15 @@ function Achievements() {
         const allData = await allRes.json();
         const userData = await userRes.json();
 
-        setAchievements(allData.achievements || []);
-        setUserProgress(userData.achievements || []);
+        // Log and dynamically handle both raw array or object structure
+        console.log(" allAchievements:", allData);
+        console.log(" userProgress:", userData);
+
+        const allAchievements = Array.isArray(allData) ? allData : allData.achievements;
+        const userAchievements = Array.isArray(userData) ? userData : userData.achievements;
+
+        setAchievements(allAchievements || []);
+        setUserProgress(userAchievements || []);
         setLoading(false);
       } catch (err) {
         console.error("Error fetching achievements:", err);
@@ -82,14 +86,15 @@ function Achievements() {
               <p className="error-msg">{error}</p>
           ) : achievements.length > 0 ? (
               <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
-                {achievements.map((ach) => (
-                    <li key={ach._id} style={{ marginBottom: '15px' }}>
-                      <strong>{ach.title}</strong><br />
-                      {ach.description && <em>{ach.description}</em>}<br />
-                      XP: {ach.xp} | Requirement: {ach.requirement}<br />
-                      Progress: {getProgress(ach._id)}/{ach.requirement}
-                    </li>
-                ))}
+                {achievements.map((ach) => {
+                  const progress = getProgress(ach._id);
+                  return (
+                      <li key={ach._id} style={{ marginBottom: '15px' }}>
+                        <strong>{ach.Title}</strong><br />
+                        {ach.Description && <em>{ach.Description}</em>}<br />
+                      </li>
+                  );
+                })}
               </ul>
           ) : (
               <p>No achievements available.</p>
