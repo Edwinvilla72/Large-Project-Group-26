@@ -1,171 +1,182 @@
 body {
-    margin: 0;
-    font-family: sans-serif;
-    background: linear-gradient(135deg, #009dff, #b445ff);
-  }
-  
-  .settings-container {
-    padding: 2rem;
-    color: white;
-  }
-  
-  h2 {
-    text-align: center;
-    margin-bottom: 2rem;
-  }
-  
-  .workout-grid {
-    display: flex;
-    flex-direction: column;
-    overflow-x: auto;
-  }
-  
-  .grid-header {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    text-align: center;
-    font-weight: bold;
-    margin-bottom: 1rem;
-  }
-  
-  .day-header {
-    padding: 0.5rem;
-    border-bottom: 2px solid #fff;
-  }
-  
-  .grid-body {
-    display: grid;
-    grid-template-rows: repeat(5, auto);
-  }
-  
-  .grid-row {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    margin-bottom: 0.5rem;
-  }
-  
-  .grid-cell {
-    padding: 0.5rem;
-    text-align: center;
-  }
-  
-  select {
-    padding: 0.3rem;
-    width: 100%;
-  }
-  
-  .workout-row {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  
-  .add-btn,
-  .remove-btn {
-    background-color: #4dcaf4;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    padding: 0.3rem 0.5rem;
-    font-weight: bold;
-  }
-  
-  .add-btn:hover,
-  .remove-btn:hover {
-    background-color: #8e8cff;
-  }
-  
-  .delete-button-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 3rem;
-  }
-  
-  .delete-button {
-    background-color: #e63946;
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 4px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  
-    .delete-button:hover {
-      background-color: #d62828;
-    }
-    .settings-container {
-      padding: 2rem;
-      text-align: center;
-    }
-    
-    .routine-grid {
-      display: flex;
-      justify-content: center;
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-      flex-wrap: wrap;
-    }
-    
-    .routine-column {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-width: 120px;
-      background: rgba(255, 255, 255, 0.07);
-      padding: 1rem;
-      border-radius: 12px;
-      box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
-    }
-    
-    .day-title {
-      font-weight: bold;
-      margin-bottom: 0.5rem;
-      color: white;
-    }
-    
-    .group-dropdown {
-      margin-bottom: 0.75rem;
-      width: 100%;
-    }
-    
-    .workout-cell {
-      margin-bottom: 0.5rem;
-    }
-    
-    .workout-row {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    
-    .workout-row select {
-      max-width: 100px;
-    }
-    
-    .add-btn {
-      background-color: #00d4ff;
-      border: none;
-      border-radius: 4px;
-      padding: 0.3rem 0.6rem;
-      cursor: pointer;
-    }
-    
-    .buttons-row {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-top: 2rem;
-    }
-    
-    .save-button,
-    .delete-button,
-    .button {
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
-      font-weight: bold;
-    }
-    /* Grid container */
+  margin: 0;
+  font-family: sans-serif;
+  background: linear-gradient(135deg, #009dff, #b445ff);
+}
+
+.settings-container {
+  padding: 2rem;
+  text-align: center;
+  color: white;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.workout-grid {
+  display: flex;
+  flex-direction: column;
+  overflow-x: auto;
+}
+
+.grid-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.day-header {
+  padding: 0.5rem;
+  border-bottom: 2px solid #fff;
+}
+
+.grid-body {
+  display: grid;
+  grid-template-rows: repeat(5, auto);
+}
+
+.grid-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 0.5rem;
+}
+
+.grid-cell {
+  padding: 0.5rem;
+  text-align: center;
+}
+
+select {
+  padding: 0.3rem;
+  width: 100%;
+}
+
+.workout-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.add-btn,
+.remove-btn {
+  background-color: #4dcaf4;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  padding: 0.3rem 0.5rem;
+  font-weight: bold;
+}
+
+.add-btn:hover,
+.remove-btn:hover {
+  background-color: #8e8cff;
+}
+
+.delete-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+.routine-grid {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.routine-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 120px;
+  background: rgba(255, 255, 255, 0.07);
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+}
+
+.day-title {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: white;
+}
+
+.group-dropdown {
+  margin-bottom: 0.75rem;
+  width: 100%;
+}
+
+.workout-cell {
+  margin-bottom: 0.5rem;
+}
+
+.workout-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.workout-row select {
+  max-width: 100px;
+}
+
+.add-btn {
+  background-color: #00d4ff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+}
+
+.buttons-row {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+/* 🔥 Gradient Buttons */
+.save-button,
+.button {
+  background: linear-gradient(to right, #a855f7, #6b21a8);
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 16px;
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(168, 85, 247, 0.6);
+  transition: background 0.3s ease;
+}
+
+.save-button:hover,
+.button:hover {
+  opacity: 0.9;
+}
+
+/* ❗ Keep Delete Button Red */
+.delete-button {
+  background-color: #e63946;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 6px rgba(255, 0, 0, 0.4);
+}
+
+.delete-button:hover {
+  background-color: #d62828;
+}
+
+/* Grid container */
 .routine-grid {
   display: flex;
   justify-content: center;
@@ -176,15 +187,30 @@ body {
 /* Each day's column */
 .routine-column {
   background-color: rgba(255, 255, 255, 0.1);
-  padding: 16px;
+  padding: 10px;
   border-radius: 10px;
   min-width: 140px;
   text-align: center;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 10px rgba(255, 255, 255, 0.1);
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Scrollable workouts container inside each column */
+.workout-scroll {
+  overflow-y: auto;
+  flex-grow: 1;
+  width: 100%;
+  padding-right: 5px;
 }
 
 /* Dropdowns */
-.group-dropdown, .workout-row select {
+.group-dropdown,
+.workout-row select {
   width: 100%;
   padding: 4px;
   margin-top: 6px;
@@ -201,7 +227,8 @@ body {
 }
 
 /* Add and remove buttons */
-.add-btn, .remove-btn {
+.add-btn,
+.remove-btn {
   background-color: #00cfff;
   color: white;
   border: none;
@@ -212,27 +239,4 @@ body {
 
 .remove-btn {
   background-color: #111;
-}
-/* Each day's column */
-.routine-column {
-  background-color: rgba(255, 255, 255, 0.1);
-  padding: 10px;
-  border-radius: 10px;
-  min-width: 140px;
-  text-align: center;
-  box-shadow: 0 10px 10px rgba(255, 255, 255, 0.1);
-  height: 250px; /* fixed height */
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  overflow: hidden;
-}
-
-/* Scrollable workouts container inside each column */
-.workout-scroll {
-  overflow-y: auto;
-  flex-grow: 1;
-  width: 100%;
-  padding-right: 5px;
 }
