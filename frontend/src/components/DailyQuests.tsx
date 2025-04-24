@@ -9,7 +9,7 @@ type Quest = {
   xp: number;
   requirement: number;
   type: string;
-  completed: boolean; // 👈 server-side tracking
+  completed: boolean;
 };
 
 function DailyQuests() {
@@ -83,17 +83,17 @@ function DailyQuests() {
   const completeQuest = async (quest: Quest) => {
     const userData = localStorage.getItem('user_data');
     const { _id } = userData ? JSON.parse(userData) : {};
-  
+
     try {
       const res = await fetch('/api/quests/complete', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: _id, xp: quest.xp, questId: quest._id }) // 👈 added questId
+        body: JSON.stringify({ userId: _id, xp: quest.xp, questId: quest._id })
       });
-  
+
       const data = await res.json();
       if (res.ok) {
-        await fetchQuests(); // refresh UI
+        await fetchQuests(); // refresh after completion
       } else {
         alert(data.error || 'Failed to complete quest.');
       }
@@ -101,7 +101,10 @@ function DailyQuests() {
       console.error("Quest completion failed:", err);
     }
   };
-  
+
+  const back = () => {
+    navigate("/Dashboard");
+  };
 
   return (
     <motion.div
