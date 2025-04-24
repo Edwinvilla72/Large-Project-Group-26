@@ -83,17 +83,17 @@ function DailyQuests() {
   const completeQuest = async (quest: Quest) => {
     const userData = localStorage.getItem('user_data');
     const { _id } = userData ? JSON.parse(userData) : {};
-
+  
     try {
-      const res = await fetch('https://merntest.fitgame.space/api/quests/complete', {
+      const res = await fetch('/api/quests/complete', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: _id, xp: quest.xp })
+        body: JSON.stringify({ userId: _id, xp: quest.xp, questId: quest._id }) // 👈 added questId
       });
-
+  
       const data = await res.json();
       if (res.ok) {
-        await fetchQuests(); // 🔄 refresh updated list
+        await fetchQuests(); // refresh UI
       } else {
         alert(data.error || 'Failed to complete quest.');
       }
@@ -101,10 +101,7 @@ function DailyQuests() {
       console.error("Quest completion failed:", err);
     }
   };
-
-  const back = () => {
-    window.location.href = "/Dashboard";
-  };
+  
 
   return (
     <motion.div

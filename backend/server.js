@@ -504,7 +504,7 @@ app.post('/api/quests/complete', async (req, res) => {
     user.character.questComp++;
 
     if (questId) {
-      const dailyEntry = user.character.dailyQuests.find(q => q.questId.toString() === quest._id.toString());
+      const dailyEntry = user.character.dailyQuests.find(q => q.questId.toString() === questId.toString());
       if (dailyEntry) dailyEntry.completed = true;
     }
 
