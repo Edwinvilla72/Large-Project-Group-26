@@ -63,18 +63,36 @@ select {
 
 .add-btn,
 .remove-btn {
-  background-color: #4dcaf4;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-  padding: 0.3rem 0.5rem;
   font-weight: bold;
+  border: none;
+  cursor: pointer;
 }
 
-.add-btn:hover,
-.remove-btn:hover {
-  background-color: #8e8cff;
+/* Add button */
+.add-btn {
+  background-color: #00d4ff;
+  color: white;
+  border-radius: 4px;
+  padding: 0.3rem 0.6rem;
 }
+
+/* remove button */
+.remove-btn {
+  background-color: #e63946;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+  box-shadow: 0 0 4px rgba(255, 0, 0, 0.4);
+  transition: background 0.2s ease;
+}
+
+.remove-btn:hover {
+  background-color: #d62828;
+}
+
 
 .delete-button-container {
   display: flex;
@@ -99,6 +117,8 @@ select {
   padding: 1rem;
   border-radius: 12px;
   box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+  height: 250px;
+  overflow: hidden;
 }
 
 .day-title {
@@ -116,22 +136,8 @@ select {
   margin-bottom: 0.5rem;
 }
 
-.workout-row {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
 .workout-row select {
   max-width: 100px;
-}
-
-.add-btn {
-  background-color: #00d4ff;
-  border: none;
-  border-radius: 4px;
-  padding: 0.3rem 0.6rem;
-  cursor: pointer;
 }
 
 .buttons-row {
@@ -141,7 +147,7 @@ select {
   margin-top: 2rem;
 }
 
-/* 🔥 Gradient Buttons */
+/* gradient buttons */
 .save-button,
 .button {
   background: linear-gradient(to right, #a855f7, #6b21a8);
@@ -160,7 +166,6 @@ select {
   opacity: 0.9;
 }
 
-/* ❗ Keep Delete Button Red */
 .delete-button {
   background-color: #e63946;
   color: white;
@@ -174,30 +179,6 @@ select {
 
 .delete-button:hover {
   background-color: #d62828;
-}
-
-/* Grid container */
-.routine-grid {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-/* Each day's column */
-.routine-column {
-  background-color: rgba(255, 255, 255, 0.1);
-  padding: 10px;
-  border-radius: 10px;
-  min-width: 140px;
-  text-align: center;
-  box-shadow: 0 10px 10px rgba(255, 255, 255, 0.1);
-  height: 250px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  overflow: hidden;
 }
 
 /* Scrollable workouts container inside each column */
@@ -217,26 +198,11 @@ select {
   margin-bottom: 8px;
 }
 
-/* Workout row */
+/* Workout row spacing */
 .workout-row {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
   margin-bottom: 8px;
-}
-
-/* Add and remove buttons */
-.add-btn,
-.remove-btn {
-  background-color: #00cfff;
-  color: white;
-  border: none;
-  padding: 4px 8px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.remove-btn {
-  background-color: #111;
 }
