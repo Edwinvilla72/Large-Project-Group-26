@@ -75,7 +75,6 @@ app.post('/api/register', async (req, res) => {
       questId: q._id,
       completed: false
     }));
-    
 
     if (selectedDaily.length < 3) {
       return res.status(500).json({ error: "Not enough daily quests in the database." });
@@ -95,7 +94,12 @@ app.post('/api/register', async (req, res) => {
         xp: 0,
         questComp: 0,
         dailyQuests: selectedDaily,
-        achievements: []
+        achievements: [
+          {
+            achievementId: new mongoose.Types.ObjectId("680ac5f01c41c331aa111d5e"),
+            progress: 1
+          }
+        ]
       }
     });
 
@@ -107,6 +111,7 @@ app.post('/api/register', async (req, res) => {
     res.status(500).json({ error: "Registration failed: " + e.message });
   }
 });
+
 
 
 
