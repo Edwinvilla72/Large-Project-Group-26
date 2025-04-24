@@ -142,15 +142,34 @@ function init(container: HTMLElement, navigate?: (path: string) => void) {
     const btn = document.createElement('button');
     btn.innerText = text;
     Object.assign(btn.style, {
-      background: '#222',
-      color: 'white',
-      border: 'none',
-      borderRadius: '8px',
-      padding: '12px 16px',
-      fontSize: '1.5rem',
-      cursor: 'pointer',
+      background: "rgba(255, 106, 255, 0.1)", // frosted purple
+      color: "white",
+      border: "1.5px rgba(255, 106, 255, 0.7) solid",
+      borderRadius: "10px", // rounded square
+      width: "50px",
+      height: "50px",
+      fontSize: "1.5rem",
+      fontWeight: "bold",
+      fontFamily: "'Poppins', sans-serif",
+      display: "flex",           // ensure centering
+      alignItems: "center",      // vertical center
+      justifyContent: "center",  // horizontal center
+      backdropFilter: "blur(6px)",
+      cursor: "pointer",
+      margin: "0 10px",
+      boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+      transition: "0.2s ease",
+      userSelect: "none",
     });
     btn.addEventListener('click', onClick);
+    btn.addEventListener("mouseenter", () => {
+      btn.style.border = "1.5px solid white";
+      btn.style.boxShadow = "0 0 12px rgba(255, 255, 255, 0.3)";
+    });
+    btn.addEventListener("mouseleave", () => {
+      btn.style.border = "1.5px solid rgba(255, 106, 255, 0.7)";
+      btn.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.3)";
+    });
     buttonContainer.appendChild(btn);
   };
 
