@@ -326,7 +326,6 @@ app.get('/api/leaderboard/friends/:userId', async (req, res) => {
 });
 
 app.post('/api/getDailyQuests', async (req, res) => {
-  // Add code for getting quests
   try {
     const { userId } = req.body;
 
@@ -353,12 +352,14 @@ app.post('/api/getDailyQuests', async (req, res) => {
       completed: dailyMap[q._id.toString()] || false
     }));
 
-    res.status(200).json({ dailyQuests: quests });
+    res.status(200).json({ dailyQuests: formatted });
+
   } catch (err) {
     console.error("Error in getDailyQuests:", err);
     res.status(500).json({ error: "Server error while retrieving quests" });
   }
 });
+
 
 app.get('/api/getAllFollowees', async (req, res) => {
   // Add code for gathering followees (cycle through friends array in user object)
