@@ -161,15 +161,16 @@ app.post('/api/login', async (req, res) => {
 
     let fullDailyQuests = [];
     if (user.character.dailyQuests && user.character.dailyQuests.length > 0) {
-      fullDailyQuests = await Quest.find({ _id: { $in: user.character.dailyQuests } });
+      fullDailyQuests = await Quest.find({
+        _id: { $in: user.character.dailyQuests.map(q => q.questId) }
+      });      
     }
 
     return res.status(200).json({
       _id: user._id,
       FirstName: user.FirstName,
       LastName: user.LastName,
-      dailyQuests: fullDailyQuests,
-      error: ""
+      dailyQuests: fullDailyQuests
     });
 
   } catch (e) {
