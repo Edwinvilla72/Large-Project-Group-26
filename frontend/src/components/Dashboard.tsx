@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 import StepProgressBar from "./StepProgressBar"; 
 import { startCarousel } from '../components/Carousel';
 import { motion } from 'framer-motion';
@@ -17,7 +17,6 @@ const Dashboard = () => {
 
   const canvasRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
-  const location = useLocation();
   const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
@@ -60,7 +59,7 @@ const Dashboard = () => {
     if (canvasRef.current) {
       startCarousel(canvasRef.current, navigate);
     }
-  }, [location.key]);
+  }, [navigate]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
