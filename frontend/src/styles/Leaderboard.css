@@ -8,7 +8,7 @@ body {
   .leaderboard-container {
     max-width: 600px;
     margin: 0 auto;
-    background: #ffffff;
+    /* background: #ffffff; */
     border-radius: 12px;
     box-shadow: 0 0 12px rgba(128, 0, 128, 0.2);
     padding: 24px;
@@ -72,5 +72,20 @@ body {
   .xp {
     font-weight: bold;
     color: #a05dbb;
+  }
+  
+
+  .neon-login-container {
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+  }
+
+  input::placeholder {
+    color: #333 !important;         
+    opacity: 1 !important;          
   }
   
