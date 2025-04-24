@@ -1,10 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate} from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import StepProgressBar from "./StepProgressBar"; 
-import { startCarousel } from '../components/Carousel';
+import { startCarousel, resetCarousel } from '../components/Carousel';
 import { motion } from 'framer-motion';
-import { useLocation } from 'react-router-dom';
-import { resetCarousel } from '../components/Carousel';
 
 const Dashboard = () => {
   const [user, setUser] = useState<{
