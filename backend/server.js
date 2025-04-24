@@ -234,7 +234,7 @@ app.get('/api/getWorkout', async (req, res) => {
   try {
     const { userId, type, date } = req.query;
 
-    if (!usingserId) {
+    if (!userId) {
       return res.status(404).send('User not found');
     }
 
@@ -656,7 +656,6 @@ app.post('/api/updateAchievement', async (req, res) => {
     res.status(500).json({ error: 'Server error when updating user\'s achievements' });
   }
 });
-
 
 // settings routine
 app.use('/api/routine', require('./routes/routineRoutes'));
