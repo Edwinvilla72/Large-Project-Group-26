@@ -136,15 +136,26 @@ const Leaderboard: React.FC = () => {
         )}
       </ul>
 
-      <div className="add-friend-form">
+      <div className="add-friend-form" style={{ marginTop: '2rem', display: 'flex', gap: '12px', alignItems: 'center', justifyContent: 'center' }}>
         <input
           type="text"
           placeholder="Username of follower"
           value={followUser}
           onChange={(e) => setFollowUser(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleFollow()}
+          style={{
+            padding: '10px',
+            borderRadius: '6px',
+            border: 'none',
+            width: '60%',
+            fontSize: '16px',
+            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+            color: '#333',
+            boxShadow: '0 0 6px rgba(0, 0, 0, 0.2)',
+            outline: 'none'
+          }}
         />
-        <button onClick={handleFollow} className="button">Follow User</button>
+        <button onClick={handleFollow} className="button" style={{ whiteSpace: 'nowrap' }}>Follow User</button>
       </div>
 
       {followMessage && (
