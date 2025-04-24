@@ -603,6 +603,7 @@ app.get('/api/getUserAchievements', async (req, res) => {
   const { userId } = req.query;
 
   try {
+<<<<<<< Updated upstream
     if (!userId) res.status(400).json({ error: 'Missing userId' });
 
     const user = await User.findById(userId);
@@ -610,23 +611,44 @@ app.get('/api/getUserAchievements', async (req, res) => {
     if (!user) res.status(404).json({ error: 'User not found' });
 
     res.status(200).json(user.character.achievements);
+=======
+    if (!userId) return res.status(400).json({ error: 'Missing userId' });
+
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ error: 'User not found' });
+
+    const formattedAchievements = (user.character.achievements || []).map((ach) => ({
+      achievementId: ach.achievementId.toString(),
+      progress: ach.progress
+    }));
+
+
+    res.status(200).json({ achievements: formattedAchievements });
+>>>>>>> Stashed changes
   } catch (err) {
     console.error("Error getting user achievement list:", err);
     res.status(500).json({ error: 'Server error when retrieving user achievement list' });
   }
 });
 
+
+
 app.post('/api/updateAchievement', async (req, res) => {
   const { userId, achievementId } = req.body;
 
   try {
-    if (!userId || !achievementId) return res.status(400).json({ error: 'Missing userId or achievementId' });
+    if (!userId || !achievementId) {
+      return res.status(400).json({ error: 'Missing userId or achievementId' });
+    }
 
     const achievementIdToCheck = new mongoose.Types.ObjectId(achievementId);
 
     const user = await User.findById(userId);
-    if (!user) return res.status(404).json({ error: 'User not found' });
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
 
+    // Check if already completed
     const achieveCheck = await User.findOne({
       _id: userId,
       "character.achievements": {
@@ -637,15 +659,21 @@ app.post('/api/updateAchievement', async (req, res) => {
       }
     });
 
-    if (achieveCheck) return res.status(400).json({ error: 'Achievement is already completed' });
+    if (achieveCheck) {
+      return res.status(400).json({ error: 'Achievement is already completed' });
+    }
 
+    //  Correct push format
     await User.updateOne(
-      { _id: userId },
-      {
-        $push: {
-          "character.achievements": [achievementIdToCheck, "1"]
+        { _id: userId },
+        {
+          $push: {
+            "character.achievements": {
+              achievementId: achievementIdToCheck,
+              progress: 1
+            }
+          }
         }
-      }
     );
 
     return res.status(200).json({ message: 'Achievement completed' });
@@ -654,6 +682,7 @@ app.post('/api/updateAchievement', async (req, res) => {
     res.status(500).json({ error: 'Server error when updating user\'s achievements' });
   }
 });
+
 
 // settings routine
 app.use('/api/routine', require('./routes/routineRoutes'));
