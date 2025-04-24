@@ -300,7 +300,7 @@ const SettingsPage: React.FC = () => {
                             <option key={opt} value={opt}>{opt}</option>
                           ))}
                         </select>
-                        <button onClick={() => removeWorkout(day, rowIndex)}>✕</button>
+                        <button className="remove-btn" onClick={() => removeWorkout(day, rowIndex)}>✕</button>
                       </div>
                     ) : rowIndex === workoutsByDay[day].length ? (
                       <button className="add-btn" onClick={() => addWorkout(day)}>+ Add</button>
