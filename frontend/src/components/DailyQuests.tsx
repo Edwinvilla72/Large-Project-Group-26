@@ -93,7 +93,7 @@ function DailyQuests() {
 
       const data = await res.json();
       if (res.ok) {
-        await fetchQuests(); // refresh after completion
+        await fetchQuests(); // Refresh the updated quest list
       } else {
         alert(data.error || 'Failed to complete quest.');
       }
@@ -103,7 +103,8 @@ function DailyQuests() {
   };
 
   const back = () => {
-    navigate("/Dashboard");
+    navigate("/Dashboard", { replace: true });
+    window.location.reload(); // 💥 force full re-init of carousel
   };
 
   return (
