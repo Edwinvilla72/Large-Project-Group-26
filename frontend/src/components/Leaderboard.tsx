@@ -155,17 +155,48 @@ const Leaderboard: React.FC = () => {
             outline: 'none'
           }}
         />
-        <button onClick={handleFollow} className="button" style={{ whiteSpace: 'nowrap' }}>Follow User</button>
+        <button
+          onClick={handleFollow}
+          className="button"
+          style={{
+            whiteSpace: 'nowrap',
+            background: 'linear-gradient(to right, #a855f7, #6b21a8)',
+            border: 'none',
+            borderRadius: '6px',
+            padding: '10px 16px',
+            color: 'white',
+            fontWeight: 'bold',
+            cursor: 'pointer',
+            boxShadow: '0 0 8px rgba(168, 85, 247, 0.6)'
+          }}
+        >
+          Follow User
+        </button>
       </div>
+      <button
+        onClick={back}
+        className="button"
+        style={{
+          marginTop: '2rem',
+          background: 'linear-gradient(to right, #a855f7, #6b21a8)',
+          border: 'none',
+          borderRadius: '6px',
+          padding: '10px 16px',
+          color: 'white',
+          fontWeight: 'bold',
+          cursor: 'pointer',
+          boxShadow: '0 0 8px rgba(168, 85, 247, 0.6)'
+        }}
+      >
+        Back
+      </button>
 
       {followMessage && (
         <p style={{ color: 'white', textAlign: 'center', marginTop: '8px' }}>
           {followMessage}
         </p>
       )}
-
       <br />
-      <button className="button" onClick={back}>Back</button>
     </div>
   );
 };
