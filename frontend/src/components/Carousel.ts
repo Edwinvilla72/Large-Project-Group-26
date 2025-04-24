@@ -173,8 +173,8 @@ function init(container: HTMLElement, navigate?: (path: string) => void) {
     buttonContainer.appendChild(btn);
   };
 
-  createButton('-', () => rotateModels(1));
-  createButton('+', () => rotateModels(-1));
+  createButton('<', () => rotateModels(1));
+  createButton('>', () => rotateModels(-1));
 
   renderer.domElement.addEventListener('mousemove', (event) => {
     const bounds = renderer.domElement.getBoundingClientRect();
