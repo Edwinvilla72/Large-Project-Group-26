@@ -234,7 +234,7 @@ app.get('/api/getWorkout', async (req, res) => {
   try {
     const { userId, type, date } = req.query;
 
-    if (!usingserId) {
+    if (!userId) {
       return res.status(404).send('User not found');
     }
 
@@ -589,6 +589,71 @@ app.delete('/api/delete-account', async (req, res) => {
   }
 });
 
+app.get('/api/getAllAchievements', async (req, res) => {
+  try {
+    const achievements = await Quest.find({ type: "achievement" });
+    res.status(200).json(achievements);
+  } catch (err) {
+    console.error("Error getting achievement list:", err);
+    res.status(500).json({ error: 'Server error when retrieving achievement list' });
+  }
+});
+
+app.get('/api/getUserAchievements', async (req, res) => {
+  const { userId } = req.query;
+
+  try {
+    if (!userId) res.status(400).json({ error: 'Missing userId' });
+
+    const user = await User.findById(userId);
+
+    if (!user) res.status(404).json({ error: 'User not found' });
+
+    res.status(200).json(user.character.achievements);
+  } catch (err) {
+    console.error("Error getting user achievement list:", err);
+    res.status(500).json({ error: 'Server error when retrieving user achievement list' });
+  }
+});
+
+app.post('/api/updateAchievement', async (req, res) => {
+  const { userId, achievementId } = req.body;
+
+  try {
+    if (!userId || !achievementId) return res.status(400).json({ error: 'Missing userId or achievementId' });
+
+    const achievementIdToCheck = new mongoose.Types.ObjectId(achievementId);
+
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ error: 'User not found' });
+
+    const achieveCheck = await User.findOne({
+      _id: userId,
+      "character.achievements": {
+        $elemMatch: {
+          0: achievementIdToCheck,
+          1: "1"
+        }
+      }
+    });
+
+    if (achieveCheck) return res.status(400).json({ error: 'Achievement is already completed' });
+
+    await User.updateOne(
+      { _id: userId },
+      {
+        $push: {
+          "character.achievements": [achievementIdToCheck, "1"]
+        }
+      }
+    );
+
+    return res.status(200).json({ message: 'Achievement completed' });
+  } catch (err) {
+    console.error("Error updating user's achievements:", err);
+    res.status(500).json({ error: 'Server error when updating user\'s achievements' });
+  }
+});
 
 // settings routine
 app.use('/api/routine', require('./routes/routineRoutes'));
