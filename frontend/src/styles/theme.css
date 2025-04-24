@@ -72,21 +72,23 @@
   .neon-login-container input[type="text"],
   .neon-login-container input[type="password"],
   .neon-login-container input[type="email"] {
-    width: 85%;
-    padding: 12px;
-    margin: 12px 0;
-    background: var(--input-bg);
-    border: none;
-    border-radius: 10px;
-    color: var(--text-light);
-    font-size: 16px;
-    outline: none;
-    text-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
-  }
-  
-  .neon-login-container input::placeholder {
-    color: var(--text-subtle);
-  }
+  width: 85%;
+  padding: 12px;
+  margin: 12px 0;
+  background: rgba(255, 255, 255, 0.9);  
+  border: none;
+  border-radius: 10px;
+  color: #000;                         
+  font-size: 16px;
+  outline: none;
+  text-shadow: none;                    
+}
+
+.neon-login-container input::placeholder {
+  color: #333;              
+  opacity: 1;
+}
+
   
   /*  Buttons */
   .neon-btn {
