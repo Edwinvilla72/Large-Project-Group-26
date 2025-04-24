@@ -40,7 +40,7 @@ const Dashboard = () => {
       }
 
       try {
-        const res = await fetch(`/api/getProfile/${parsed._id}`);
+        const res = await fetch(`/api/getProfile?userId=${parsed._id}`);
         const data = await res.json();
 
         if (data?.error) {
