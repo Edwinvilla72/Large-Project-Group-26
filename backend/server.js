@@ -80,28 +80,37 @@ app.post('/api/register', async (req, res) => {
       return res.status(500).json({ error: "Not enough daily quests in the database." });
     }
 
-    const newUser = new User({
-      FirstName,
-      LastName,
-      Login,
-      Password: PasswordHash,
-      SecQNum,
-      SecQAns: SecQAnsHash,
-      friends: [],
-      character: {
-        name: FirstName + "'s Hero",
-        level: 1,
-        xp: 0,
-        questComp: 0,
-        dailyQuests: selectedDaily,
-        achievements: [
-          {
-            achievementId: new mongoose.Types.ObjectId("680ac5f01c41c331aa111d5e"),
-            progress: 1
-          }
-        ]
+    const ipAddress =
+  req.headers['x-forwarded-for']?.split(',')[0] ||
+  req.connection.remoteAddress ||
+  req.socket.remoteAddress;
+
+console.log(`Register attempt from IP: ${ipAddress}`);
+
+const newUser = new User({
+  FirstName,
+  LastName,
+  Login,
+  Password: PasswordHash,
+  SecQNum,
+  SecQAns: SecQAnsHash,
+  friends: [],
+  registerIp: ipAddress, // 🆕 this saves the IP
+  character: {
+    name: FirstName + "'s Hero",
+    level: 1,
+    xp: 0,
+    questComp: 0,
+    dailyQuests: selectedDaily,
+    achievements: [
+      {
+        achievementId: new mongoose.Types.ObjectId("680ac5f01c41c331aa111d5e"),
+        progress: 1
       }
-    });
+    ]
+  }
+});
+
 
     await newUser.save();
 

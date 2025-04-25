@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    registerIp: {
+        type: String,
+        default: ''
+    },      
     character: {
         name: String,
         level: Number,
