@@ -390,9 +390,9 @@ app.get('/api/getAllFollowees', async (req, res) => {
       LastName: followee.LastName
     }));
 
-    if (!user.friends || user.followees.length === 0) {
+    if (!followees || followees.length === 0) {
       return res.status(204).end();
-    }
+    }    
 
     return res.status(200).json(result);
   } catch (err) {
