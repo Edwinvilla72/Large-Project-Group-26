@@ -8,7 +8,7 @@ body {
 .leaderboard-container {
   max-width: 600px;
   margin: 0 auto;
-  background: rgba(0, 0, 0, 0.4); /* darker glass effect */
+  background: rgba(0, 0, 0, 0.2); /* darker glass effect */
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: 12px;
