@@ -8,7 +8,7 @@ body {
 .leaderboard-container {
   max-width: 600px;
   margin: 0 auto;
-  background: rgba(0, 0, 0, 0.6); /* darker glass effect */
+  background: rgba(0, 0, 0, 0.4); /* darker glass effect */
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: 12px;
@@ -27,6 +27,7 @@ body {
 
 
 .header h2 {
+  font-size: 2.25rem;
   background: linear-gradient(135deg, #009dff, #b445ff);
   background-clip: text; /* may be ignored without -webkit- */
   -webkit-background-clip: text; /* actually works */
