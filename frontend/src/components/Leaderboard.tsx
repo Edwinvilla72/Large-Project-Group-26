@@ -96,7 +96,7 @@ const Leaderboard: React.FC = () => {
       const result = await response.json();
 
       if (!response.ok) {
-        setFollowMessage(result.error || "Failed to follow user.");
+        setFollowMessage(result.error || "Failed to Follow User.");
       } else {
         setFollowMessage("User followed!");
         setFollowUser('');
@@ -110,7 +110,7 @@ const Leaderboard: React.FC = () => {
   const handleUnfollow = async () => {
     const userData = localStorage.getItem('user_data');
     if (!userData) {
-      setUnfollowMessage("You must be logged in to unfollow someone.");
+      setUnfollowMessage("You must be logged in to Unfollow someone.");
       return;
     }
 
@@ -119,7 +119,7 @@ const Leaderboard: React.FC = () => {
     const trimmed = unfollowUser.trim();
 
     if (!trimmed) {
-      setUnfollowMessage("Please enter a username to unfollow.");
+      setUnfollowMessage("Please Enter a Username to Unfollow.");
       return;
     }
 
@@ -131,7 +131,7 @@ const Leaderboard: React.FC = () => {
       const result = await response.json();
 
       if (!response.ok) {
-        setUnfollowMessage(result.error || "Failed to unfollow user.");
+        setUnfollowMessage(result.error || "Failed to Unfollow User.");
       } else {
         setUnfollowMessage(`Unfollowed ${trimmed}!`);
         setUnfollowUser('');
@@ -153,7 +153,7 @@ const Leaderboard: React.FC = () => {
           onChange={(e) => setType(e.target.value as LeaderboardType)}
         >
           <option value="global">Global</option>
-          <option value="followers">Followers</option>
+          <option value="followers">Following</option>
         </select>
       </div>
 
@@ -176,7 +176,7 @@ const Leaderboard: React.FC = () => {
       <div className="add-friend-form" style={{ marginTop: '2rem', display: 'flex', gap: '12px', alignItems: 'center', justifyContent: 'center' }}>
         <input
           type="text"
-          placeholder="Username of follower"
+          placeholder="Your Friend's Username"
           value={followUser}
           onChange={(e) => setFollowUser(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleFollow()}
@@ -220,7 +220,7 @@ const Leaderboard: React.FC = () => {
       <div className="unfollow-friend-form" style={{ marginTop: '1rem', display: 'flex', gap: '12px', alignItems: 'center', justifyContent: 'center' }}>
         <input
           type="text"
-          placeholder="Username to unfollow"
+          placeholder="Username to Unfollow"
           value={unfollowUser}
           onChange={(e) => setUnfollowUser(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleUnfollow()}
