@@ -718,12 +718,8 @@ app.post('/api/updateAchievement', async (req, res) => {
   }
 });
 
-
 // settings routine
 app.use('/api/routine', require('./routes/routineRoutes'));
-
-
-
 
 // ===== Server =====//
 const PORT = process.env.PORT || 3000;
