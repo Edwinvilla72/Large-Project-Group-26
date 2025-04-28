@@ -9,19 +9,19 @@
     --shadow-glow: 0 0 15px rgba(0, 240, 255, 0.4);
   }
   
+  /* Fitopia Bakchground */
   .fullscreen-background {
+    width: 100vw;
+    height: 100vh;
     background: url('/assets/gymbackground2.png') no-repeat center center fixed;
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
-    height: 100vh;
-    width: 100vw;
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
     overflow: hidden;
-  }
+}
+
   
   
   /* Stack Fitopia title above login box */

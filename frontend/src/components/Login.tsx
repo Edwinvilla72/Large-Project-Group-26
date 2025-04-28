@@ -77,7 +77,7 @@ function Login() {
   return (
     <div className="fullscreen-background">
       <div className="login-stack">
-        <h1 className="fitopia-title">🏋️‍♂️Fitopia🏃‍♂️</h1>
+        <h1 className="fitopia-title">🏋️‍♂️ Fitopia 🏃‍♂️</h1>
         <motion.div
           initial={{ y: -100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}

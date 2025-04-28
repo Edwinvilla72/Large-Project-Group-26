@@ -1,5 +1,5 @@
 /* FULL reset for body and root layout */
-html, body, #root {
+html, body {
   height: 100%;
   width: 100%;
   margin: 0;
@@ -10,6 +10,8 @@ html, body, #root {
   align-items: center;
   justify-content: center;
 }
+
+
 
 .card {
   padding: 2em;
