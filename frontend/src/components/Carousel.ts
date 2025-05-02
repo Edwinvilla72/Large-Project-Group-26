@@ -134,7 +134,7 @@ function init(container: HTMLElement, navigate?: (path: string) => void) {
 
         root.scale.setScalar(scaleFactor);            // scales entire model by our scale factor we created earlier
 
-        // treat this current model as a CustomMest (defined earlier with the path, url and labels)
+        // treat this current model as a CustomMesh (defined earlier with the path, url and labels)
         const rootWithMeta = root as CustomMesh;
         // set all values of this model to the current model's values we defined earlier in beeg array
         rootWithMeta.userData = {
