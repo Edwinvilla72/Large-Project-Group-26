@@ -3,7 +3,8 @@ import * as THREE from 'three'; // three.js is the 3D rendering technology used 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'; // loads models (.gbl)
 
 //THREE.Group is a collection of 3D objects treated as a single object
-interface CustomMesh extends THREE.Group {
+// this is essentially what gives the models attributes like size, targetsize, url and labels
+interface CustomMesh extends THREE.Group {    
   userData: {
     originalScale: THREE.Vector3;  // original size of the model
     targetScale: THREE.Vector3;    // what to scale up to when hovered over
@@ -227,92 +228,106 @@ function init(container: HTMLElement, navigate?: (path: string) => void) {
     mouse.x = ((event.clientX - bounds.left) / bounds.width) * 2 - 1;  // x position of the mouse
     mouse.y = -((event.clientY - bounds.top) / bounds.height) * 2 + 1; // y position of the mouse
 
+    // detect mouse hover
     raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObjects(models, true);
+    const intersects = raycaster.intersectObjects(models, true);  // checks which model the ray touches (check all children too being the smaller pieces of the model we imported in)
 
+    // resets all model sizes
     models.forEach((model) =>
-      model.userData.targetScale.copy(model.userData.originalScale)
+      model.userData.targetScale.copy(model.userData.originalScale) // so the model doesn't stay big forever after being hovered over and exited
     );
 
+    // handle the hovered model
     if (intersects.length > 0) {
-      let hovered = intersects[0].object as THREE.Object3D;
+      let hovered = intersects[0].object as THREE.Object3D;     // this sets hovered to the part of the model we hit. sometimes we hit the child mesh on the model and not the root. count it. 
       while (hovered && !('targetScale' in hovered.userData)) {
-        hovered = hovered.parent!;
+        hovered = hovered.parent!;                              // walk up until we find the CustomMesh which is parent to the current child mesh (trophy base => trophy model)
       }
 
+      // grow the model and scale it when it is hovered over
       if (hovered && 'targetScale' in hovered.userData) {
         (hovered as CustomMesh).userData.targetScale.setScalar(
-          hovered.userData.originalScale.x * 1.25
+          hovered.userData.originalScale.x * 1.25 // scale the model up 25% when hovered over (to make the dashboard feel interactive)
         );
-        hoverLabel.innerText = hovered.userData.label ?? 'Unknown';
-        hoverLabel.style.left = `${event.clientX - bounds.left - 65}px`;
-        hoverLabel.style.top = `${event.clientY - bounds.top - 40}px`;
-        hoverLabel.style.display = 'block';
+        // update the text label for this model 
+        hoverLabel.innerText = hovered.userData.label ?? 'Unknown';       // sets text inside of textbox for hover label
+        hoverLabel.style.left = `${event.clientX - bounds.left - 65}px`;  // sets the x offset (from cursor)
+        hoverLabel.style.top = `${event.clientY - bounds.top - 80}px`;    // sets y offset (from cursor) so the box sits above the mouse
+        hoverLabel.style.display = 'block';                               // makes the label visible
       }
     } else {
-      hoverLabel.style.display = 'none';
+      hoverLabel.style.display = 'none';                                  // if nothing is hovered over, dont display a label or increase the size of the model
     }
   });
 
-  renderer.domElement.addEventListener('click', () => {
-    raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObjects(models, true);
+  // when the model is clicked on, detect which model was clicked and go to its respective page
+  renderer.domElement.addEventListener('click', () => {           // adds click listener
+    raycaster.setFromCamera(mouse, camera);                       // casts a ray through the mouse's current position from the camera
+    const intersects = raycaster.intersectObjects(models, true);  // sets hovered to the part of the model we hit.
     if (intersects.length > 0) {
-      let clicked = intersects[0].object as THREE.Object3D;
-      while (clicked && !('url' in clicked.userData)) {
-        clicked = clicked.parent!;
+      let clicked = intersects[0].object as THREE.Object3D;       // the closes object hit is the one we want to use for this function
+      while (clicked && !('url' in clicked.userData)) {           // if the model we hit didnt have a CustomMesh associated with it, but was still part of a model, 
+        clicked = clicked.parent!;                                // walk up until we find the CustomMesh which is parent to the current child mesh (trophy base => trophy model)
       }
-      if (clicked && clicked.userData.url) {
-        if (navigate) {
-          navigate(clicked.userData.url);
-        } else {
-          window.location.href = clicked.userData.url;
+      if (clicked && clicked.userData.url) {            // if this model is the CustomMesh...
+        if (navigate) {                                 // if we are using navigate to go from one page to another
+          navigate(clicked.userData.url);               // navigate to the page associated with this model
+        } else {                                        // if we have any issues using navigate for any reason...
+          window.location.href = clicked.userData.url;  // use window.location.href (reloads the page instead of smooth transition)
         }
       }
     }
   });
 
+  // ensures that the carousel and models stay consistent, even when the browser window is resized
   window.addEventListener('resize', () => {
-    const width = containerElement.clientWidth;
-    const height = containerElement.clientHeight;
-    camera.aspect = width / height;
-    camera.updateProjectionMatrix();
-    renderer.setSize(width, height);
+    const width = containerElement.clientWidth;   // width adjustment according to the current window size
+    const height = containerElement.clientHeight; // height adjustment according to the current window size
+    camera.aspect = width / height;               // change the way the camera percieves the carousel based on our new values
+    camera.updateProjectionMatrix();              // so that new settings take place onscreen
+    renderer.setSize(width, height);              // resizes the canvas
   });
-
-  animate();
+  animate();  // 
 }
 
+// updates the positions of the models in the circular path we put them on
 function updateModelPositions() {
-  models.forEach((model, index) => {
-    const theta = angle + (index * (Math.PI * 2)) / models.length;
-    model.position.x = Math.sin(theta) * radius;
-    model.position.z = Math.cos(theta) * radius;
-    model.position.y = 0;
-    model.scale.lerp(model.userData.targetScale, 0.1);
-    model.rotation.y = 0;
+  models.forEach((model, index) => {                                  // for every model
+    const theta = angle + (index * (Math.PI * 2)) / models.length;    // calculates where on the circular path this model should go (if we add any more models, this will position every model correctly)
+    model.position.x = Math.sin(theta) * radius;                      // places the model in the correct X position on this carousel
+    model.position.z = Math.cos(theta) * radius;                      // places the model in the correct Z position on this carousel   
+    model.position.y = 0;                                             // we place the model on 0 for Y since its a carousel, not a circular sine wave (that sounds kinda cool though)
+
+    // lerp = linear interpolation
+    model.scale.lerp(model.userData.targetScale, 0.1);                // changes the model by 10% on each frame (when hovering or exiting)
+    model.rotation.y = 0;                                             // we dont need to rotate on the Y axis
   });
 }
 
+// updates targetAngle, which we need so the carousel knows where to go
 function rotateModels(direction: number) {
-  targetAngle += direction * ((Math.PI * 2) / models.length);
+  targetAngle += direction * ((Math.PI * 2) / models.length); // moves 1 or -1 by one model's worth of rotation
 }
 
+// animation loop. runs continuously to animate the scene
 function animate() {
-  if (isDestroyed) return; // 🛡️ stop loop after reset
-  requestAnimationFrame(animate);
-  if (!renderer || !scene || !camera) return;
+  if (isDestroyed) return;                      // stop loop after reset
+  requestAnimationFrame(animate);               // updates the next frame (60 times a second)
+  if (!renderer || !scene || !camera) return;   // sanity check. if any of our scene elements hasn't loaded properly, don't error out, just return
 
-  angle += (targetAngle - angle) * 0.05;
-  updateModelPositions();
-  renderer.render(scene, camera);
+  angle += (targetAngle - angle) * 0.05;        // instead of snapping models to their correct spot, make them smoothly transition over to their correct locations
+  updateModelPositions();                       // spins and animates scale of models
+  renderer.render(scene, camera);               // draws the new 3D scene to the screen (instead of making all these changes and noting appearing to reflect it)
 }
 
+// stops animation loop, removes the canvas from the HTML, and resets global variables (for switching pages)
 export function resetCarousel() {
-  isDestroyed = true;
+  isDestroyed = true;                                     // stop the animation loop
   if (renderer && containerElement) {
-    containerElement.removeChild(renderer.domElement);
+    containerElement.removeChild(renderer.domElement);    // removes the webGL canvas we made everything on from the current page
   }
+
+  // resets variables to undefined (so nothing doubles or misbehaves upon reloading the carousel)
   scene = undefined as any;
   camera = undefined as any;
   renderer = undefined as any;
