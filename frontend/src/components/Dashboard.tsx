@@ -108,7 +108,7 @@ const Dashboard = () => {
           <div style={{ color: 'white', fontSize: '1.1rem', fontWeight: 600 }}>
             {user ? (
               <div>
-                <div>{`Welcome, ${user.FirstName} ${user.LastName}`}</div>
+                <div>{`Welcome, ${user.FirstName} ${user.LastName}!`}</div>
                 <div style={{ fontSize: '0.9rem', fontWeight: 400 }}>
                   Level: {user.level} | XP: {user.xp} | Quests Completed: {user.questComp}
                 </div>

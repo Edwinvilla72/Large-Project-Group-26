@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require('express'); 
 const dotenv = require('dotenv').config();
 const connectDB = require('./config/db');
 // const authRoutes = require('./routes/authRoutes');
@@ -7,11 +7,12 @@ const bodyParser = require("body-parser");
 const User = require('./models/User');
 const Workout = require('./models/Workout');
 const Quest = require('./models/Quest');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs'); // or 'bcrypt' if you're using that instead
+const jwt = require('jsonwebtoken');  
+const bcrypt = require('bcryptjs');   // how we hash passwords upon user registration
 const app = express();
 
 
+// test
 // app.get('/', (req, res) => {
 //     res.send('Backend is running!');
 // });
@@ -23,8 +24,6 @@ app.use(cors({
   origin: 'http://localhost:5173',
   credentials: true
 }));
-
-
 
 function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization'];
@@ -39,17 +38,16 @@ function authenticateToken(req, res, next) {
   });
 }
 
-
 connectDB();
-
 
 app.use(express.json());
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
 //app.use('/api/auth', authRoutes);
 
+
+// ---register api---
 app.post('/api/register', async (req, res) => {
   try {
     const { FirstName, LastName, Login, Password, SecQNum, SecQAns } = req.body;
@@ -102,6 +100,7 @@ const newUser = new User({
     xp: 0,
     questComp: 0,
     dailyQuests: selectedDaily,
+    // temp achievements for new users since none have been generated
     achievements: [
       {
         achievementId: new mongoose.Types.ObjectId("680ac5f01c41c331aa111d5e"),
@@ -110,7 +109,6 @@ const newUser = new User({
     ]
   }
 });
-
 
     await newUser.save();
 
@@ -121,10 +119,7 @@ const newUser = new User({
   }
 });
 
-
-
-
-// login api
+// ---login api---
 app.post('/api/login', async (req, res) => {
   const { Login, Password } = req.body;
 
@@ -192,7 +187,6 @@ app.post('/api/login', async (req, res) => {
     return res.status(500).json({ error: "An error occurred during login" });
   }
 });
-
 
 // Quests (Fitness Tasks)
 app.get('/api/quests', async (req, res) => {
@@ -286,13 +280,7 @@ app.get('/api/getWorkout', async (req, res) => {
 
 });
 
-
-// Get Leaderboard (Top XP Users)
-//app.get('/api/leaderboard', async (req, res) => {
-//const users = await User.find().sort({ 'character.xp': -1 }).limit(10);
-//res.json(users.map(u => ({ username: u.username, level: u.character.level, xp: u.character.xp })));
-//});
-
+// ===leaderboard api===
 app.get('/api/leaderboard', async (req, res) => {
   try {
     const users = await User.find({})
@@ -412,7 +400,6 @@ app.get('/api/getAllFollowees', async (req, res) => {
 
 // add friend
 const mongoose = require('mongoose'); // at the top if not imported
-
 app.post('/api/follow', async (req, res) => {
   const { userId, followUser } = req.body;
 
@@ -638,6 +625,7 @@ app.get('/api/getAllAchievements', async (req, res) => {
   }
 });
 
+// get current user's achievements
 app.get('/api/getUserAchievements', async (req, res) => {
   const { userId } = req.query;
 
@@ -665,9 +653,7 @@ app.get('/api/getUserAchievements', async (req, res) => {
   }
 });
 
-
-
-
+// update achievement
 app.post('/api/updateAchievement', async (req, res) => {
   const { userId, achievementId } = req.body;
 
