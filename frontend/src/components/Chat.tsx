@@ -31,7 +31,7 @@ function Chat() {
 
         try {
  
-            const response = await fetch("http://localhost:3000/api/generate", {
+            const response = await fetch("https://merntest.fitgame.space/api/generate", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
