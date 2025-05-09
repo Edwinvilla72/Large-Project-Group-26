@@ -84,6 +84,7 @@ function init(container: HTMLElement, navigate?: (path: string) => void) {
   //! model[2] = achievements
   //! model[3] = leaderboard
   //! model[4] = settings
+  //! model[5] = chatbot
 
   // model paths array
   const modelPaths = [
@@ -92,7 +93,7 @@ function init(container: HTMLElement, navigate?: (path: string) => void) {
     'assets/models/Dice.glb',
     'assets/models/Trophy.glb',
     'assets/models/cog.glb',
-    'assets/models/Waterbottle.glb'
+    'assets/models/Waterbottle.glb' //TODO: change this to reflect a chatbot soon!
   ];
 
   // model hover labels array

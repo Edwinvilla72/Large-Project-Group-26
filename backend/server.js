@@ -749,6 +749,65 @@ app.post('/api/updateAchievement', async (req, res) => {
 // settings routine
 app.use('/api/routine', require('./routes/routineRoutes'));
 
+
+// generate text using OpenAI
+const fetch = require('node-fetch'); // at top if not already imported
+app.post('/api/generate', async (req, res) => {
+  const { prompt } = req.body;
+
+  if (!prompt) {
+    return res.status(400).json({ error: 'Prompt is required' });
+  }
+
+  try {
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.API_KEY}`
+      },
+      body: JSON.stringify({
+        model: "gpt-3.5-turbo",
+        messages: [
+          {
+            role: "system",
+            content: "You are a motivating, knowledgeable gym partner. You know the user's goals and suggest exercises, nutrition tips, and encouragement."
+          },
+          {
+            role: "user",
+            content: prompt
+          }
+        ]
+      })
+    });
+
+    const data = await response.json();
+    console.log("🔍 OpenAI raw response:", JSON.stringify(data, null, 2)); // logs actual structure
+    
+    if (!response.ok) {
+      console.error("OpenAI error response:", data);
+      return res.status(response.status).json({ error: data.error?.message || "OpenAI error" });
+    }
+    
+    const message = data.choices?.[0]?.message?.content;
+    
+    if (!message) {
+      console.error("❌ No message found in OpenAI response", data);
+      return res.status(500).json({ error: "No message returned from OpenAI" });
+    }
+    
+    return res.json({ result: message });
+    
+  } 
+  catch (error) {
+    console.error("OpenAI fetch error:", error);
+    res.status(500).json({ error: 'Server error generating response' });
+  }
+});
+
+
+
+
 // ===== Server =====//
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => console.log(`API running on port ${PORT}!`));

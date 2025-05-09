@@ -2,5 +2,10 @@
   "dependencies": {
     "cors": "^2.8.5",
     "react-step-progress-bar": "^1.0.3"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.1.6"
   }
 }

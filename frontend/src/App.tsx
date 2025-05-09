@@ -13,6 +13,7 @@ import AchievementsPage from './pages/AchievementsPage';
 import GymQuestsPage from './pages/GymQuestsPage';
 import LeaderboardPage from './pages/LeaderboardPage';
 import SettingsPage from './pages/SettingsPage';
+import ChatPage from './pages/ChatPage';
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -35,6 +36,8 @@ function AnimatedRoutes() {
         <Route path="/GymQuests" element={<GymQuestsPage/>} />
         <Route path="/Leaderboard" element={<LeaderboardPage/>} />
         <Route path="/Settings" element={<SettingsPage/>} />
+        <Route path="/Chat" element={<ChatPage/>}/>
+
 
 
 
