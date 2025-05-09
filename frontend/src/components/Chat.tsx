@@ -81,6 +81,11 @@ function Chat() {
               type="text"
               value={prompt}                              // sets value of input text to 'prompt'
               onChange={(e) => setPrompt(e.target.value)} // allows prompt value to update 
+              onKeyUp={(e) => {                           // allows user to press enter to submit text
+                if (e.key === "Enter") {
+                  generate();
+                }
+              }}
               placeholder="Type something..."
               style={{ width: '100%', padding: '10px', marginTop: '6px', marginBottom: '10px', borderRadius: '5px' }}
             />
