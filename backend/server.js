@@ -27,7 +27,7 @@ const app = express();                                      // create main expre
 // cors = cross origin resourse sharing (LOCAL)
 const cors = require('cors');
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: ['http://localhost:5173', 'https://merntest.fitgame.space'],
   credentials: true
 }));
 
