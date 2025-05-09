@@ -50,8 +50,7 @@ function authenticateToken(req, res, next) {
 
 connectDB();  // attempts to connect to the database 
 
-app.use(express.json());                              // so that express server understands request bodies formatted as JSON
-app.use(cors());                                      // resource sharing for deployed site
+app.use(express.json());                              // so that express server understands request bodies formatted as JSON                                    // resource sharing for deployed site
 app.use(bodyParser.json());                           // standard for parsing JSON before Express
 app.use(bodyParser.urlencoded({ extended: true }));   // standard for parsing JSON before Express
 //app.use('/api/auth', authRoutes);
