@@ -63,6 +63,7 @@ const Dashboard = () => {
 
     fetchUserProfile();
 
+    // starts carousel
     if (canvasRef.current) {
       startCarousel(canvasRef.current, navigate);
     }

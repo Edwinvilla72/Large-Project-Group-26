@@ -1,15 +1,21 @@
-const express = require('express'); 
-const dotenv = require('dotenv').config();
-const connectDB = require('./config/db');
+// foundational imports/tools
+const express = require('express');                          // the main framework for building this web server
+const dotenv = require('dotenv').config();                   // for .env file
+const connectDB = require('./config/db');                    // assists in establishing connection to the MongoDB database
 // const authRoutes = require('./routes/authRoutes');
-const routineRoutes = require('./routes/routineRoutes');
-const bodyParser = require("body-parser");
-const User = require('./models/User');
+const routineRoutes = require('./routes/routineRoutes');     // for storing workout routines users store
+const bodyParser = require("body-parser");                   // handles data that comes in from requests
+
+// database models
+const User = require('./models/User');                       
 const Workout = require('./models/Workout');
 const Quest = require('./models/Quest');
-const jwt = require('jsonwebtoken');  
-const bcrypt = require('bcryptjs');   // how we hash passwords upon user registration
-const app = express();
+
+// security and managing logins
+const jwt = require('jsonwebtoken');                        // JSON webtoken (for security and handling logins)
+const bcrypt = require('bcryptjs');                         // how we hash passwords upon user registration
+
+const app = express();                                      // create main express application object (where routes, middleware, etc. to)
 
 
 // test
@@ -18,66 +24,78 @@ const app = express();
 // });
 
 
-// cors
+// cors = cross origin resourse sharing (LOCAL)
 const cors = require('cors');
 app.use(cors({
   origin: 'http://localhost:5173',
   credentials: true
 }));
 
+
+// authenticationToken checks if incoming requests have valid JWT so that only valid requests are authorized
 function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 
-  if (!token) return res.sendStatus(401);
+  if (!token) return res.sendStatus(401);   // user needs to provide credentials
 
+  // checks if token is valid
   jwt.verify(token, process.env.JWT_SECRET || 'secret', (err, user) => {
-    if (err) return res.sendStatus(403);
-    req.user = user; // this gets attached to req
-    next();
+    if (err) return res.sendStatus(403);  // user provided invalid credentials
+    req.user = user;                      // this gets attached to request
+    next();                               // passes control over to next middleware or API
   });
 }
 
-connectDB();
 
-app.use(express.json());
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+connectDB();  // attempts to connect to the database 
+
+app.use(express.json());                              // so that express server understands request bodies formatted as JSON
+app.use(cors());                                      // resource sharing for deployed site
+app.use(bodyParser.json());                           // standard for parsing JSON before Express
+app.use(bodyParser.urlencoded({ extended: true }));   // standard for parsing JSON before Express
 //app.use('/api/auth', authRoutes);
 
 
 // ---register api---
+// where user data is sent and checked for validity (if so, register them for the platform)
 app.post('/api/register', async (req, res) => {
   try {
-    const { FirstName, LastName, Login, Password, SecQNum, SecQAns } = req.body;
+    
+    const { FirstName, LastName, Login, Password, SecQNum, SecQAns } = req.body;      // required fields for body
 
-    if (!FirstName || !LastName || !Login || !Password || !SecQAns) {
-      return res.status(400).json({ error: "Please fill out all fields." });
+    if (!FirstName || !LastName || !Login || !Password || !SecQAns) {                 // if any of these fields were not present in the users attempt to register...
+      return res.status(400).json({ error: "Please fill out all fields." });          // (Bad Request Error) tell the user to make sure all fields have values
     }
 
-    const existing = await User.findOne({ Login });
-    if (existing) {
-      return res.status(409).json({ error: "Username already exists. Please choose another." });
+    // checks if the new user's desired username is already taken
+    const existing = await User.findOne({ Login });                                                 // attempts to find an existing instance of this login (using findOne)
+    if (existing) {                                                                                 // if anything was found...
+      return res.status(409).json({ error: "Username already exists. Please choose another." });    // (Conflict Error) tell the user this username has already been taken
     }
 
-    const SecQAnsHash = await bcrypt.hash(SecQAns, 10);
-    const PasswordHash = await bcrypt.hash(Password, 10);
+    // security (hashing)
+    const SecQAnsHash = await bcrypt.hash(SecQAns, 10);     // uses bcrypt to encrypt the security question answer that the user provided
+    const PasswordHash = await bcrypt.hash(Password, 10);   // uses bcrypt to encrypt the password that the user assigned to this account
 
+    // if the user regsiters successfully, set up the user's initial set of daily quests to be any RANDOM 3 'daily' quests
     const selectedDailyDocs = await Quest.aggregate([
-      { $match: { type: "daily" } },
-      { $sample: { size: 3 } }
+      { $match: { type: "daily" } },  // type of quest we are looking for is daily
+      { $sample: { size: 3 } }        // we only need 3 of them
     ]);
 
+    // format newly selected quests into an array of objects containing their ID and completion status (set this to false)
     const selectedDaily = selectedDailyDocs.map(q => ({
-      questId: q._id,
-      completed: false
+      questId: q._id,     // quest ID
+      completed: false    // set this quests completion status to false (we literally JUST made the account)
     }));
 
-    if (selectedDaily.length < 3) {
-      return res.status(500).json({ error: "Not enough daily quests in the database." });
+  
+    if (selectedDaily.length < 3) {                                                         // if for some reason we couldn't manage to find 3 daily quests from our database
+      return res.status(500).json({ error: "Not enough daily quests in the database." });   // tell the user there was an issue (there are enough this is just for sanity)
     }
 
+    // get the users IP address
     const ipAddress =
   req.headers['x-forwarded-for']?.split(',')[0] ||
   req.connection.remoteAddress ||
@@ -85,6 +103,8 @@ app.post('/api/register', async (req, res) => {
 
 console.log(`Register attempt from IP: ${ipAddress}`);
 
+
+// new user object using all of the data we took in
 const newUser = new User({
   FirstName,
   LastName,
@@ -92,82 +112,98 @@ const newUser = new User({
   Password: PasswordHash,
   SecQNum,
   SecQAns: SecQAnsHash,
-  friends: [],
-  registerIp: ipAddress, // 🆕 this saves the IP
+  friends: [],            // initializes friends array to empty (again, we JUST made the account)
+  registerIp: ipAddress,  // saves the IP
+
+  // character information
   character: {
     name: FirstName + "'s Hero",
-    level: 1,
-    xp: 0,
-    questComp: 0,
-    dailyQuests: selectedDaily,
+    level: 1,                     // initializes level to 1
+    xp: 0,                        // initializes XP to 0 points
+    questComp: 0,                 // initializes number of quests completed to 0
+    dailyQuests: selectedDaily,   // sets daily quests to the set we randomly pulled earlier
+
     // temp achievements for new users since none have been generated
     achievements: [
       {
-        achievementId: new mongoose.Types.ObjectId("680ac5f01c41c331aa111d5e"),
+        // every user starts with the level 1 achievement
+        achievementId: new mongoose.Types.ObjectId("680ac5f01c41c331aa111d5e"), 
         progress: 1
       }
     ]
   }
 });
 
-    await newUser.save();
-
-    res.status(201).json({ error: "" });
-  } catch (e) {
+    await newUser.save();                 // attempt to save information to the database
+    res.status(201).json({ error: "" });  // successfully created the user (no error)
+  } 
+  catch (e) {
+    // registration failed and returns an error
     console.error("Registration error:", e);
     res.status(500).json({ error: "Registration failed: " + e.message });
   }
 });
 
 // ---login api---
+// handles a user's login request
 app.post('/api/login', async (req, res) => {
-  const { Login, Password } = req.body;
+  const { Login, Password } = req.body;   // required fields for body
 
-  if (!Login || !Password) {
-    return res.status(400).json({ error: "Missing login or password" });
+  if (!Login || !Password) {                                                // if any fields were not entered byt he user
+    return res.status(400).json({ error: "Missing login or password" });    // tell the user that something is missing
   }
 
   try {
-    const user = await User.findOne({ Login });
+    const user = await User.findOne({ Login });                   // attempts to find out whether the username entered exists in the database
 
-    if (!user) {
-      return res.status(401).json({ error: "Invalid username" });
+    // username
+    if (!user) {                                                  // if the user wasn't found in the database
+      return res.status(401).json({ error: "Invalid username" }); // error, tell the user they entered a username that does not exist in the db
     }
 
-    const isMatch = await bcrypt.compare(Password, user.Password);
-    if (!isMatch) {
-      return res.status(401).json({ error: "Invalid password" });
+    // password
+    const isMatch = await bcrypt.compare(Password, user.Password);  // checks whether the password entered is the decrypted password that the username entered is associated with
+    if (!isMatch) {                                                 // if the password entered does not match what we have stored in the database, 
+      return res.status(401).json({ error: "Invalid password" });   // tells the user their password was incorrect
     }
 
-    const isNewDay = (lastDate) => {
-      const now = new Date();
-      const last = new Date(lastDate);
+    // daily quest refresh logic (if the user logs in on a new day)
+    const isNewDay = (lastDate) => {                
+      const now = new Date();                       // variable containing todays date
+      const last = new Date(lastDate);              // the last day we had logged
+      // checks if the day, month and year of todays date match with the previous. 
       return (
         now.getFullYear() !== last.getFullYear() ||
         now.getMonth() !== last.getMonth() ||
         now.getDate() !== last.getDate()
       );
+      // true if today is a new day, false if it is the same day
     };
 
-    if (isNewDay(user.lastDailyRefresh)) {
-      const newDaily = await Quest.aggregate([
+  
+    if (isNewDay(user.lastDailyRefresh)) {      // if todays login is DIFFERENT than that of the previous login
+      const newDaily = await Quest.aggregate([  // swap out the previous daily quests for 3 NEW RANDOM daily quests
         { $match: { type: "daily" } },
         { $sample: { size: 3 } }
       ]);
     
+      // update daily quest array to reflect the new selections we found (if today was a new day)
       user.character.dailyQuests = newDaily.map(q => ({
         questId: q._id,
-        completed: false
+        completed: false    // initialize completion status to false so we can complete new quests later
       }));
     
-      user.lastDailyRefresh = new Date();
+      user.lastDailyRefresh = new Date();   // sets new lastDailyRefresh value to today's date for the next login to compare to
     }
 
+    // if the user does not have a time stamp (maybe its their first time logging in)
     if (!user.loginTimestamps) user.loginTimestamps = [];
-    user.loginTimestamps.push(new Date());
+    user.loginTimestamps.push(new Date());  // adds the new date
 
-    await user.save();
 
+    await user.save();  // save changes made to the user upon logging in
+
+    // get details for current daily quests (quest description and XP to be awarded to the user)
     let fullDailyQuests = [];
     if (user.character.dailyQuests && user.character.dailyQuests.length > 0) {
       fullDailyQuests = await Quest.find({
@@ -175,43 +211,49 @@ app.post('/api/login', async (req, res) => {
       });      
     }
 
+    // if everything is successful up to this point, we return a successful result
     return res.status(200).json({
-      _id: user._id,
-      FirstName: user.FirstName,
-      LastName: user.LastName,
-      dailyQuests: fullDailyQuests
+      // return key user info for the frontend to use (JSON)
+      _id: user._id,                  // user's id
+      FirstName: user.FirstName,      // user's first name
+      LastName: user.LastName,        // user's last name
+      dailyQuests: fullDailyQuests    // sets dailyQuests array to the fullDailyQuests we just set
     });
 
   } catch (e) {
-    console.error("Login error:", e);
-    return res.status(500).json({ error: "An error occurred during login" });
+    // if anything went wrong along the way, error
+    console.error("Login error:", e);                                           
+    return res.status(500).json({ error: "An error occurred during login" });   
   }
 });
 
-// Quests (Fitness Tasks)
+// ---Quests (Fitness Tasks)---
+// gets all quests and returns an array of them as JSON
 app.get('/api/quests', async (req, res) => {
-  const quests = await Quest.find();
-  res.json(quests);
+  const quests = await Quest.find();      // finds all possible quests in game
+  res.json(quests);                       // result is a JSON file containing all quests 
 });
 
-// User Progress
+// ---User Progress---
+// upon completing quests, update the user's XP and quest completion status
 app.post('/api/completeQuest', async (req, res) => {
-  const { userId, questId } = req.body;
+  const { userId, questId } = req.body;   // required fields for body
 
   try {
-    const quest = await Quest.findById(questId);
-    if (!quest) return res.status(404).json({ error: 'Quest not found' });
+    const quest = await Quest.findById(questId);                              // looks for the current quest by id 
+    if (!quest) return res.status(404).json({ error: 'Quest not found' });    // if this quest could not be found, return an error
 
-    const user = await User.findById(userId);
-    if (!user) return res.status(404).json({ error: 'User not found' });
+    const user = await User.findById(userId);                                 // look for the current user by id
+    if (!user) return res.status(404).json({ error: 'User not found' });      // if the user could not be found, return an error
 
-    const levelThreshold = 100;
-    const totalXP = user.character.xp + quest.xp;
-    const newLevel = Math.floor(totalXP / levelThreshold) + 1; // Users start at level 1
+    const levelThreshold = 100;                                // 100 XP per level
+    const totalXP = user.character.xp + quest.xp;              // awards user with quest XP (finds the total XP after adding)
+    const newLevel = Math.floor(totalXP / levelThreshold) + 1; // Users start at level 1. Calculates new level after XP has been added
 
-    user.character.xp = totalXP;
-    user.character.level = newLevel;
-    user.character.questComp++;
+    // changes user stats
+    user.character.xp = totalXP;       // updates user's xp
+    user.character.level = newLevel;   // updates user's level (if applicable)
+    user.character.questComp++;        // updates user's number of completed quests 
 
     await user.save();
 
