@@ -93,7 +93,7 @@ function init(container: HTMLElement, navigate?: (path: string) => void) {
     'assets/models/Dice.glb',
     'assets/models/Trophy.glb',
     'assets/models/cog.glb',
-    'assets/models/Waterbottle.glb' //TODO: change this to reflect a chatbot soon!
+    'assets/models/mac.glb' //TODO: change this to reflect a chatbot soon!
   ];
 
   // model hover labels array
@@ -135,8 +135,16 @@ function init(container: HTMLElement, navigate?: (path: string) => void) {
         if (i === 0) root.position.y += 1.2;          // for 'basic quests' model, move up by 1.2 units
         if (i === 2) scaleFactor *= 0.7;              // for 'achievements' model, make it 70 percent of its current size
         if (i === 4) root.rotation.x = -Math.PI / 2;  // for 'settings' model, it originally was lying flat, so rotate on the x axis to make it stand upright
-        if (i === 5) root.position.y -= 2.2;
+        if (i === 5) {
+          root.rotation.y = Math.PI;
         
+          // Try adjusting the child mesh
+          const child = root.children[0];
+          if (child) {
+            child.position.y -= 0.03;
+          }
+        }
+
         root.scale.setScalar(scaleFactor);            // scales entire model by our scale factor we created earlier
 
         // treat this current model as a CustomMesh (defined earlier with the path, url and labels)

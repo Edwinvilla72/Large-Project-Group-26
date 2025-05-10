@@ -74,7 +74,7 @@ function Chat() {
           transition={{ duration: 0.4 }}
         >
           <div className="neon-login-container">
-            <h1 className="neon-title">Chat With AI</h1>
+            <h1 className="neon-title">Workout Partner</h1>
       
             <label htmlFor="promptInput" style={{ fontWeight: 'bold' }}>Enter prompt:</label><br />
             <input id="promptInput"
